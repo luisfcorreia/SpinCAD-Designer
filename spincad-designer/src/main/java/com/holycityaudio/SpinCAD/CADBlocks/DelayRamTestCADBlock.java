@@ -17,18 +17,17 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 	
  */
-
 // this block is experimental and needs adjustment to work with the FV-1
-
 package com.holycityaudio.SpinCAD.CADBlocks;
 
 import com.holycityaudio.SpinCAD.SpinCADPin;
 import com.holycityaudio.SpinCAD.SpinFXBlock;
 import com.holycityaudio.SpinCAD.SpinCADBlock;
 
-public class DelayRamTestCADBlock extends SpinCADBlock{
+public class DelayRamTestCADBlock extends SpinCADBlock {
+
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 5711126291575876825L;
 
@@ -36,12 +35,12 @@ public class DelayRamTestCADBlock extends SpinCADBlock{
 		super(x, y);
 		addInputPin(this);
 		addOutputPin(this);
-		setName("Delay RAM Test");	
+		setName("Delay RAM Test");
 	}
 
-	public void editBlock(){
+	public void editBlock() {
 
-	}	
+	}
 
 	public void generateCode(SpinFXBlock sfxb) {
 
@@ -51,7 +50,7 @@ public class DelayRamTestCADBlock extends SpinCADBlock{
 
 		SpinCADPin p = this.getPin("Audio Input 1").getPinConnection();
 
-		if(p != null) {
+		if (p != null) {
 			input = p.getRegister();
 
 			int output = sfxb.allocateReg();
@@ -62,9 +61,9 @@ public class DelayRamTestCADBlock extends SpinCADBlock{
 			sfxb.readRegister(input, 1.0);
 			sfxb.FXwriteDelay("ram", 0, 0.0);
 			sfxb.FXreadDelay("ram", 0, 1.0);
-			sfxb.writeRegister(output, 0.0);	
-			
-			this.getPin("Audio Output 1").setRegister(output);	
+			sfxb.writeRegister(output, 0.0);
+
+			this.getPin("Audio Output 1").setRegister(output);
 		}
 		System.out.println("Delay Test code gen!");
 	}

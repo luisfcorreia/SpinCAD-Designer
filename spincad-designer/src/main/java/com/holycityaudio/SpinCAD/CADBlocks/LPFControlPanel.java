@@ -17,7 +17,6 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 	
  */
-
 package com.holycityaudio.SpinCAD.CADBlocks;
 
 import java.awt.event.ActionEvent;
@@ -30,39 +29,39 @@ import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-
 @SuppressWarnings("serial")
 class LPFControlPanel extends JFrame implements ChangeListener, ActionListener {
+
 	JSlider freqSlider;
 	JSlider resSlider;
 
 	JLabel freqLabel;
 	JLabel resLabel;
-	
+
 	private LPFCADBlock LPF;
-	
+
 	public LPFControlPanel(LPFCADBlock lpfcadBlock) {
 		this.LPF = lpfcadBlock;
 		this.setTitle("Low pass Filter");
 		this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
-		
+
 		freqSlider = new JSlider(JSlider.HORIZONTAL, 0, 100, 0);
 		freqSlider.addChangeListener(this);
 		resSlider = new JSlider(JSlider.HORIZONTAL, 0, 90, 0);
 		resSlider.addChangeListener(this);
-		
+
 		freqLabel = new JLabel();
 		resLabel = new JLabel();
-		
+
 		this.getContentPane().add(freqLabel);
 		this.getContentPane().add(freqSlider);
 
 		this.getContentPane().add(resLabel);
 		this.getContentPane().add(resSlider);
-		
+
 		this.setVisible(true);
 		this.pack();
-		this.setLocation(LPF.getX() + 200, LPF.getY() + 150);	
+		this.setLocation(LPF.getX() + 200, LPF.getY() + 150);
 //		freqSlider.setValue((int)Math.round((lpfcadBlock.getFreq() * 100.0)));
 //		resSlider.setValue((int)Math.round((lpfcadBlock.getRes() * 100.0)));
 	}
@@ -70,13 +69,12 @@ class LPFControlPanel extends JFrame implements ChangeListener, ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// ---
-		
+
 	}
 
 	public void stateChanged(ChangeEvent ce) {
-		if(ce.getSource() == freqSlider) {
-		}
-		else if(ce.getSource() == resSlider) {
+		if (ce.getSource() == freqSlider) {
+		} else if (ce.getSource() == resSlider) {
 		}
 	}
 }

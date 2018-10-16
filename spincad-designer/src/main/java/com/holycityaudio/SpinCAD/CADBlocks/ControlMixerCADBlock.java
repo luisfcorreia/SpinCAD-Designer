@@ -15,17 +15,16 @@
  *   You should have received a copy of the GNU General Public License 
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. 
  *     
- */ 
-
+ */
 package com.holycityaudio.SpinCAD.CADBlocks;
 
 import com.holycityaudio.SpinCAD.SpinCADPin;
 import com.holycityaudio.SpinCAD.SpinFXBlock;
 
-public class ControlMixerCADBlock extends ControlCADBlock{
+public class ControlMixerCADBlock extends ControlCADBlock {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 4676526418848384621L;
 
@@ -37,29 +36,27 @@ public class ControlMixerCADBlock extends ControlCADBlock{
 		setName("Control Mixer");
 	}
 
-	public void generateCode(SpinFXBlock sfxb)
-	{
+	public void generateCode(SpinFXBlock sfxb) {
 		int mix = sfxb.allocateReg();
 		int leftIn = -1;
 		sfxb.comment(getName());
 		SpinCADPin p = this.getPin("Control Input 1").getPinConnection();
 		if (p != null) {
-			leftIn = p.getRegister();			
+			leftIn = p.getRegister();
 			sfxb.readRegister(leftIn, 1.0);	// get left signal, add to register, scale by 1.0
 		}
 
 		int rightIn = -1;
 		p = this.getPin("Control Input 2").getPinConnection();
 		if (p != null) {
-			rightIn = p.getRegister();			
-			sfxb.readRegister(rightIn,  1.0);
+			rightIn = p.getRegister();
+			sfxb.readRegister(rightIn, 1.0);
 		}
 
 		// at this point, if there is no right input, we clear accumulator
 		// if there is a right input but no right control input, then ACC holds rightIn * defaultGain
 		// if there is a right input and right control input, then ACC holds right input * right control input
-
-		if(leftIn + rightIn != -2) {
+		if (leftIn + rightIn != -2) {
 			sfxb.writeRegister(mix, 0.0);	// dry signal, for later
 			this.getPin("Control Output 1").setRegister(mix);
 			System.out.println("Control Mixer code gen!");

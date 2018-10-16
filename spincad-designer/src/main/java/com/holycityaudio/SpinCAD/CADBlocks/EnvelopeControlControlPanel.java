@@ -15,8 +15,7 @@
  *   You should have received a copy of the GNU General Public License 
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. 
  *     
- */ 
-
+ */
 package com.holycityaudio.SpinCAD.CADBlocks;
 
 import java.awt.event.ActionEvent;
@@ -36,28 +35,28 @@ public class EnvelopeControlControlPanel implements ChangeListener, ActionListen
 
 	private JSlider gainSlider = new JSlider(JSlider.HORIZONTAL, 1, 8, 2);
 	private JLabel gainLabel = new JLabel("Hi");
-	
+
 	private JSlider attackSlider = null;
 	private JLabel attackLabel = new JLabel("Hi");
-	
+
 	private JSlider decaySlider = null;
 	private JLabel decayLabel = new JLabel("Hi");
-	
+
 	private JFrame frame;
 
 	private EnvelopeControlCADBlock pC;
 
 	public EnvelopeControlControlPanel(EnvelopeControlCADBlock envelopeControlCADBlock) {
 		gainSlider.addChangeListener(this);
-		
+
 		this.pC = envelopeControlCADBlock;
 		// JSlider value is converted to an exponent representing filter frequency, so 
 		// -29 => 10^(-29/100) = 0.5129 Hz which determined is the lowest practical frequency possible
 		// with the FV-1's coefficient resolution.
 		// 100 => 10^(100/100) = 10 Hz.
-		attackSlider = new JSlider(JSlider.HORIZONTAL, (int)(-29),(int) (125), SpinCADBlock.logvalToSlider(SpinCADBlock.filtToFreq(pC.getAttack()), 100.0));
-		decaySlider = new JSlider(JSlider.HORIZONTAL, (int)(-29),(int) (50), SpinCADBlock.logvalToSlider(SpinCADBlock.filtToFreq(pC.getDecay()), 100.0));
-		
+		attackSlider = new JSlider(JSlider.HORIZONTAL, (int) (-29), (int) (125), SpinCADBlock.logvalToSlider(SpinCADBlock.filtToFreq(pC.getAttack()), 100.0));
+		decaySlider = new JSlider(JSlider.HORIZONTAL, (int) (-29), (int) (50), SpinCADBlock.logvalToSlider(SpinCADBlock.filtToFreq(pC.getDecay()), 100.0));
+
 		attackSlider.addChangeListener(this);
 		decaySlider.addChangeListener(this);
 
@@ -105,28 +104,26 @@ public class EnvelopeControlControlPanel implements ChangeListener, ActionListen
 		if (e.getSource() == gainSlider) {
 			pC.setGain(gainSlider.getValue());
 			updateGainLabel();
-		}
-		else if (e.getSource() == attackSlider) {
+		} else if (e.getSource() == attackSlider) {
 			pC.setAttack(SpinCADBlock.freqToFilt(SpinCADBlock.sliderToLogval(attackSlider.getValue(), 100.0)));
 //			pC.setAttack((double) attackSlider.getValue()/100000.0);
 			updateAttackLabel();
-		}
-		else if (e.getSource() == decaySlider) {
+		} else if (e.getSource() == decaySlider) {
 			pC.setDecay(SpinCADBlock.freqToFilt(SpinCADBlock.sliderToLogval(decaySlider.getValue(), 100.0)));
 //			pC.setDecay((double) decaySlider.getValue()/1000000.0);
 			updateDecayLabel();
 		}
-	}	
-	
-	private void updateGainLabel() {
-		gainLabel.setText(String.format("Gain: %2d dB", pC.getGain() * 6));				
 	}
-	
+
+	private void updateGainLabel() {
+		gainLabel.setText(String.format("Gain: %2d dB", pC.getGain() * 6));
+	}
+
 	private void updateAttackLabel() {
-		attackLabel.setText(String.format("Attack: %4.2f", SpinCADBlock.filtToFreq(pC.getAttack())));		
+		attackLabel.setText(String.format("Attack: %4.2f", SpinCADBlock.filtToFreq(pC.getAttack())));
 	}
 
 	private void updateDecayLabel() {
-		decayLabel.setText(String.format("Decay: %4.2f", SpinCADBlock.filtToFreq(pC.getDecay())));		
+		decayLabel.setText(String.format("Decay: %4.2f", SpinCADBlock.filtToFreq(pC.getDecay())));
 	}
 }

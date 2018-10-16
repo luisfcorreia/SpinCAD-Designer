@@ -16,10 +16,9 @@
  *   You should have received a copy of the GNU General Public License 
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. 
  *     
- */ 
+ */
 package com.holycityaudio.SpinCAD.ControlPanel;
 
-import org.andrewkilpatrick.elmGen.ElmProgram;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
@@ -29,32 +28,18 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.event.ItemEvent;
 import javax.swing.BoxLayout;
-import javax.swing.JSlider;
-import javax.swing.JPanel;
-import javax.swing.JSpinner;
-import javax.swing.JLabel;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.Box;
-import javax.swing.SpinnerNumberModel;
-import javax.swing.SwingConstants;
-import javax.swing.BorderFactory;
-import javax.swing.border.BevelBorder;
-import javax.swing.border.Border;
-import java.awt.Dimension;
-import java.text.DecimalFormat;
-import com.holycityaudio.SpinCAD.SpinCADBlock;
 import com.holycityaudio.SpinCAD.spinCADControlPanel;
 import com.holycityaudio.SpinCAD.CADBlocks.Half_WaveCADBlock;
 
 @SuppressWarnings("unused")
 public class Half_WaveControlPanel extends spinCADControlPanel {
+
 	private JFrame frame;
 	private Half_WaveCADBlock gCB;
 	// declare the controls
 
-public Half_WaveControlPanel(Half_WaveCADBlock genericCADBlock) {
-		
+	public Half_WaveControlPanel(Half_WaveCADBlock genericCADBlock) {
+
 		gCB = genericCADBlock;
 
 		SwingUtilities.invokeLater(new Runnable() {
@@ -69,50 +54,52 @@ public Half_WaveControlPanel(Half_WaveCADBlock genericCADBlock) {
 				frame.setResizable(false);
 				frame.setLocation(gCB.getX() + 100, gCB.getY() + 100);
 				frame.setAlwaysOnTop(true);
-				frame.setVisible(true);		
+				frame.setVisible(true);
 			}
 		});
-		}
+	}
 
-		// add change listener for Sliders, Spinners 
-		class Half_WaveListener implements ChangeListener { 
+	// add change listener for Sliders, Spinners 
+	class Half_WaveListener implements ChangeListener {
+
 		public void stateChanged(ChangeEvent ce) {
-			}
+		}
+	}
+
+	// add item state changed listener for Checkbox
+	class Half_WaveItemListener implements java.awt.event.ItemListener {
+
+		@Override
+		public void itemStateChanged(ItemEvent arg0) {
+		}
+	}
+
+	// add action listener for Combo Box
+	class Half_WaveActionListener implements java.awt.event.ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+		}
+	}
+
+	class MyWindowListener implements WindowListener {
+
+		@Override
+		public void windowActivated(WindowEvent arg0) {
 		}
 
-		// add item state changed listener for Checkbox
-		class Half_WaveItemListener implements java.awt.event.ItemListener { 
-			
 		@Override
-			public void itemStateChanged(ItemEvent arg0) {
-			}
+		public void windowClosed(WindowEvent arg0) {
 		}
-		
-		// add action listener for Combo Box
-		class Half_WaveActionListener implements java.awt.event.ActionListener { 
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-			}
+
+		@Override
+		public void windowClosing(WindowEvent arg0) {
+			gCB.clearCP();
 		}
-		
-		class MyWindowListener implements WindowListener
-		{
-		@Override
-			public void windowActivated(WindowEvent arg0) {
-			}
 
 		@Override
-			public void windowClosed(WindowEvent arg0) {
-			}
-
-		@Override
-			public void windowClosing(WindowEvent arg0) {
-				gCB.clearCP();
-			}
-
-		@Override
-			public void windowDeactivated(WindowEvent arg0) {
-			}
+		public void windowDeactivated(WindowEvent arg0) {
+		}
 
 		@Override
 		public void windowDeiconified(WindowEvent arg0) {
@@ -123,9 +110,9 @@ public Half_WaveControlPanel(Half_WaveCADBlock genericCADBlock) {
 
 		}
 
-			@Override
-			public void windowOpened(WindowEvent arg0) {
-			}
+		@Override
+		public void windowOpened(WindowEvent arg0) {
 		}
-		
 	}
+
+}

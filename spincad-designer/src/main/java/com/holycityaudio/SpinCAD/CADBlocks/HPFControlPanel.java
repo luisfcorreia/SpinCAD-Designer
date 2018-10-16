@@ -17,7 +17,6 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 	
  */
-
 package com.holycityaudio.SpinCAD.CADBlocks;
 
 import java.awt.EventQueue;
@@ -29,13 +28,13 @@ import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-
 public class HPFControlPanel extends JFrame implements ChangeListener {
+
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 8785303496392300373L;
-	
+
 	JSlider freqSlider;
 	JSlider resSlider;
 
@@ -46,15 +45,13 @@ public class HPFControlPanel extends JFrame implements ChangeListener {
 
 	public HPFControlPanel(HPFCADBlock b) {
 		this.HPF = b;
-		
-        EventQueue.invokeLater(new Runnable()
-        {
-            public void run()
-            {
-                createAndShowUI();
-            }
-        });
-    }
+
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				createAndShowUI();
+			}
+		});
+	}
 
 	private void createAndShowUI() {
 		this.setTitle("High pass Filter");
@@ -102,15 +99,15 @@ public class HPFControlPanel extends JFrame implements ChangeListener {
 		p.add(resLabel);
 		p.add(resSlider);
 
-		freqSlider.setValue((int)Math.round((b.getFreq() * 100.0)));
-		resSlider.setValue((int)Math.round((b.getRes() * 100.0)));
+		freqSlider.setValue((int) Math.round((b.getFreq() * 100.0)));
+		resSlider.setValue((int) Math.round((b.getRes() * 100.0)));
 	}
 
 	public void stateChanged(ChangeEvent ce) {
 		if (ce.getSource() == freqSlider) {
 			HPF.setFreq((double) freqSlider.getValue() / 100.0);
 			freqLabel.setText("Frequency: "
-					+ String.format("%2.2f", HPF.getFreq()));
+				+ String.format("%2.2f", HPF.getFreq()));
 		} else if (ce.getSource() == resSlider) {
 			HPF.setRes((double) resSlider.getValue() / 100.0);
 			resLabel.setText("Resonance: " + String.format("%2.2f", HPF.getRes()));

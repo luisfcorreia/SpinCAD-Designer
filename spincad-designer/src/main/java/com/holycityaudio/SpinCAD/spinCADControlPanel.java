@@ -17,7 +17,6 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 	
  */
-
 // I'm not exactly sure what this is doing here...
 // Must have been a good idea at one time 8^)
 package com.holycityaudio.SpinCAD;
@@ -26,8 +25,8 @@ import org.andrewkilpatrick.elmGen.ElmProgram;
 import java.io.Serializable;
 
 public class spinCADControlPanel implements Serializable {
-	
+
 	protected double coeffToLFORate(double rate) {
-		 return (ElmProgram.getSamplerate() * rate) / (2 * Math.PI * Math.pow(2.0, 17));
+		return (ElmProgram.getSamplerate() * rate) / (2 * Math.PI * Math.pow(2.0, 17));
 	}
 }

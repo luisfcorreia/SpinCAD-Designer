@@ -16,8 +16,7 @@
  *   You should have received a copy of the GNU General Public License 
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. 
  *     
- */ 
-
+ */
 package com.holycityaudio.SpinCAD.CADBlocks;
 
 import java.awt.Color;
@@ -25,9 +24,10 @@ import java.awt.Color;
 import com.holycityaudio.SpinCAD.SpinCADBlock;
 import com.holycityaudio.SpinCAD.SpinFXBlock;
 
-public class BPFCADBlock extends SpinCADBlock{
+public class BPFCADBlock extends SpinCADBlock {
+
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = -2168695413490384727L;
 	double f0 = 1200;
@@ -40,39 +40,37 @@ public class BPFCADBlock extends SpinCADBlock{
 		setName("Band Pass");
 		setBorderColor(Color.PINK);
 	}
-	
-	public void editBlock(){
+
+	public void editBlock() {
 		new BPFControlPanel(this);
 	}
-	
+
 	public void generateCode(SpinFXBlock sfxb) {
 		// at this moment, code implements a low pass.
 		// and not a very good one at that!
 		// coefficients
-		
+
 		// need to figure out how to map these coefficients to freq/resonance
 		sfxb.comment(sfxb.getName());
-		double kfl = 1.0 - Math.exp((-6.283 * f0)/getSamplerate());
+		double kfl = 1.0 - Math.exp((-6.283 * f0) / getSamplerate());
 		double kql = -0.13;
-		
+
 		int input = this.getPin("Audio Input").getPinConnection().getRegister();
-		
+
 		int lpal = sfxb.allocateReg();
 		int lpbl = sfxb.allocateReg();
 		int lpoutl = sfxb.allocateReg();
 
 		//		int rmixl = sfxb.allocateReg();
 //		int kfx = sfxb.allocateReg();	
-		
 		//		;now do the low pass.
-		
 		sfxb.skip(RUN, 3);
 		sfxb.clear();
-		sfxb.writeRegister(lpal,  0);
-		sfxb.writeRegister(lpbl,  0);
-				
+		sfxb.writeRegister(lpal, 0);
+		sfxb.writeRegister(lpbl, 0);
+
 		// ------------- start of filter code
-	 	//		rdax	lpal,1
+		//		rdax	lpal,1
 		sfxb.readRegister(lpal, kfl);
 		//		mulx	kfl
 //		sfxb.mulx(kfl);
@@ -99,8 +97,8 @@ public class BPFCADBlock extends SpinCADBlock{
 		sfxb.readRegister(input, 1.0);
 		//		rdax	lpbl,1
 		sfxb.readRegister(lpbl, 1.0);
-		
-		this.getPin("Audio Output").setRegister(lpoutl);	
+
+		this.getPin("Audio Output").setRegister(lpoutl);
 		System.out.println("BPF code gen!");
 
 	}

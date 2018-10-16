@@ -16,35 +16,34 @@
  *   You should have received a copy of the GNU General Public License 
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. 
  *     
- */ 
-
+ */
 package com.holycityaudio.SpinCAD.CADBlocks;
 
 import java.awt.Color;
 
 import com.holycityaudio.SpinCAD.SpinCADBlock;
 
-public class FilterCADBlock extends SpinCADBlock{
+public class FilterCADBlock extends SpinCADBlock {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = -4609262868411320225L;
 
-	enum filterType { LOWPASS, BANDPASS, HIGHPASS };
+	enum filterType {
+		LOWPASS, BANDPASS, HIGHPASS
+	};
 
 	public FilterCADBlock(int x, int y) {
 		super(x, y);
 		setBorderColor(Color.PINK);
 	}
-	
+
 	public double freqToFilter(double freq) {
-		return (2 * Math.PI) * (freq/getSamplerate()); 
+		return (2 * Math.PI) * (freq / getSamplerate());
 	}
 
 	public double filterToFreq(double filt) {
-		return (filt * getSamplerate())/(2 * Math.PI); 
+		return (filt * getSamplerate()) / (2 * Math.PI);
 	}
 }
-
-

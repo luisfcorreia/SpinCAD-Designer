@@ -17,7 +17,6 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 	
  */
-
 package com.holycityaudio.SpinCAD;
 
 import java.awt.BorderLayout;
@@ -88,7 +87,7 @@ public class SpinCADFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	/**
-	 * 
+	 *
 	 */
 
 	int buildNum = 1026;
@@ -126,11 +125,10 @@ public class SpinCADFrame extends JFrame {
 	// modelSave is used to undo deletes
 	ByteArrayOutputStream modelSave;
 
-
 	// pasteBuffer is used to paste after copying
 	ByteArrayOutputStream pasteBuffer;
 	// used in copy/paste
-	SpinCADBlock blk = new SpinCADBlock(0,0);
+	SpinCADBlock blk = new SpinCADBlock(0, 0);
 
 	private int canUndo = 0;
 
@@ -151,11 +149,9 @@ public class SpinCADFrame extends JFrame {
 		});
 	}
 
-
 	/**
 	 * Create the frame.
 	 */
-
 	@SuppressWarnings("unused")
 	public SpinCADFrame() {
 		// setTitle("SpinCAD Designer - Untitled");
@@ -185,8 +181,6 @@ public class SpinCADFrame extends JFrame {
 		// ==========================================================================================
 		// ======================= main panel
 		// =========================================================
-
-
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.LIGHT_GRAY);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -195,13 +189,11 @@ public class SpinCADFrame extends JFrame {
 
 //		JScrollPane scrollPane = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 //		setPreferredSize(new Dimension(450, 1200));
-
 		contentPane.add(panel, BorderLayout.CENTER);
 
 		// =========================================================
 		// ======================= toolbars ========================
 		// =========================================================
-
 		JPanel toolBarPanel = new JPanel();
 		toolBarPanel.setLayout(new BoxLayout(toolBarPanel, BoxLayout.Y_AXIS));
 		contentPane.add(toolBarPanel, BorderLayout.SOUTH);
@@ -216,15 +208,13 @@ public class SpinCADFrame extends JFrame {
 
 		//--------------------------------------
 		// patch selector buttons in bank toolbar
-
 		Border border = BorderFactory.createBevelBorder(BevelBorder.RAISED);
 
-		bankPanel.setLayout(new GridLayout(1,8));
+		bankPanel.setLayout(new GridLayout(1, 8));
 		bankPanel.setVisible(true);
 		topPanel.add(bankPanel, BorderLayout.NORTH);
 
 		//----------------------------------------
-
 		simX.sctb.setFloatable(false);
 		simX.sctb.setBorder(border);
 		simPanel.setLayout(new BoxLayout(simPanel, BoxLayout.Y_AXIS));
@@ -249,14 +239,13 @@ public class SpinCADFrame extends JFrame {
 		// controlPanels.setFloatable(false);
 		contentPane.add(controlPanels, BorderLayout.EAST);
 		controlPanels.setLayout(new BoxLayout(controlPanels, BoxLayout.Y_AXIS));
-		
+
 		// initialize file paths in preferences
 		SpinCADFile fsp = new SpinCADFile();
 		fsp.init_prefs();
-		
+
 		// ======================================================
 		// ; ==================== menu bar and items ==========
-
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 
@@ -264,7 +253,6 @@ public class SpinCADFrame extends JFrame {
 		menuBar.add(mnFileMenu);
 
 		// Patch File operations
-
 		JMenuItem mntmNewPatch = new JMenuItem("New Patch");
 		mntmNewPatch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -272,8 +260,8 @@ public class SpinCADFrame extends JFrame {
 				if (eeprom.patch[bankIndex].getChanged() == true) {
 					int dialogButton = JOptionPane.YES_NO_OPTION;
 					int dialogResult = JOptionPane.showConfirmDialog(panel,
-							"You have unsaved changes!  Continue?", "Warning!",
-							dialogButton);
+						"You have unsaved changes!  Continue?", "Warning!",
+						dialogButton);
 					if (dialogResult == JOptionPane.NO_OPTION) {
 						return;
 					}
@@ -293,18 +281,17 @@ public class SpinCADFrame extends JFrame {
 				SpinCADFile f = new SpinCADFile();
 				if (eeprom.patch[bankIndex].getChanged() == true) {
 					int dialogResult = SpinCADDialogs.yesNoBox(panel, "Warning!",
-							"You have unsaved changes!  Continue?");
+						"You have unsaved changes!  Continue?");
 					if (dialogResult == JOptionPane.NO_OPTION) {
 						// eeprom.patch[bankIndex].patchModel.newModel();
 						repaint();
-					}
-					else {
+					} else {
 						SpinCADPatch p = f.fileOpenPatch();
 						if (p != null) {
 							eeprom.patch[bankIndex] = p;
 							eeprom.patch[bankIndex].patchModel.getIndexFB();
 							eeprom.patch[bankIndex].patchModel.presetIndexFB();
-							eeprom.patch[bankIndex].setChanged(false);						
+							eeprom.patch[bankIndex].setChanged(false);
 							eeprom.changed = true;
 							updateAll();
 							repaint();
@@ -314,7 +301,7 @@ public class SpinCADFrame extends JFrame {
 					eeprom.patch[bankIndex] = f.fileOpenPatch();
 					eeprom.patch[bankIndex].patchModel.getIndexFB();
 					eeprom.patch[bankIndex].patchModel.presetIndexFB();
-					eeprom.patch[bankIndex].setChanged(false);						
+					eeprom.patch[bankIndex].setChanged(false);
 					eeprom.changed = true;
 					updateAll();
 					repaint();
@@ -330,12 +317,11 @@ public class SpinCADFrame extends JFrame {
 				SpinCADFile f = new SpinCADFile();
 				if (eeprom.patch[bankIndex].getChanged() == true) {
 					int dialogResult = SpinCADDialogs.yesNoBox(panel, "Warning!",
-							"You have unsaved changes!  Continue?");
+						"You have unsaved changes!  Continue?");
 					if (dialogResult == JOptionPane.NO_OPTION) {
 						//						eeprom.patch[bankIndex].patchModel.newModel();
 						repaint();
-					}
-					else {
+					} else {
 						SpinCADPatch p = f.fileOpenHex();
 						if (p != null) {
 							eeprom.patch[bankIndex] = p;
@@ -344,12 +330,11 @@ public class SpinCADFrame extends JFrame {
 							repaint();
 						}
 					}
-				} 
-				else {
+				} else {
 					eeprom.patch[bankIndex] = f.fileOpenHex();
 					eeprom.changed = true;
 					updateAll();
-					repaint();					
+					repaint();
 				}
 			}
 		});
@@ -359,7 +344,7 @@ public class SpinCADFrame extends JFrame {
 		JMenuItem mntmSavePatch = new JMenuItem("Save Patch");
 		mntmSavePatch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(eeprom.patch[bankIndex].patchFileName != "Untitled") {
+				if (eeprom.patch[bankIndex].patchFileName != "Untitled") {
 					SpinCADFile f = new SpinCADFile();
 					f.fileSavePatch(eeprom.patch[bankIndex]);
 					updateAll(false);
@@ -412,9 +397,9 @@ public class SpinCADFrame extends JFrame {
 		mntmCopyToClipboard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				eeprom.patch[bankIndex].patchModel.sortAlignGen();
-				StringSelection stringSelection = new StringSelection (eeprom.patch[bankIndex].cb.getComments() + eeprom.patch[bankIndex].patchModel.getRenderBlock().getProgramListing(1));
-				Clipboard clpbrd = Toolkit.getDefaultToolkit ().getSystemClipboard ();
-				clpbrd.setContents (stringSelection, null);
+				StringSelection stringSelection = new StringSelection(eeprom.patch[bankIndex].cb.getComments() + eeprom.patch[bankIndex].patchModel.getRenderBlock().getProgramListing(1));
+				Clipboard clpbrd = Toolkit.getDefaultToolkit().getSystemClipboard();
+				clpbrd.setContents(stringSelection, null);
 			}
 		});
 		mnFileMenu.add(mntmCopyToClipboard);
@@ -429,8 +414,8 @@ public class SpinCADFrame extends JFrame {
 				if (eeprom.patch[bankIndex].getChanged() == true) {
 					int dialogButton = JOptionPane.YES_NO_OPTION;
 					int dialogResult = JOptionPane.showConfirmDialog(panel,
-							"You have unsaved changes!  Continue?", "Warning!",
-							dialogButton);
+						"You have unsaved changes!  Continue?", "Warning!",
+						dialogButton);
 					if (dialogResult == JOptionPane.NO_OPTION) {
 						return;
 					}
@@ -448,23 +433,20 @@ public class SpinCADFrame extends JFrame {
 		JMenuItem mntmOpenBank = new JMenuItem("Open Bank");
 		mntmOpenBank.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				SpinCADFile f= new SpinCADFile();
+				SpinCADFile f = new SpinCADFile();
 				if (eeprom.patch[bankIndex].getChanged() == true) {
 					int dialogResult = SpinCADDialogs.yesNoBox(panel, "Warning!",
-							"You have unsaved changes!  Continue?");
+						"You have unsaved changes!  Continue?");
 					if (dialogResult == JOptionPane.NO_OPTION) {
 						return;
-					}
-					else {
+					} else {
 						SpinCADBank b = f.fileOpenBank();
 						if (b != null) {
 							eeprom = b;
 							updateAll(false);
 						}
 					}
-				}
-				else
-				{
+				} else {
 					eeprom = f.fileOpenBank();
 					updateAll(false);
 				}
@@ -476,7 +458,7 @@ public class SpinCADFrame extends JFrame {
 		JMenuItem mntmSaveBank = new JMenuItem("Save Bank");
 		mntmSaveBank.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(eeprom.bankFileName != "Untitled") {
+				if (eeprom.bankFileName != "Untitled") {
 					SpinCADFile f = new SpinCADFile();
 					f.fileSaveBank(eeprom);
 				} else {
@@ -541,8 +523,8 @@ public class SpinCADFrame extends JFrame {
 		mntmExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (eeprom.patch[bankIndex].getChanged() == true) {
-					int dialogResult = SpinCADDialogs.yesNoBox(panel, "Warning!", 
-							"You have unsaved changes!  Save first?");				
+					int dialogResult = SpinCADDialogs.yesNoBox(panel, "Warning!",
+						"You have unsaved changes!  Save first?");
 					if (dialogResult == JOptionPane.YES_OPTION) {
 						File fileToBeSaved = new File(eeprom.patch[bankIndex].patchFileName);
 						if (fileToBeSaved.exists()) {
@@ -607,7 +589,7 @@ public class SpinCADFrame extends JFrame {
 		final JMenuItem mntm_AddFB = new JMenuItem("Add");
 		mntm_AddFB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int i =  eeprom.patch[bankIndex].patchModel.getIndexFB();
+				int i = eeprom.patch[bankIndex].patchModel.getIndexFB();
 				FBInputCADBlock pcB = new FBInputCADBlock(50, 100, i);
 				dropBlock(panel, pcB);
 
@@ -628,10 +610,9 @@ public class SpinCADFrame extends JFrame {
 		final JMenuItem mntmSimLogger = new JCheckBoxMenuItem("Enable Level Viewer");
 		mntmSimLogger.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(simX.loggerIsVisible == true) {
+				if (simX.loggerIsVisible == true) {
 					simX.loggerIsVisible = false;
-				}
-				else {
+				} else {
 					simX.loggerIsVisible = true;
 				}
 			}
@@ -641,10 +622,9 @@ public class SpinCADFrame extends JFrame {
 		final JMenuItem mntmSimScope = new JCheckBoxMenuItem("Enable Scope");
 		mntmSimScope.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(simX.scopeIsVisible == true) {
+				if (simX.scopeIsVisible == true) {
 					simX.scopeIsVisible = false;
-				}
-				else {
+				} else {
 					simX.scopeIsVisible = true;
 				}
 			}
@@ -690,14 +670,13 @@ public class SpinCADFrame extends JFrame {
 					simX.getSimulatorFile();
 				} catch (UnsupportedAudioFileException e) {
 					SpinCADDialogs.MessageBox("Simulator File Error", "Make sure that your simulator source\n"
-							+ "file is a stereo 16 bit WAV file sampled \nat 32768, 44100, or 48000 Hz.");
-				}
-				catch (IOException e) {
+						+ "file is a stereo 16 bit WAV file sampled \nat 32768, 44100, or 48000 Hz.");
+				} catch (IOException e) {
 					e.printStackTrace();
 				}
 			}
 		});
-		mnSimulator.add(mntmSourceFile);		
+		mnSimulator.add(mntmSourceFile);
 
 		mnSimulator.addSeparator();
 		JMenuItem mntmSetSampleRate = new JMenuItem("Set Sample Rate");
@@ -711,7 +690,7 @@ public class SpinCADFrame extends JFrame {
 		});
 		mnSimulator.add(mntmSetSampleRate);
 
-		if(Debug.DEBUG == true) {
+		if (Debug.DEBUG == true) {
 			mnSimulator.addSeparator();
 			JMenuItem mntmDebugFile = new JMenuItem("Set Simulator Debug file");
 			mntmDebugFile.addActionListener(new ActionListener() {
@@ -745,10 +724,10 @@ public class SpinCADFrame extends JFrame {
 		mntmAbout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				SpinCADDialogs.MessageBox("About SpinCAD Designer", "Version 0.98 Build " + buildNum + "\n"
-						+ "Copyright 2018 Gary Worsham, Holy City Audio\n" + 
-						" This program is distributed in the hope that it will be useful," +
-						"\nbut WITHOUT ANY WARRANTY; without even the implied warranty of\n" + 
-						"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.");
+					+ "Copyright 2018 Gary Worsham, Holy City Audio\n"
+					+ " This program is distributed in the hope that it will be useful,"
+					+ "\nbut WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+					+ "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.");
 			}
 		});
 		mnHelp.add(mntmAbout);
@@ -758,13 +737,12 @@ public class SpinCADFrame extends JFrame {
 	 * @param panel
 	 * @param mntmExit
 	 */
-
 	void updateFrameTitle() {
 		SwingUtilities.invokeLater(new Runnable() {
-			public void run() { 	
+			public void run() {
 				String bankName = eeprom.bankFileName + (eeprom.changed ? " * ]" : "]");
 				String patchName = bankIndex + " [" + eeprom.patch[bankIndex].patchFileName + (eeprom.patch[bankIndex].getChanged() ? " * ]" : "]");
-				setTitle("SpinCAD Designer - Bank [" + bankName + " Patch " + patchName);			
+				setTitle("SpinCAD Designer - Bank [" + bankName + " Patch " + patchName);
 			}
 		});
 	}
@@ -774,9 +752,9 @@ public class SpinCADFrame extends JFrame {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				int confirm = JOptionPane.showOptionDialog(null,
-						"Do you wish to exit SpinCAD?", "Exit Confirmation",
-						JOptionPane.YES_NO_OPTION,
-						JOptionPane.QUESTION_MESSAGE, null, null, null);
+					"Do you wish to exit SpinCAD?", "Exit Confirmation",
+					JOptionPane.YES_NO_OPTION,
+					JOptionPane.QUESTION_MESSAGE, null, null, null);
 				if (confirm == JOptionPane.YES_OPTION) {
 					System.exit(0);
 				}
@@ -805,32 +783,29 @@ public class SpinCADFrame extends JFrame {
 	}
 
 	// edit functions cut/copy/paste/undo
-
 	public void saveModel() {
-		try { 
+		try {
 			modelSave = new ByteArrayOutputStream();
-			ObjectOutputStream oos = new ObjectOutputStream(modelSave); 
-			oos.writeObject(getPatch().patchModel); 
-			oos.flush(); 
-			oos.close(); 
-		} 
-		catch(Exception e) { 
-			System.out.println("saveModel: Exception during serialization: " + e); 
-		} 
+			ObjectOutputStream oos = new ObjectOutputStream(modelSave);
+			oos.writeObject(getPatch().patchModel);
+			oos.flush();
+			oos.close();
+		} catch (Exception e) {
+			System.out.println("saveModel: Exception during serialization: " + e);
+		}
 		canUndo = 1;
 	}
 
 	public void saveModelToPasteBuffer() {
-		try { 
+		try {
 			pasteBuffer = new ByteArrayOutputStream();
-			ObjectOutputStream oos = new ObjectOutputStream(pasteBuffer); 
-			oos.writeObject(getPatch().patchModel); 
-			oos.flush(); 
-			oos.close(); 
-		} 
-		catch(Exception e) { 
-			System.out.println("saveModelToPasteBuffer: Exception during serialization: " + e); 
-		} 
+			ObjectOutputStream oos = new ObjectOutputStream(pasteBuffer);
+			oos.writeObject(getPatch().patchModel);
+			oos.flush();
+			oos.close();
+		} catch (Exception e) {
+			System.out.println("saveModelToPasteBuffer: Exception during serialization: " + e);
+		}
 		canUndo = 1;
 	}
 
@@ -839,9 +814,9 @@ public class SpinCADFrame extends JFrame {
 		SpinCADBlock block;
 
 		Iterator<SpinCADBlock> itr = getPatch().patchModel.blockList.iterator();
-		while(itr.hasNext()) {
+		while (itr.hasNext()) {
 			block = itr.next();
-			if(block.selected == true) {
+			if (block.selected == true) {
 				// TODO need to think of a way to delete an open control panel
 				//						if(block.editBlock != null)
 				deleteBlockConnection(getPatch().patchModel, block);
@@ -851,20 +826,19 @@ public class SpinCADFrame extends JFrame {
 	}
 
 	public void undo() {
-		if(canUndo == 1) {
-			try { 
+		if (canUndo == 1) {
+			try {
 				ByteArrayInputStream bais = new ByteArrayInputStream(modelSave.toByteArray());
 				ObjectInputStream is = new ObjectInputStream(bais);
 				setModel((SpinCADModel) is.readObject());
-				is.close(); 
+				is.close();
 				// System.out.println("m: " + m); 
-			} 
-			catch(Exception e) { 
-				System.out.println("Undo: Exception during deserialization: " + 
-						e); 
-				System.exit(0); 
-			} 
-			canUndo = 0;		
+			} catch (Exception e) {
+				System.out.println("Undo: Exception during deserialization: "
+					+ e);
+				System.exit(0);
+			}
+			canUndo = 0;
 		}
 		contentPane.repaint();
 	}
@@ -875,24 +849,23 @@ public class SpinCADFrame extends JFrame {
 		panel.unselectAll(this);
 		SpinCADModel copyBuffer = new SpinCADModel();
 
-		try { 
+		try {
 			ByteArrayInputStream bais = new ByteArrayInputStream(pasteBuffer.toByteArray());
 			ObjectInputStream is = new ObjectInputStream(bais);
 			copyBuffer = ((SpinCADModel) is.readObject());
-			is.close(); 
+			is.close();
 			// System.out.println("m: " + m); 
-		} 
-		catch(Exception e) { 
-			System.out.println("paste: Exception during deserialization: " + 
-					e); 
-			System.exit(0); 
-		} 
+		} catch (Exception e) {
+			System.out.println("paste: Exception during deserialization: "
+				+ e);
+			System.exit(0);
+		}
 		Iterator<SpinCADBlock> itr = copyBuffer.blockList.iterator();
-		SpinCADBlock b = new SpinCADBlock(0,0);
+		SpinCADBlock b = new SpinCADBlock(0, 0);
 		// delete all pin connections from unselected blocks
-		while(itr.hasNext()) {
+		while (itr.hasNext()) {
 			b = itr.next();
-			if(b.selected == false) {
+			if (b.selected == false) {
 				deleteBlockConnection(copyBuffer, b);
 			}
 		}
@@ -901,36 +874,34 @@ public class SpinCADFrame extends JFrame {
 		// or if they are selected, add them to the current patch's
 		// block list
 		itr = copyBuffer.blockList.iterator();
-		while(itr.hasNext()) {
+		while (itr.hasNext()) {
 			b = itr.next();
-			if(b.selected == false) {
+			if (b.selected == false) {
 				itr.remove();
-			}
-			else {
-				eeprom.patch[bankIndex].patchModel.addBlock(b);	
+			} else {
+				eeprom.patch[bankIndex].patchModel.addBlock(b);
 			}
 		}
 
 		// to make sure that the mouse is on one of the new blocks
 		// just pick the first one it finds that is selected
 		itr = eeprom.patch[bankIndex].patchModel.blockList.iterator();
-		while(itr.hasNext()) {
+		while (itr.hasNext()) {
 			b = itr.next();
-			if(b.selected == true) {
+			if (b.selected == true) {
 				blk = b;
 				break;
 			}
 		}
 
 		SwingUtilities.invokeLater(new Runnable() {
-			public void run() { 	
+			public void run() {
 				// this gets the mouse sitting on the block!
 				panel.nullMouse();
-				panel.putMouseOnBlock(blk);	
+				panel.putMouseOnBlock(blk);
 				panel.setDragModeDragMove();
 			}
 		});
-
 
 		repaint();
 		canUndo = 1;
@@ -938,22 +909,21 @@ public class SpinCADFrame extends JFrame {
 
 	// deleteBlockConnection will delete all connections to a block as  
 	// part of removing it from the model
-
 	public void deleteBlockConnection(SpinCADModel m, SpinCADBlock b) {
 		SpinCADBlock block;
 		Iterator<SpinCADBlock> itr = m.blockList.iterator();
 		// b is the block to delete
 		// iterate through each block in the model
-		while(itr.hasNext()) {
+		while (itr.hasNext()) {
 			block = itr.next();
 			Iterator<SpinCADPin> itrPin = block.pinList.iterator();
 			SpinCADPin currentPin;
 			// iterate through each pin in each block
-			while(itrPin.hasNext()) {
+			while (itrPin.hasNext()) {
 				currentPin = itrPin.next();
 				// if the current pin's block connection is this block
 				// then we should delete it
-				if(currentPin.getBlockConnection() == b) {
+				if (currentPin.getBlockConnection() == b) {
 					currentPin.deletePinConnection();
 				}
 			}
@@ -962,6 +932,7 @@ public class SpinCADFrame extends JFrame {
 
 	// ====== COMMENT BLOCK PATCH ==================================================
 	class commentBlockPatch {
+
 		commentBlockPanel cbPnl;
 
 		public commentBlockPatch(SpinCADPatch patch) {
@@ -971,6 +942,7 @@ public class SpinCADFrame extends JFrame {
 
 	// ======================================================================================================
 	class commentBlockBank {
+
 		commentBlockPanel cbPnl;
 
 		public commentBlockBank(SpinCADBank bank) {
@@ -979,8 +951,9 @@ public class SpinCADFrame extends JFrame {
 	}
 
 	private class commentBlockPanel extends JFrame implements WindowListener {
+
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = -7295329402087496031L;
 
@@ -1021,7 +994,7 @@ public class SpinCADFrame extends JFrame {
 					commentFrame.add(line1text);
 					commentFrame.add(line2text);
 					commentFrame.add(line3text);
-					commentFrame.add(line4text);	
+					commentFrame.add(line4text);
 					commentFrame.setAlwaysOnTop(true);
 					commentFrame.pack();
 					commentFrame.setLocation(200, 150);
@@ -1051,11 +1024,11 @@ public class SpinCADFrame extends JFrame {
 		@Override
 		public void windowClosing(WindowEvent arg0) {
 			// ---
-			spcb.line[0] = line0text.getText();	
-			spcb.line[1] = line1text.getText();	
-			spcb.line[2] = line2text.getText();	
-			spcb.line[3] = line3text.getText();	
-			spcb.line[4] = line4text.getText();	
+			spcb.line[0] = line0text.getText();
+			spcb.line[1] = line1text.getText();
+			spcb.line[2] = line2text.getText();
+			spcb.line[3] = line3text.getText();
+			spcb.line[4] = line4text.getText();
 		}
 
 		@Override
@@ -1076,18 +1049,18 @@ public class SpinCADFrame extends JFrame {
 		@Override
 		public void windowOpened(WindowEvent arg0) {
 
-		}	
+		}
 	}
 
 	// ======================================================================================================
 	class bankPanel extends JPanel implements ActionListener {
 
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = 4962440927175195441L;
 		/**
-		 * 
+		 *
 		 */
 
 		final JButton[] btnPatch = new JButton[8];
@@ -1097,7 +1070,7 @@ public class SpinCADFrame extends JFrame {
 			Dimension minButtonSize = new Dimension(100, 20);
 			Dimension buttonSize = new Dimension(180, 20);
 
-			for(int i = 0; i < 8; i++) {
+			for (int i = 0; i < 8; i++) {
 				btnPatch[i] = new JButton("Patch " + i);
 				btnPatch[i].setPreferredSize(buttonSize);
 				btnPatch[i].setMinimumSize(minButtonSize);
@@ -1109,26 +1082,24 @@ public class SpinCADFrame extends JFrame {
 
 		public void actionPerformed(ActionEvent arg0) {
 
-			Object source = arg0.getSource(); 
+			Object source = arg0.getSource();
 
-			for(int i = 0; i < 8; i++) {
+			for (int i = 0; i < 8; i++) {
 				if (source == btnPatch[i]) {
 					bankIndex = i;
 					btnPatch[i].setBorder(BorderFactory.createCompoundBorder(
-							BorderFactory.createLineBorder(Color.blue),
-							null));
-				}
-				else {
+						BorderFactory.createLineBorder(Color.blue),
+						null));
+				} else {
 					btnPatch[i].setBorder(BorderFactory.createCompoundBorder(
-							BorderFactory.createLineBorder(Color.gray),
-							null));
+						BorderFactory.createLineBorder(Color.gray),
+						null));
 				}
 			}
 
 			// previously loaded patch into the slot
-			if(eeprom.patch[bankIndex] != null) {
-			}
-			// have not yet loaded a patch into this slot
+			if (eeprom.patch[bankIndex] != null) {
+			} // have not yet loaded a patch into this slot
 			else {
 				eeprom.patch[bankIndex] = new SpinCADPatch();
 				eeprom.patch[bankIndex].patchModel.newModel();
@@ -1137,22 +1108,22 @@ public class SpinCADFrame extends JFrame {
 		}
 	}
 
-
 	// ================= EditResourcesToolbar
 	// this shows the pin name as you hover over a pin
-
 	public class EditResourcesToolBar extends JToolBar implements ActionListener {
+
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = -7209732646570379290L;
 		/**
-		 * 
+		 *
 		 */
 
 		final JLabel pinName = new JLabel("");
 
 		class Task extends SwingWorker<Void, Void> {
+
 			/*
 			 * Main task. Executed in background thread.
 			 */
@@ -1166,6 +1137,7 @@ public class SpinCADFrame extends JFrame {
 				done();
 				return null;
 			}
+
 			/*
 			 * Executed in event dispatch thread
 			 */
@@ -1196,17 +1168,17 @@ public class SpinCADFrame extends JFrame {
 	public void updateAll() {
 		simX.updateSliders(eeprom.patch[bankIndex]);
 		pb.update(eeprom.patch[bankIndex]);
-		if(eeprom.patch[bankIndex].isHexFile == true) {
+		if (eeprom.patch[bankIndex].isHexFile == true) {
 			simX.sctb.setVisible(false);
 			etb.pinName.setText("Hex file: " + eeprom.patch[bankIndex].patchFileName);
 			etb.pinName.setVisible(true);
 		} else {
 			simX.sctb.setVisible(true);
-			etb.pinName.setText("");			
+			etb.pinName.setText("");
 		}
 		etb.update();
 		updateFrameTitle();
-		contentPane.repaint();	
+		contentPane.repaint();
 	}
 
 	public void updateAll(boolean isChanged) {
@@ -1217,13 +1189,14 @@ public class SpinCADFrame extends JFrame {
 	// ===================================================
 	// == Sample rate combo box
 	public class SampleRateComboBox extends JFrame {
+
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = 1L;
 		/**
-		 * 
-		private static final long serialVersionUID = 1L;
+		 *
+		 * private static final long serialVersionUID = 1L;
 		 */
 		JComboBox<Object> rateList = null;
 
@@ -1232,8 +1205,11 @@ public class SpinCADFrame extends JFrame {
 			createAndShowGUI();
 		}
 
-		/** Listens to the combo box. */
+		/**
+		 * Listens to the combo box.
+		 */
 		class SampleRateListener implements ActionListener {
+
 			public void actionPerformed(ActionEvent e) {
 				JComboBox<String> cb = ((JComboBox<String>) e.getSource());
 				String rate = (String) cb.getSelectedItem();
@@ -1248,8 +1224,8 @@ public class SpinCADFrame extends JFrame {
 		}
 
 		/**
-		 * Create the GUI and show it. For thread safety, this method should be
-		 * invoked from the event-dispatching thread.
+		 * Create the GUI and show it. For thread safety, this method
+		 * should be invoked from the event-dispatching thread.
 		 */
 		private void createAndShowGUI() {
 			// Create and set up the window.
@@ -1261,7 +1237,7 @@ public class SpinCADFrame extends JFrame {
 					setContentPane(newContentPane);
 					newContentPane.setOpaque(true); // content panes must be
 					// opaque
-					String[] rateStrings = { "32768", "44100", "48000" };
+					String[] rateStrings = {"32768", "44100", "48000"};
 
 					// Create the combo box, select the item at index 4.
 					// Indices start at 0, so 4 specifies the pig.
@@ -1272,14 +1248,15 @@ public class SpinCADFrame extends JFrame {
 					} else if (ElmProgram.SAMPLERATE == 48000) {
 						rateList.setSelectedIndex(2);
 
-					} else
+					} else {
 						rateList.setSelectedIndex(0);
+					}
 					rateList.addActionListener(new SampleRateListener());
 
 					// Lay out the demo.
 					newContentPane.add(rateList, BorderLayout.PAGE_START);
 					newContentPane.setBorder(BorderFactory.createEmptyBorder(
-							20, 20, 20, 20));
+						20, 20, 20, 20));
 
 					// Display the window.
 					pack();

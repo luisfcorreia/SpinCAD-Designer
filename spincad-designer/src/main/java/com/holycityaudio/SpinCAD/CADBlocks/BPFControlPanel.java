@@ -16,8 +16,7 @@
  *   You should have received a copy of the GNU General Public License 
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. 
  *     
- */ 
-
+ */
 package com.holycityaudio.SpinCAD.CADBlocks;
 
 import java.awt.event.ActionEvent;
@@ -30,45 +29,45 @@ import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-
 @SuppressWarnings("serial")
 class BPFControlPanel extends JFrame implements ChangeListener, ActionListener {
+
 	JSlider freqSlider;
 	JSlider resSlider;
 
 	JLabel freqLabel;
 	JLabel resLabel;
-	
+
 	private BPFCADBlock BPF;
-	
+
 	public BPFControlPanel(BPFCADBlock b) {
 		this.BPF = b;
 		this.setTitle("Band pass Filter");
 		this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
-		
+
 		freqSlider = new JSlider(JSlider.HORIZONTAL, 0, 100, 0);
 		freqSlider.addChangeListener(this);
 		resSlider = new JSlider(JSlider.HORIZONTAL, 0, 90, 0);
 		resSlider.addChangeListener(this);
-		
+
 		freqLabel = new JLabel();
 		resLabel = new JLabel();
-		
+
 		this.getContentPane().add(freqLabel);
 		this.getContentPane().add(freqSlider);
 
 		this.getContentPane().add(resLabel);
 		this.getContentPane().add(resSlider);
-		
+
 		this.pack();
-		this.setVisible(true);		
+		this.setVisible(true);
 		this.setLocation(BPF.getX() + 200, BPF.getY() + 150);
-		}
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// ---
-		
+
 	}
 
 	public void stateChanged(ChangeEvent ce) {

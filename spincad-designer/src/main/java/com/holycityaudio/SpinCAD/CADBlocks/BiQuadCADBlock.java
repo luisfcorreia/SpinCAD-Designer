@@ -17,20 +17,20 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 	
  */
-
 package com.holycityaudio.SpinCAD.CADBlocks;
 
 import com.holycityaudio.SpinCAD.SpinCADPin;
 import com.holycityaudio.SpinCAD.SpinFXBlock;
 
-public class BiQuadCADBlock extends FilterCADBlock{
+public class BiQuadCADBlock extends FilterCADBlock {
+
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 5711126291575876825L;
 	double f0 = 1200.0;
 	double q0 = 10.0;
-	double w0 = (2.0 * Math.PI * f0)/getSamplerate();
+	double w0 = (2.0 * Math.PI * f0) / getSamplerate();
 	int filterMode = 1;
 	double b0;
 	double b1;
@@ -38,31 +38,31 @@ public class BiQuadCADBlock extends FilterCADBlock{
 
 	public BiQuadCADBlock(int x, int y) {
 		super(x, y);
-		setName("BiQuad");	
+		setName("BiQuad");
 		addInputPin(this, "Audio Input");
 		addOutputPin(this, "Audio Output");
 		hasControlPanel = true;
 	}
 
-	public void editBlock(){
+	public void editBlock() {
 		new BiQuadControlPanel(this);
-	}	
+	}
 
 	@Override
 	public void generateCode(SpinFXBlock sfxb) {
 		// coefficients
-		w0 = (2.0 * Math.PI * f0)/getSamplerate();	
+		w0 = (2.0 * Math.PI * f0) / getSamplerate();
 		//	    alpha = sin(w0)/(2*Q) (case: Q)
-		double alpha = Math.sin(w0)/(2.0 * q0);
+		double alpha = Math.sin(w0) / (2.0 * q0);
 
-		if(filterMode == 1) {
+		if (filterMode == 1) {
 			// the following are for a low pass filter
 			//        b0 =  (1 - cos(w0))/2
-			b0 = (1.0 - Math.cos(w0))/2;
+			b0 = (1.0 - Math.cos(w0)) / 2;
 			//        b1 =   1 - cos(w0)
 			b1 = 1.0 - Math.cos(w0);
 			//        b2 =  (1 - cos(w0))/2
-			b2 = (1.0 - Math.cos(w0))/2;
+			b2 = (1.0 - Math.cos(w0)) / 2;
 		} else if (filterMode == 2) {
 			// band pass
 			// b0 = Math.sin(w0)/2;
@@ -72,48 +72,48 @@ public class BiQuadCADBlock extends FilterCADBlock{
 			b2 = -alpha;	// correcting gain against Q
 		} else if (filterMode == 3) {
 			// high pass
-			b0 = (1.0 + Math.cos(w0))/2;
+			b0 = (1.0 + Math.cos(w0)) / 2;
 			b1 = -(1.0 + Math.cos(w0));
-			b2 = (1.0 + Math.cos(w0))/2;			
+			b2 = (1.0 + Math.cos(w0)) / 2;
 		}
 		//        a0 =   1 + alpha;
 		double a0 = 1 + alpha;
 		//        a1 =  -2*cos(w0)
-		double a1 =  -2.0 * Math.cos(w0);
+		double a1 = -2.0 * Math.cos(w0);
 		//        a2 =   1 - alpha
 		double a2 = 1 - alpha;
-		
+
 		double inputGain = 0.25;
 
 		int input = -1;
 
 		SpinCADPin p = this.getPin("Audio Input").getPinConnection();
 
-		if(p != null) {
+		if (p != null) {
 			input = p.getRegister();
 
 			int d0 = sfxb.allocateReg();
 			int d1 = sfxb.allocateReg();
 			int output = sfxb.allocateReg();
-			
+
 			sfxb.comment("BiQuad filter");
-			
+
 			sfxb.scaleOffset(0, 0);
-			sfxb.readRegister(input, inputGain * b0/a0);
+			sfxb.readRegister(input, inputGain * b0 / a0);
 
 			sfxb.readRegister(d0, 1.0);
-			sfxb.writeRegister(output,0);
+			sfxb.writeRegister(output, 0);
 
-			sfxb.readRegister(input, b1/a0);
-			sfxb.readRegister(output, -a1/a0);
+			sfxb.readRegister(input, b1 / a0);
+			sfxb.readRegister(output, -a1 / a0);
 			sfxb.readRegister(d1, 1.0);
-			sfxb.writeRegister(d0,0);
+			sfxb.writeRegister(d0, 0);
 
-			sfxb.readRegister(input, b2/a0);
-			sfxb.readRegister(output, -a2/a0);
-			sfxb.writeRegister(d1,0);
+			sfxb.readRegister(input, b2 / a0);
+			sfxb.readRegister(output, -a2 / a0);
+			sfxb.writeRegister(d1, 0);
 
-			this.getPin("Audio Output").setRegister(output);	
+			this.getPin("Audio Output").setRegister(output);
 		}
 		System.out.println("BiQuad code gen!");
 	}

@@ -16,7 +16,6 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 	
  */
-
 package com.holycityaudio.SpinCAD.CADBlocks;
 
 import java.awt.Color;
@@ -25,12 +24,13 @@ import com.holycityaudio.SpinCAD.SpinCADBlock;
 import com.holycityaudio.SpinCAD.SpinCADPin;
 import com.holycityaudio.SpinCAD.SpinFXBlock;
 
-public class FBInputCADBlock extends SpinCADBlock{
+public class FBInputCADBlock extends SpinCADBlock {
+
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = -4680315672929089295L;
-	
+
 	private int register = -1;
 	private double lGain = 1.0;
 
@@ -43,7 +43,7 @@ public class FBInputCADBlock extends SpinCADBlock{
 		// actually assigning registers can be done at code generation time
 		setName("FB In " + getIndex());
 	}
-	
+
 	public FBInputCADBlock(int x, int y, int ind) {
 		super(x, y);
 		hasControlPanel = true;
@@ -54,22 +54,22 @@ public class FBInputCADBlock extends SpinCADBlock{
 		// actually assigning registers can be done at code generation time
 		setName("FB In " + getIndex());
 	}
-	
+
 	public void generateCode(SpinFXBlock sfxb) {
 //		System.out.println("Output codegen!");
 		sfxb.comment(getName());
-		
+
 		SpinCADPin p = getPin("Feedback Input");
 		SpinCADPin pC = p.getPinConnection();
 //		SpinCADBlock b = p.getBlockConnection();
-		
+
 		if (pC != null) {
-			if(lGain <= 1.9) {
+			if (lGain <= 1.9) {
 				int i = pC.getRegister();
-				if( (i >= 32 && i <= 64) || i == ADCR || i == ADCL) {
-					sfxb.readRegister(i,lGain);
+				if ((i >= 32 && i <= 64) || i == ADCR || i == ADCL) {
+					sfxb.readRegister(i, lGain);
 					sfxb.writeRegister(register, 0.0);
-				}			
+				}
 			}
 		}
 	}
@@ -85,12 +85,12 @@ public class FBInputCADBlock extends SpinCADBlock{
 	public int getRegister() {
 		return register;
 	}
-	
+
 	public void setRegister(int val) {
 		register = val;
 	}
-	
-	public void editBlock(){
+
+	public void editBlock() {
 		new FBInputControlPanel(this);
 	}
 

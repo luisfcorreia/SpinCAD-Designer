@@ -17,7 +17,6 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 	
  */
-
 package com.holycityaudio.SpinCAD;
 
 import java.awt.BorderLayout;
@@ -26,7 +25,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.ArrayList;
-//import java.util.EventListener;
 import java.util.List;
 
 import javax.swing.AbstractListModel;
@@ -37,7 +35,6 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
-//import javax.swing.event.EventListenerList;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileSystemView;
@@ -45,11 +42,9 @@ import javax.swing.filechooser.FileSystemView;
 public class RecentFileList extends JPanel {
 
 	/**
-	 * 
+	 *
 	 */
-
 	private static final long serialVersionUID = -8939170769782253694L;
-
 
 	private final JList<File> list;
 	final FileListModel listModel;
@@ -106,7 +101,7 @@ public class RecentFileList extends JPanel {
 	public class FileListModel extends AbstractListModel<File> {
 
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = 1058051753311359394L;
 		private List<File> files;
@@ -148,7 +143,7 @@ public class RecentFileList extends JPanel {
 	public class FileListCellRenderer extends DefaultListCellRenderer {
 
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = -8275640582829749182L;
 
@@ -167,4 +162,3 @@ public class RecentFileList extends JPanel {
 
 	}
 }
-

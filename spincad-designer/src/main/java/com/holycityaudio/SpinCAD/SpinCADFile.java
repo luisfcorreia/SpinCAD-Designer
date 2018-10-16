@@ -17,7 +17,6 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 	
  */
-
 package com.holycityaudio.SpinCAD;
 
 import java.io.BufferedReader;
@@ -43,6 +42,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import org.apache.commons.io.FilenameUtils;
 
 public class SpinCADFile {
+
 	// PREFERENCES =====================================================
 	// following things are saved in the SpinCAD preferences
 	private Preferences prefs;
@@ -57,18 +57,18 @@ public class SpinCADFile {
 		prefs = Preferences.userNodeForPackage(this.getClass());
 	}
 
-	private void init_pref(String prefName, String initValue){
-		String value = prefs.get(prefName,  "");
+	private void init_pref(String prefName, String initValue) {
+		String value = prefs.get(prefName, "");
 		if (value == "") {
 			prefs.put(prefName, initValue);
 		}
 	}
-	
+
 	public void init_prefs() {
-    	Path currentRelativePath = Paths.get("");
+		Path currentRelativePath = Paths.get("");
 		String s = currentRelativePath.toAbsolutePath().toString();
 		System.out.println("Current relative path is: " + s);
-	
+
 		init_pref("MRUPatchFolder", s);
 		init_pref("MRUBankFolder", s);
 		init_pref("MRUSpnFolder", s);
@@ -78,9 +78,9 @@ public class SpinCADFile {
 		init_pref("RecentBankFileList.fileList", "");
 		init_pref("RecentHexFileList.fileList", "");
 	}
-	
+
 	public void fileSavePatch(SpinCADPatch m) {
-		File fileToBeSaved = new File(prefs.get("MRUPatchFolder",  "") + "/" + m.patchFileName);
+		File fileToBeSaved = new File(prefs.get("MRUPatchFolder", "") + "/" + m.patchFileName);
 		String filePath = fileToBeSaved.getPath();
 		loadRecentPatchFileList();
 
@@ -88,59 +88,56 @@ public class SpinCADFile {
 		ObjectOutputStream oos = null;
 		try {
 			fos = new FileOutputStream(filePath);
-			oos = new ObjectOutputStream(fos); 
+			oos = new ObjectOutputStream(fos);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		} 
+		}
 		try {
 			oos.writeObject(m);
 		} catch (IOException e1) {
 			// XXX debug this is currently triggered when a block control panel is open and you save the patch
 			e1.printStackTrace();
-		} 	
+		}
 		try {
 			oos.flush();
-			oos.close(); 
+			oos.close();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
-		finally {
+		} finally {
 			saveMRUPatchFolder(filePath);
-			recentPatchFileList.add(fileToBeSaved);		
+			recentPatchFileList.add(fileToBeSaved);
 			saveRecentPatchFileList();
 		}
 	}
 
 	public void fileSaveBank(SpinCADBank b) {
-		
-		String Folder = prefs.get("MRUBankFolder",  "");
-		
-		File fileToBeSaved = new File( Folder + "/" + b.bankFileName);
+
+		String Folder = prefs.get("MRUBankFolder", "");
+
+		File fileToBeSaved = new File(Folder + "/" + b.bankFileName);
 		System.out.println("fileToBeSaved " + fileToBeSaved);
 
 		String filePath = fileToBeSaved.getPath();
 		System.out.println("filepath " + filePath);
-		
+
 		loadRecentBankFileList();
 
-		try { 
-			FileOutputStream fos = new FileOutputStream(filePath); 
-			ObjectOutputStream oos = new ObjectOutputStream(fos); 
+		try {
+			FileOutputStream fos = new FileOutputStream(filePath);
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
 
-			oos.writeObject(b); 	
+			oos.writeObject(b);
 
-			oos.flush(); 
-			oos.close(); 
-		} 
-		catch(Exception e) { 
-			System.out.println("Exception during serialization: " + e); 
+			oos.flush();
+			oos.close();
+		} catch (Exception e) {
+			System.out.println("Exception during serialization: " + e);
 			//		System.exit(0); 
-		} 
-		finally {
+		} finally {
 			saveMRUBankFolder(filePath);
-			if(recentBankFileList != null) {
+			if (recentBankFileList != null) {
 				recentBankFileList.add(fileToBeSaved);
 			}
 			saveRecentBankFileList();
@@ -149,15 +146,15 @@ public class SpinCADFile {
 
 	public SpinCADPatch fileReadPatch(String fileName) throws IOException, ClassNotFoundException {
 		// Object deserialization 
-		FileInputStream fis = new FileInputStream(fileName); 
-		ObjectInputStream ois = new ObjectInputStream(fis); 
-		SpinCADPatch p  = new SpinCADPatch();
+		FileInputStream fis = new FileInputStream(fileName);
+		ObjectInputStream ois = new ObjectInputStream(fis);
+		SpinCADPatch p = new SpinCADPatch();
 
 		p = (SpinCADPatch) ois.readObject();
 
-		ois.close(); 
+		ois.close();
 		return p;
-	} 
+	}
 
 	// backwards compatibility with SpinCAD 952 patch file serialization
 	public SpinCADPatch fileReadPatch952(String fileName) throws IOException, ClassNotFoundException {
@@ -165,18 +162,18 @@ public class SpinCADFile {
 		SpinCADPatch p = new SpinCADPatch();
 		p.patchFileName = fileName;
 
-		FileInputStream fis = new FileInputStream(fileName); 
-		ObjectInputStream ois = new ObjectInputStream(fis); 
+		FileInputStream fis = new FileInputStream(fileName);
+		ObjectInputStream ois = new ObjectInputStream(fis);
 
-		p.cb.line[0] = (String)ois.readObject();
-		p.cb.line[1] = (String)ois.readObject();
-		p.cb.line[2] = (String)ois.readObject();
-		p.cb.line[3] = (String)ois.readObject();
-		p.cb.line[4] = (String)ois.readObject();
-		p.patchModel = (SpinCADModel)ois.readObject(); 
-		ois.close(); 
+		p.cb.line[0] = (String) ois.readObject();
+		p.cb.line[1] = (String) ois.readObject();
+		p.cb.line[2] = (String) ois.readObject();
+		p.cb.line[3] = (String) ois.readObject();
+		p.cb.line[4] = (String) ois.readObject();
+		p.patchModel = (SpinCADModel) ois.readObject();
+		ois.close();
 		return p;
-	} 
+	}
 
 	// backwards compatibility with SpinCAD 952 patch file serialization
 	public SpinCADPatch fileReadHex(String fileName) throws IOException, ClassNotFoundException {
@@ -184,46 +181,46 @@ public class SpinCADFile {
 		p.patchFileName = fileName;
 		File file = new File(fileName);
 		int nComments = 0;
-		try(BufferedReader br = new BufferedReader(new FileReader(file))) {
+		try (BufferedReader br = new BufferedReader(new FileReader(file))) {
 			char c = 'c';
-			int nBytes= 0;
+			int nBytes = 0;
 			int nLines = 0;
 			int address = 0;
 			int recordType = 0;
 			int data = 0;
-			for(String line; (line = br.readLine()) != null; ) {
+			for (String line; (line = br.readLine()) != null;) {
 				c = line.charAt(0);
 				switch (c) {
-				case ':':
-					// process 64 lines of hex file from beginning
-					if(nLines < 128) {
-						//						System.out.println("================================ " + nLines);
-						//						System.out.println(line);
-						String byteString = line.substring(1, 3);
-						nBytes = Integer.parseInt(byteString, 16);
-						//						System.out.println(byteString + " Bytes= " + nBytes);
-						//						System.out.println("Address: " + line.substring(3,7));
-						address =  Integer.parseInt(line.substring(3,7), 16);
-						//						System.out.printf("Address: %x\n", address);
-						//						System.out.println("recordType: " + line.substring(7,9));
-						recordType= Integer.parseInt(line.substring(7,9), 16);
-						//						System.out.println("recordType: " + recordType);
-						data = (int) Long.parseLong(line.substring(9,9 + (2 * nBytes)), 16);
-						//						System.out.println(line.substring(9,9 + (2 * nBytes)));
-						//						System.out.printf("data: %x\n", data);		
-						p.hexFile[nLines]= data;
-					}
-					nLines++;
-					break;
-				case ';':
-					// process up to 5 comment lines
-					if(nComments < 5) {
-						p.cb.line[nComments] = line;
-						nComments ++;
-					}
-					break;
-				default:
-					break;
+					case ':':
+						// process 64 lines of hex file from beginning
+						if (nLines < 128) {
+							//						System.out.println("================================ " + nLines);
+							//						System.out.println(line);
+							String byteString = line.substring(1, 3);
+							nBytes = Integer.parseInt(byteString, 16);
+							//						System.out.println(byteString + " Bytes= " + nBytes);
+							//						System.out.println("Address: " + line.substring(3,7));
+							address = Integer.parseInt(line.substring(3, 7), 16);
+							//						System.out.printf("Address: %x\n", address);
+							//						System.out.println("recordType: " + line.substring(7,9));
+							recordType = Integer.parseInt(line.substring(7, 9), 16);
+							//						System.out.println("recordType: " + recordType);
+							data = (int) Long.parseLong(line.substring(9, 9 + (2 * nBytes)), 16);
+							//						System.out.println(line.substring(9,9 + (2 * nBytes)));
+							//						System.out.printf("data: %x\n", data);		
+							p.hexFile[nLines] = data;
+						}
+						nLines++;
+						break;
+					case ';':
+						// process up to 5 comment lines
+						if (nComments < 5) {
+							p.cb.line[nComments] = line;
+							nComments++;
+						}
+						break;
+					default:
+						break;
 					// process the line.
 				}
 			}
@@ -231,7 +228,7 @@ public class SpinCADFile {
 		}
 		p.isHexFile = true;
 		return p;
-	} 
+	}
 
 	public SpinCADPatch fileOpenHex() {
 
@@ -241,7 +238,7 @@ public class SpinCADFile {
 
 		// In response to a button click:
 		FileNameExtensionFilter filter = new FileNameExtensionFilter(
-				"Spin Hex Files", "hex");
+			"Spin Hex Files", "hex");
 		fc.setFileFilter(filter);
 		fc.setAccessory(recentHexFileList);
 		fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -252,11 +249,11 @@ public class SpinCADFile {
 			File file = fc.getSelectedFile();
 
 			System.out.println("Opening: " + file.getName() + "."
-					+ newline);
+				+ newline);
 			filePath = file.getPath();
 			try {
 				p = fileReadHex(filePath);
-			} catch (Exception e) {	
+			} catch (Exception e) {
 				e.printStackTrace();
 				SpinCADDialogs.MessageBox("Hex File open failed!", "That's not supposed to happen!");
 			} finally {
@@ -272,7 +269,7 @@ public class SpinCADFile {
 			return p;
 		} else {
 			System.out.println("Open command cancelled by user."
-					+ newline);
+				+ newline);
 			return null;
 		}
 
@@ -286,7 +283,7 @@ public class SpinCADFile {
 
 		// In response to a button click:
 		FileNameExtensionFilter filter = new FileNameExtensionFilter(
-				"SpinCAD Files", "spcd");
+			"SpinCAD Files", "spcd");
 		fc.setFileFilter(filter);
 		fc.setAccessory(recentPatchFileList);
 		fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -297,16 +294,16 @@ public class SpinCADFile {
 			File file = fc.getSelectedFile();
 
 			System.out.println("Opening: " + file.getName() + "."
-					+ newline);
+				+ newline);
 			filePath = file.getPath();
 			try {
 				p = fileReadPatch(filePath);
-			} catch (Exception e) {	
+			} catch (Exception e) {
 				e.printStackTrace();
 				try {
-					System.out.println("Trying version 952 format..." + newline);					
+					System.out.println("Trying version 952 format..." + newline);
 					p = fileReadPatch952(filePath);
-				} catch (Exception exc) {	
+				} catch (Exception exc) {
 					exc.printStackTrace();
 				}
 				SpinCADDialogs.MessageBox("File open failed!", "This spcd file may be from\nan incompatible version of \nSpinCAD Designer.");
@@ -321,19 +318,19 @@ public class SpinCADFile {
 			return p;
 		} else {
 			System.out.println("Open command cancelled by user."
-					+ newline);
+				+ newline);
 			return null;
 		}
 	}
 
 	public SpinCADBank fileReadBank(File fileName) throws IOException, ClassNotFoundException {
 		// Object deserialization 
-		FileInputStream fis = new FileInputStream(fileName); 
-		ObjectInputStream ois = new ObjectInputStream(fis); 
-		SpinCADBank b  = (SpinCADBank)ois.readObject();
-		ois.close(); 
+		FileInputStream fis = new FileInputStream(fileName);
+		ObjectInputStream ois = new ObjectInputStream(fis);
+		SpinCADBank b = (SpinCADBank) ois.readObject();
+		ois.close();
 		return b;
-	} 	
+	}
 
 	public SpinCADBank fileOpenBank() {
 		loadRecentBankFileList();
@@ -343,7 +340,7 @@ public class SpinCADFile {
 		final String newline = "\n";
 		// In response to a button click:
 		FileNameExtensionFilter filter = new FileNameExtensionFilter(
-				"SpinCAD Bank Files", "spbk");
+			"SpinCAD Bank Files", "spbk");
 		System.out.println("\nfilter=" + filter);
 		fc.setFileFilter(filter);
 		fc.setAccessory(recentBankFileList);
@@ -354,7 +351,7 @@ public class SpinCADFile {
 			file = fc.getSelectedFile();
 			// This is where a real application would open the file.
 			System.out.println("Opening: " + file.getName() + "."
-					+ newline);
+				+ newline);
 			try {
 				// first, open bank, then open patch 0
 				b = fileReadBank(file);
@@ -374,7 +371,7 @@ public class SpinCADFile {
 			return b;
 		} else {
 			System.out.println("Open command cancelled by user."
-					+ newline);
+				+ newline);
 			return null;
 		}
 	}
@@ -384,7 +381,7 @@ public class SpinCADFile {
 		String savedPath = prefs.get("MRUPatchFolder", "");
 		final JFileChooser fc = new JFileChooser(savedPath);
 		FileNameExtensionFilter filter = new FileNameExtensionFilter(
-				"SpinCAD Files", "spcd");
+			"SpinCAD Files", "spcd");
 		fc.setFileFilter(filter);
 		fc.setSelectedFile(new File(p.patchFileName));
 		int returnVal = fc.showSaveDialog(new JFrame());
@@ -401,8 +398,8 @@ public class SpinCADFile {
 			if (fileToBeSaved.exists()) {
 				JFrame frame = new JFrame();
 				n = JOptionPane.showConfirmDialog(frame,
-						"Would you like to overwrite it?", "File already exists!",
-						JOptionPane.YES_NO_OPTION);
+					"Would you like to overwrite it?", "File already exists!",
+					JOptionPane.YES_NO_OPTION);
 			}
 			if (n == JOptionPane.YES_OPTION) {
 				try {
@@ -418,8 +415,7 @@ public class SpinCADFile {
 				} catch (Exception e) {	// thrown over in SpinCADFile.java
 					e.printStackTrace();
 					SpinCADDialogs.MessageBox("File save failed!", "look at stack trace for info");
-				}
-				finally {
+				} finally {
 					p.setChanged(false);
 				}
 			}
@@ -431,7 +427,7 @@ public class SpinCADFile {
 		String savedPath = prefs.get("MRUBankFolder", "");
 		final JFileChooser fc = new JFileChooser(savedPath);
 		FileNameExtensionFilter filter = new FileNameExtensionFilter(
-				"SpinCAD Bank Files", "spbk");
+			"SpinCAD Bank Files", "spbk");
 		fc.setFileFilter(filter);
 		fc.setSelectedFile(new File(b.bankFileName));
 		int returnVal = fc.showSaveDialog(new JFrame());
@@ -450,20 +446,19 @@ public class SpinCADFile {
 			if (fileToBeSaved.exists()) {
 				JFrame frame = new JFrame();
 				n = JOptionPane.showConfirmDialog(frame,
-						"Would you like to overwrite it?", "File already exists!",
-						JOptionPane.YES_NO_OPTION);
+					"Would you like to overwrite it?", "File already exists!",
+					JOptionPane.YES_NO_OPTION);
 				if (n == JOptionPane.YES_OPTION) {
 					try {
 						fileSaveBank(b);
 					} finally {
 					}
 				}
-			}
-			else {
+			} else {
 				fileSaveBank(b);
 			}
 			b.changed = false;
-			if(recentBankFileList != null){
+			if (recentBankFileList != null) {
 				recentBankFileList.add(fileToBeSaved);
 			}
 			saveMRUBankFolder(fileToBeSaved.getPath());
@@ -472,7 +467,6 @@ public class SpinCADFile {
 	}
 
 	// File Save Asm =============================================
-
 	public void fileSaveAsm(SpinCADPatch patch) {
 		// Create a file chooser
 		String savedPath = prefs.get("MRUSpnFolder", "");
@@ -480,7 +474,7 @@ public class SpinCADFile {
 		final JFileChooser fc = new JFileChooser(savedPath);
 		// In response to a button click:
 		FileNameExtensionFilter filter = new FileNameExtensionFilter(
-				"Spin ASM Files", "spn");
+			"Spin ASM Files", "spn");
 		fc.setFileFilter(filter);
 		// XXX DEBUG
 		fc.showSaveDialog(new JFrame());
@@ -493,8 +487,8 @@ public class SpinCADFile {
 		if (fileToBeSaved.exists()) {
 			JFrame frame1 = new JFrame();
 			n = JOptionPane.showConfirmDialog(frame1,
-					"Would you like to overwrite it?", "File already exists!",
-					JOptionPane.YES_NO_OPTION);
+				"Would you like to overwrite it?", "File already exists!",
+				JOptionPane.YES_NO_OPTION);
 		}
 		if (n == JOptionPane.YES_OPTION) {
 			String filePath = fileToBeSaved.getPath();
@@ -504,9 +498,9 @@ public class SpinCADFile {
 				fileSaveAsm(patch, filePath);
 			} catch (IOException e) {
 				JOptionPane.showOptionDialog(null,
-						"File save error!", "Error",
-						JOptionPane.YES_NO_OPTION,
-						JOptionPane.QUESTION_MESSAGE, null, null, null);
+					"File save error!", "Error",
+					JOptionPane.YES_NO_OPTION,
+					JOptionPane.QUESTION_MESSAGE, null, null, null);
 				e.printStackTrace();
 			}
 			saveMRUSpnFolder(filePath);
@@ -541,7 +535,7 @@ public class SpinCADFile {
 
 		String codeListing = p.patchModel.getRenderBlock().getProgramListing(1);
 		String[] words = codeListing.split("\n");
-		for (String word: words) {
+		for (String word : words) {
 			writer.write(word);
 			writer.newLine();
 		}
@@ -549,14 +543,13 @@ public class SpinCADFile {
 	}
 
 	// File Save Hex =============================================
-
 	public void fileSaveHex(SpinCADBank bank) {
 		// Create a file chooser
 		String savedPath = prefs.get("MRUHexFolder", "");
 
 		final JFileChooser fc = new JFileChooser(savedPath);
 		FileNameExtensionFilter filter = new FileNameExtensionFilter(
-				"Hex Files", "hex");
+			"Hex Files", "hex");
 		fc.setFileFilter(filter);
 		fc.showSaveDialog(new JFrame());
 		File fileToBeSaved = fc.getSelectedFile();
@@ -568,8 +561,8 @@ public class SpinCADFile {
 		if (fileToBeSaved.exists()) {
 			JFrame frame1 = new JFrame();
 			n = JOptionPane.showConfirmDialog(frame1,
-					"Would you like to overwrite it?", "File already exists!",
-					JOptionPane.YES_NO_OPTION);
+				"Would you like to overwrite it?", "File already exists!",
+				JOptionPane.YES_NO_OPTION);
 		}
 		if (n == JOptionPane.YES_OPTION) {
 			String filePath;
@@ -578,19 +571,18 @@ public class SpinCADFile {
 				fileToBeSaved.delete();
 			} finally {
 			}
-			for(int i = 0; i < 8; i++) {
+			for (int i = 0; i < 8; i++) {
 				try {
-					if(bank.patch[i].isHexFile) {
-						fileSaveHex(i, bank.patch[i].hexFile, filePath);						
-					}
-					else {
-						fileSaveHex(i, bank.patch[i].patchModel.getRenderBlock().generateHex(), filePath);										
+					if (bank.patch[i].isHexFile) {
+						fileSaveHex(i, bank.patch[i].hexFile, filePath);
+					} else {
+						fileSaveHex(i, bank.patch[i].patchModel.getRenderBlock().generateHex(), filePath);
 					}
 				} catch (IOException e) {
 					JOptionPane.showOptionDialog(null,
-							"File save error!", "Error",
-							JOptionPane.YES_NO_OPTION,
-							JOptionPane.QUESTION_MESSAGE, null, null, null);
+						"File save error!", "Error",
+						JOptionPane.YES_NO_OPTION,
+						JOptionPane.QUESTION_MESSAGE, null, null, null);
 
 					e.printStackTrace();
 				}
@@ -607,7 +599,7 @@ public class SpinCADFile {
 		final JFileChooser fc = new JFileChooser(savedPath);
 		// In response to a button click:
 		FileNameExtensionFilter filter = new FileNameExtensionFilter(
-				"Spin Project Files", "spj");
+			"Spin Project Files", "spj");
 		fc.setFileFilter(filter);
 		// XXX debug
 		fc.showSaveDialog(new JFrame());
@@ -620,8 +612,8 @@ public class SpinCADFile {
 		if (fileToBeSaved.exists()) {
 			JFrame frame1 = new JFrame();
 			n = JOptionPane.showConfirmDialog(frame1,
-					"Would you like to overwrite it?", "File already exists!",
-					JOptionPane.YES_NO_OPTION);
+				"Would you like to overwrite it?", "File already exists!",
+				JOptionPane.YES_NO_OPTION);
 		}
 		if (n == JOptionPane.YES_OPTION) {
 			// filePath points at the desired Spj file
@@ -629,19 +621,19 @@ public class SpinCADFile {
 			String folder = fileToBeSaved.getParent().toString();
 
 			// export the individual SPN files
-			for(int i = 0; i < 8; i++) {
+			for (int i = 0; i < 8; i++) {
 				try {
-					String asmFileNameRoot =  FilenameUtils.removeExtension(bank.patch[i].patchFileName);
-					String asmFileName = folder + "\\" +  asmFileNameRoot + ".spn";
-					if(bank.patch[i].patchFileName != "Untitled") {
+					String asmFileNameRoot = FilenameUtils.removeExtension(bank.patch[i].patchFileName);
+					String asmFileName = folder + "\\" + asmFileNameRoot + ".spn";
+					if (bank.patch[i].patchFileName != "Untitled") {
 						fileSaveAsm(bank.patch[i], asmFileName);
-						spnFileNames[i] = asmFileName;				
+						spnFileNames[i] = asmFileName;
 					}
 				} catch (IOException e) {
 					JOptionPane.showOptionDialog(null,
-							"File save error!", "Error",
-							JOptionPane.YES_NO_OPTION,
-							JOptionPane.QUESTION_MESSAGE, null, null, null);
+						"File save error!", "Error",
+						JOptionPane.YES_NO_OPTION,
+						JOptionPane.QUESTION_MESSAGE, null, null, null);
 
 					e.printStackTrace();
 				} finally {
@@ -664,20 +656,19 @@ public class SpinCADFile {
 				e1.printStackTrace();
 			}
 
-			for(int i = 0; i < 8; i++) {
+			for (int i = 0; i < 8; i++) {
 				try {
-					if(bank.patch[i].patchFileName != "Untitled") {
+					if (bank.patch[i].patchFileName != "Untitled") {
 						writer.write(spnFileNames[i] + ",1");
+					} else {
+						writer.write(",0");
 					}
-					else {
-						writer.write(",0");						
-					}
-					writer.newLine();				
+					writer.newLine();
 				} catch (IOException e) {
 					JOptionPane.showOptionDialog(null,
-							"File save error!\n" + filePath, "Error",
-							JOptionPane.YES_NO_OPTION,
-							JOptionPane.QUESTION_MESSAGE, null, null, null);
+						"File save error!\n" + filePath, "Error",
+						JOptionPane.YES_NO_OPTION,
+						JOptionPane.QUESTION_MESSAGE, null, null, null);
 
 					e.printStackTrace();
 				}
@@ -702,40 +693,38 @@ public class SpinCADFile {
 		BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true));
 		int i = -1;
 		String outputString = new String();
-		for(int ii = 0, index = 0; ii < 128; ii++) {
-			if(ii < codeListing.length) {
+		for (int ii = 0, index = 0; ii < 128; ii++) {
+			if (ii < codeListing.length) {
 				i = codeListing[ii];
 			} else {
 				i = 0;
 			}
-			if(i != -1) {
-				if(i == 0) { 	// do NOP conversion
+			if (i != -1) {
+				if (i == 0) { 	// do NOP conversion
 					i = 0x11;
 				}
 				outputString = String.format("04%04X00%08X", (patchIndex * 0x200) + index, i);
 				//				outputString = String.format("04%04X00%08X", index, i);
 				long message = Long.parseLong(outputString, 16);
 				int checksum = 0;
-				for(int iii = 0; iii < 8; iii++) {
+				for (int iii = 0; iii < 8; iii++) {
 					checksum = checksum + (int) (message & 0xff);
 					message = message >> 8;
 				}
 				checksum = (((~checksum) & 0xff) + 1) & 0xff;
-				writer.write(":" + outputString + String.format("%02X",  checksum));
-				writer.newLine();		
+				writer.write(":" + outputString + String.format("%02X", checksum));
+				writer.newLine();
 				index += 4;
 			}
 		}
-		if(patchIndex == 7) {
-			writer.write(":00000001FF\n");	
+		if (patchIndex == 7) {
+			writer.write(":00000001FF\n");
 		}
 		writer.close();
 	}
 
-
 	//====================================================
 	// most-recently used file and folder methods
-
 	private void saveMRUBankFolder(String path) {
 		Path pathE = Paths.get(path);
 
@@ -765,7 +754,6 @@ public class SpinCADFile {
 		prefs.put("MRUHexFolder", pathS);
 	}
 
-
 	private void saveMRUSpjFolder(String path) {
 		Path pathE = Paths.get(path);
 		prefs.put("MRUSpjFolder", pathE.toString());
@@ -773,11 +761,10 @@ public class SpinCADFile {
 
 	//========================================================================	
 	// recent file lists
-
 	private void saveRecentPatchFileList() {
 		StringBuilder sb = new StringBuilder(128);
-		if(recentPatchFileList != null) {
-			int k = Math.min(20,recentPatchFileList.listModel.getSize() - 1);
+		if (recentPatchFileList != null) {
+			int k = Math.min(20, recentPatchFileList.listModel.getSize() - 1);
 			for (int index = 0; index <= k; index++) {
 				File file = recentPatchFileList.listModel.getElementAt(k - index);
 				if (sb.length() > 0) {
@@ -817,7 +804,7 @@ public class SpinCADFile {
 
 	private void saveRecentBankFileList() {
 		StringBuilder sb = new StringBuilder(128);
-		if(recentBankFileList != null) {
+		if (recentBankFileList != null) {
 			int k = Math.min(20, recentBankFileList.listModel.getSize() - 1);
 			for (int index = 0; index <= k; index++) {
 				File file = recentBankFileList.listModel.getElementAt(k - index);
@@ -836,8 +823,8 @@ public class SpinCADFile {
 		String listOfFiles = p.get("RecentBankFileList.fileList", null);
 		System.out.println(listOfFiles);
 		System.out.print(listOfFiles);
-		
-		if (listOfFiles != null ) {
+
+		if (listOfFiles != null) {
 
 			Integer listLength = listOfFiles.length();
 
@@ -863,7 +850,7 @@ public class SpinCADFile {
 
 	private void saveRecentHexFileList() {
 		StringBuilder sb = new StringBuilder(128);
-		if(recentHexFileList != null) {
+		if (recentHexFileList != null) {
 			int k = Math.min(20, recentHexFileList.listModel.getSize() - 1);
 			for (int index = 0; index <= k; index++) {
 				File file = recentHexFileList.listModel.getElementAt(k - index);
@@ -900,4 +887,3 @@ public class SpinCADFile {
 	}
 
 }
-

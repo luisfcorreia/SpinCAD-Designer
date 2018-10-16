@@ -17,7 +17,6 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 	
  */
-
 package com.holycityaudio.SpinCAD.CADBlocks;
 
 import java.awt.Dimension;
@@ -36,28 +35,27 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-
 class LPF4PControlPanel extends JFrame implements ActionListener {
+
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = -2288952347754535913L;
 
 	JSlider freqSlider;
 	JLabel freqLabel;
-	
+
 	JSlider qSlider;
 	JLabel qLabel;
 
 	private JComboBox<Object> nPoles;
 
 	private LPF4PCADBlock LPF;
-	
-	private String listOptions[] = {
-			" 2 poles ",
-			" 4 poles "
-	};
 
+	private String listOptions[] = {
+		" 2 poles ",
+		" 4 poles "
+	};
 
 	public LPF4PControlPanel(LPF4PCADBlock lpf1pcadBlock) {
 		this.LPF = lpf1pcadBlock;
@@ -65,17 +63,17 @@ class LPF4PControlPanel extends JFrame implements ActionListener {
 		nPoles.addActionListener(this);
 		createAndShowUI();
 	}
-	
+
 	private void createAndShowUI() {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				if(LPF.getIs4Pole()) {
+				if (LPF.getIs4Pole()) {
 					setTitle("Low pass 4 pole");
 					nPoles.setSelectedIndex(1);
 				} else {
 					setTitle("Low pass 2 pole");
 					nPoles.setSelectedIndex(0);
-				}	
+				}
 				setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 
 				freqSlider = new JSlider(JSlider.HORIZONTAL, 80, 2500, 1000);
@@ -83,7 +81,7 @@ class LPF4PControlPanel extends JFrame implements ActionListener {
 
 				freqLabel = new JLabel();
 
-				int qSliderPosition = (int)(1/LPF.getQ());
+				int qSliderPosition = (int) (1 / LPF.getQ());
 				qSlider = new JSlider(JSlider.HORIZONTAL, 10, 200, qSliderPosition);
 				qSlider.addChangeListener(new LPF1PChangeListener());
 
@@ -94,13 +92,13 @@ class LPF4PControlPanel extends JFrame implements ActionListener {
 
 //				getContentPane().add(freqLabel);
 //				getContentPane().add(freqSlider);
-				getContentPane().add(Box.createRigidArea(new Dimension(250,4)));			
+				getContentPane().add(Box.createRigidArea(new Dimension(250, 4)));
 				getContentPane().add(qLabel);
-				getContentPane().add(Box.createRigidArea(new Dimension(250,4)));			
+				getContentPane().add(Box.createRigidArea(new Dimension(250, 4)));
 				getContentPane().add(qSlider);
-				getContentPane().add(Box.createRigidArea(new Dimension(250,7)));			
+				getContentPane().add(Box.createRigidArea(new Dimension(250, 7)));
 				getContentPane().add(nPoles);
-				getContentPane().add(Box.createRigidArea(new Dimension(250,4)));			
+				getContentPane().add(Box.createRigidArea(new Dimension(250, 4)));
 
 //				freqSlider.setValue((int)Math.round(LPF.getFreq()));
 //				updateFreqLabel();
@@ -110,42 +108,42 @@ class LPF4PControlPanel extends JFrame implements ActionListener {
 				pack();
 				setResizable(true);
 			}
-		});		
+		});
 	}
 
-	class LPF1PChangeListener implements ChangeListener { 
+	class LPF1PChangeListener implements ChangeListener {
+
 		public void stateChanged(ChangeEvent ce) {
-			if(ce.getSource() == freqSlider) {
+			if (ce.getSource() == freqSlider) {
 				LPF.setFreq((double) freqSlider.getValue());
 				updateFreqLabel();
-			}
-			else if(ce.getSource() == qSlider) {
+			} else if (ce.getSource() == qSlider) {
 				LPF.setQ((double) qSlider.getValue());
 				updateQLabel();
 			}
 		}
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		if (arg0.getSource() == nPoles) {
-	        JComboBox<?> cb = (JComboBox<?>)arg0.getSource();
-	        String range = (String)cb.getSelectedItem();
-	        if (range == listOptions[0]) {
-	        	LPF.setIs4Pole(false);
-	        } else if (range == listOptions[1]) {
-	        	LPF.setIs4Pole(true);
-	        }
+			JComboBox<?> cb = (JComboBox<?>) arg0.getSource();
+			String range = (String) cb.getSelectedItem();
+			if (range == listOptions[0]) {
+				LPF.setIs4Pole(false);
+			} else if (range == listOptions[1]) {
+				LPF.setIs4Pole(true);
+			}
 		}
 	}
-	
+
 	public void updateQLabel() {
 //		qLabel.setText(" Resonance " + String.format(new DecimalFormat("#.##").format(0.1/LPF.getQ())));		
-		qLabel.setText(" Resonance " + String.format("%3.2f",(0.1/LPF.getQ())));		
+		qLabel.setText(" Resonance " + String.format("%3.2f", (0.1 / LPF.getQ())));
 	}
 
 	private void updateFreqLabel() {
-		freqLabel.setText("Frequency " + String.format("%2.2f", LPF.getFreq()));		
+		freqLabel.setText("Frequency " + String.format("%2.2f", LPF.getFreq()));
 	}
 
 }

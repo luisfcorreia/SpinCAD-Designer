@@ -16,7 +16,6 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 	
  */
-
 package com.holycityaudio.SpinCAD.CADBlocks;
 
 import java.awt.Color;
@@ -25,15 +24,15 @@ import com.holycityaudio.SpinCAD.SpinCADBlock;
 import com.holycityaudio.SpinCAD.SpinCADPin;
 import com.holycityaudio.SpinCAD.SpinFXBlock;
 
-public class Mixer3_1CADBlock extends SpinCADBlock{
+public class Mixer3_1CADBlock extends SpinCADBlock {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 4676526418848384621L;
-	private double gain1 = 1.0/3;
-	private double gain2 = 1.0/3;
-	private double gain3 = 1.0/3;
+	private double gain1 = 1.0 / 3;
+	private double gain2 = 1.0 / 3;
+	private double gain3 = 1.0 / 3;
 
 	// three to one mixer, default 0.33 per input no controls
 	public Mixer3_1CADBlock(int x, int y) {
@@ -50,65 +49,65 @@ public class Mixer3_1CADBlock extends SpinCADBlock{
 		setBorderColor(Color.YELLOW);
 	}
 
-	public void generateCode(SpinFXBlock sfxb)
-	{
+	public void generateCode(SpinFXBlock sfxb) {
 		int mix = -1;
 		int leftIn = -1;
 		int centerIn = -1;
 		int rightIn = -1;
 		sfxb.comment(getName());
-		
+
 		SpinCADPin p = this.getPin("Audio Input 1").getPinConnection();
 		if (p != null) {
-			leftIn = p.getRegister();			
+			leftIn = p.getRegister();
 			sfxb.readRegister(leftIn, gain1);  // read input 1 scaled by control panel value
 			p = this.getPin("Level 1").getPinConnection();
-			if(p != null) {
+			if (p != null) {
 				int controlInput = p.getRegister();
-				if(controlInput != -1)
-					sfxb.mulx(controlInput);				
+				if (controlInput != -1) {
+					sfxb.mulx(controlInput);
+				}
 			}
 			mix = sfxb.allocateReg();
-			sfxb.writeRegister(mix, 0);	
+			sfxb.writeRegister(mix, 0);
 		}
 
 		p = this.getPin("Audio Input 2").getPinConnection();
 		if (p != null) {
-			centerIn = p.getRegister();			
+			centerIn = p.getRegister();
 			sfxb.readRegister(centerIn, gain2);  // read input 2 scaled by control panel value
 			p = this.getPin("Level 2").getPinConnection();
-			if(p != null) {
+			if (p != null) {
 				int controlInput = p.getRegister();
-				if(controlInput != -1)
+				if (controlInput != -1) {
 					sfxb.mulx(controlInput);
+				}
 			}
-			if(mix == -1) {
-				mix = sfxb.allocateReg();			
-				sfxb.writeRegister(mix, 0);	
-			}
-			else {
+			if (mix == -1) {
+				mix = sfxb.allocateReg();
+				sfxb.writeRegister(mix, 0);
+			} else {
 				sfxb.readRegister(mix, 1.0);
-				sfxb.writeRegister(mix, 0);	
+				sfxb.writeRegister(mix, 0);
 			}
 		}
 
 		p = this.getPin("Audio Input 3").getPinConnection();
 		if (p != null) {
-			rightIn = p.getRegister();			
+			rightIn = p.getRegister();
 			sfxb.readRegister(rightIn, gain3);  // read input 3 scaled by control panel value
 			p = this.getPin("Level 3").getPinConnection();
-			if(p != null) {
+			if (p != null) {
 				int controlInput = p.getRegister();
-				if(controlInput != -1)
+				if (controlInput != -1) {
 					sfxb.mulx(controlInput);
+				}
 			}
-			if(mix == -1) {
-				mix = sfxb.allocateReg();			
-				sfxb.writeRegister(mix, 0);	
-			}
-			else {
+			if (mix == -1) {
+				mix = sfxb.allocateReg();
+				sfxb.writeRegister(mix, 0);
+			} else {
 				sfxb.readRegister(mix, 1.0);
-				sfxb.writeRegister(mix, 0);	
+				sfxb.writeRegister(mix, 0);
 			}
 		}
 
@@ -142,7 +141,7 @@ public class Mixer3_1CADBlock extends SpinCADBlock{
 		return gain3;
 	}
 
-	public void editBlock(){
+	public void editBlock() {
 		new Mixer3_1ControlPanel(this);
 	}
 }

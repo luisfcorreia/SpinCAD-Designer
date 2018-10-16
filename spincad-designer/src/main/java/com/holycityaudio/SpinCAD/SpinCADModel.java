@@ -17,7 +17,6 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 	
  */
-
 package com.holycityaudio.SpinCAD;
 
 import java.io.Serializable;
@@ -25,19 +24,18 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 // import org.andrewkilpatrick.elmGen.ElmProgram;
-
 import com.holycityaudio.SpinCAD.CADBlocks.FBInputCADBlock;
 import com.holycityaudio.SpinCAD.CADBlocks.FBOutputCADBlock;
 
 public class SpinCADModel implements Serializable {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = -8461943977905967897L;
 	ArrayList<SpinCADBlock> blockList = null;
 	private SpinCADBlock currentBlock = null;
-	
+
 	// renderBlock is... what exactly???
 	private SpinFXBlock renderBlock = null;
 	private int indexFB = 1;
@@ -109,10 +107,10 @@ public class SpinCADModel implements Serializable {
 		}
 		return null;
 	}
-	
+
 	// blockCopy is intended to allow copy-paste of at least one block.  Maybe more!
 	public void blockCopy() {
-		
+
 	}
 
 	public int realign() {
@@ -154,7 +152,6 @@ public class SpinCADModel implements Serializable {
 	 * There could be holes in the list of feedback loop indices due to deletion.
 	 * It doesn't really matter as long as they are unique.
 	 */
-
 	public int presetIndexFB() {
 		SpinCADBlock block;
 		int index = 0;
@@ -163,7 +160,7 @@ public class SpinCADModel implements Serializable {
 		while (itr.hasNext()) {
 			block = itr.next();
 			int i = block.getIndex();
-			if(i > index) {
+			if (i > index) {
 				index = i + 1;
 			}
 		}
@@ -175,9 +172,10 @@ public class SpinCADModel implements Serializable {
 		Iterator<SpinCADBlock> itr = blockList.iterator();
 		while (itr.hasNext()) {
 			itr.next();
-			if(modelSort() == 0)
+			if (modelSort() == 0) {
 				break;
-		}		
+			}
+		}
 		realign();
 		int i = generateCode();
 		renderBlock.checkCodeLen();
@@ -186,11 +184,11 @@ public class SpinCADModel implements Serializable {
 
 	public int generateCode() {
 //  XXX debug for some reason, export to Hex spits out 8 of the same thing
-		
+
 		// every time we generate code, make a new FXBlock (program)
 		renderBlock = new SpinFXBlock("Patch ");
 		SpinCADBlock block = null;
-		
+
 		Iterator<SpinCADBlock> itr = blockList.iterator();
 		int i = 0;
 		int codeLength = 0;
@@ -199,12 +197,9 @@ public class SpinCADModel implements Serializable {
 		try {
 			while (itr.hasNext()) {
 				block = itr.next();
-				if(block instanceof FBInputCADBlock)
-				{
+				if (block instanceof FBInputCADBlock) {
 					((FBInputCADBlock) block).setRegister(-1);
-				}
-				else if(block instanceof FBOutputCADBlock)
-				{
+				} else if (block instanceof FBOutputCADBlock) {
 					((FBOutputCADBlock) block).setRegister(-1);
 				}
 			}
@@ -215,8 +210,7 @@ public class SpinCADModel implements Serializable {
 			while (itr.hasNext()) {
 				block = itr.next();
 				block.setBlockNum(i);
-				if(block instanceof FBInputCADBlock)
-				{
+				if (block instanceof FBInputCADBlock) {
 					// XXX under construction feedback block register resolution
 					//search list to find matching FBOutputCADBlock
 					// if it's not there, then allocateReg and set register to the returned value
@@ -227,24 +221,21 @@ public class SpinCADModel implements Serializable {
 					Iterator<SpinCADBlock> itrFB = blockList.iterator();
 					while (itrFB.hasNext()) {
 						blockSearch = itrFB.next();
-						if((blockSearch instanceof FBOutputCADBlock) && (blockSearch.getIndex() == block.getIndex()))
-						{
+						if ((blockSearch instanceof FBOutputCADBlock) && (blockSearch.getIndex() == block.getIndex())) {
 							int i2 = ((FBOutputCADBlock) blockSearch).getRegister();
-							if(i2 == -1) {
+							if (i2 == -1) {
 								i2 = renderBlock.allocateReg();
 								((FBOutputCADBlock) blockSearch).setRegister(i2);
-							}						
+							}
 							((FBInputCADBlock) block).setRegister(i2);
 							found = true;
 						}
 					}
-					if(found == false) {
+					if (found == false) {
 						int i1 = renderBlock.allocateReg();
 						((FBInputCADBlock) block).setRegister(i1);
 					}
-				}
-				else if(block instanceof FBOutputCADBlock)
-				{
+				} else if (block instanceof FBOutputCADBlock) {
 					//search list to find matching FBInputCADBlock
 					// if it's not there, then allocateReg and set register to the returned value
 					// if it is there, then it's already been allocated, so get the register value and
@@ -254,10 +245,9 @@ public class SpinCADModel implements Serializable {
 					Iterator<SpinCADBlock> itrFB = blockList.iterator();
 					while (itrFB.hasNext()) {
 						blockSearch = itrFB.next();
-						if((blockSearch instanceof FBInputCADBlock) && (blockSearch.getIndex() == block.getIndex()))
-						{
+						if ((blockSearch instanceof FBInputCADBlock) && (blockSearch.getIndex() == block.getIndex())) {
 							int i3 = ((FBInputCADBlock) blockSearch).getRegister();
-							if(i3 == -1) {
+							if (i3 == -1) {
 								i3 = renderBlock.allocateReg();
 								((FBInputCADBlock) blockSearch).setRegister(i3);
 							}
@@ -265,7 +255,7 @@ public class SpinCADModel implements Serializable {
 							found = true;
 						}
 					}
-					if(found == false) {
+					if (found == false) {
 						int i4 = renderBlock.allocateReg();
 						((FBOutputCADBlock) block).setRegister(i4);
 					}
@@ -283,41 +273,39 @@ public class SpinCADModel implements Serializable {
 			System.out.println(getRenderBlock().getProgramListing(1));
 			codeLength = renderBlock.getCodeLen() - renderBlock.getNumComments();
 		}
-		
+
 		return codeLength;
 	}
 
 	public static int countLFOReferences(SpinCADModel m, String matchString) {
 		String list = m.getRenderBlock().getProgramListing();
 		int lastIndex = 0;
-		int count =0;
+		int count = 0;
 
-		while(lastIndex != -1){
+		while (lastIndex != -1) {
 
-			lastIndex = list.indexOf(matchString,lastIndex);
+			lastIndex = list.indexOf(matchString, lastIndex);
 
-			if( lastIndex != -1){
-				count ++;
-				lastIndex+=matchString.length();
+			if (lastIndex != -1) {
+				count++;
+				lastIndex += matchString.length();
 			}
 		}
 		return count;
 	}
-	
+
 	public static int optimize(SpinCADModel m) {
 		String list = m.getRenderBlock().getProgramListing();
 		int lastIndex = 0;
-		int count =0;
-		
+		int count = 0;
+
 		SpinCADModel optimizedModel = new SpinCADModel();
 		SpinCADModel skpRun = new SpinCADModel();
 
-		for (count = 0; count < list.length(); count++){
+		for (count = 0; count < list.length(); count++) {
 		}
 		return 0;
 	}
-
-	
 
 	public SpinFXBlock getRenderBlock() {
 		return renderBlock;

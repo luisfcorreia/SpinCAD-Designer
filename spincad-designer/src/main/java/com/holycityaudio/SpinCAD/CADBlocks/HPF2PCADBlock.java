@@ -17,7 +17,6 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 	
  */
-
 package com.holycityaudio.SpinCAD.CADBlocks;
 
 import java.awt.Color;
@@ -26,9 +25,10 @@ import com.holycityaudio.SpinCAD.SpinCADBlock;
 import com.holycityaudio.SpinCAD.SpinCADPin;
 import com.holycityaudio.SpinCAD.SpinFXBlock;
 
-public class HPF2PCADBlock extends SpinCADBlock{
+public class HPF2PCADBlock extends SpinCADBlock {
+
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 5711126291575876825L;
 	private double f0 = 880;
@@ -42,12 +42,13 @@ public class HPF2PCADBlock extends SpinCADBlock{
 		hasControlPanel = true;
 		addControlInputPin(this, "Frequency");
 		addControlInputPin(this, "Resonance");
-		setBorderColor(new Color(0x24f26f));	
-		setName("High Pass 2P");	}
+		setBorderColor(new Color(0x24f26f));
+		setName("High Pass 2P");
+	}
 
-	public void editBlock(){
+	public void editBlock() {
 		new HPF2PControlPanel(this);
-	}	
+	}
 
 	public void generateCode(SpinFXBlock sfxb) {
 		// coefficients
@@ -56,7 +57,7 @@ public class HPF2PCADBlock extends SpinCADBlock{
 
 		SpinCADPin p = this.getPin("Audio Input").getPinConnection();
 
-		if(p != null) {
+		if (p != null) {
 			input = p.getRegister();
 
 			int kfh = sfxb.allocateReg();
@@ -69,18 +70,18 @@ public class HPF2PCADBlock extends SpinCADBlock{
 
 			sfxb.skip(RUN, 3);
 			sfxb.clear();
-			sfxb.writeRegister(hp1al,  0);
-			sfxb.writeRegister(hp1bl,  0);
+			sfxb.writeRegister(hp1al, 0);
+			sfxb.writeRegister(hp1bl, 0);
 
 			//			;prepare pot2 for low pass frequency control:
 			p = this.getPin("Frequency").getPinConnection();
 			int control1 = -1;
-			if(p != null) {
+			if (p != null) {
 				control1 = p.getRegister();
 				//				rdax	pot2,1		;get pot2
-				sfxb.readRegister(control1,1);
+				sfxb.readRegister(control1, 1);
 				//				sof	0.5,-0.5	;ranges -0.5 to 0
-				sfxb.scaleOffset(0.35,  -0.35);
+				sfxb.scaleOffset(0.35, -0.35);
 				//				exp	1,0
 				sfxb.exp(1, 0);
 				//				wrax	kfl,0		;write to LP filter control
@@ -88,45 +89,43 @@ public class HPF2PCADBlock extends SpinCADBlock{
 				//				;now derive filter bypass function (at open condition)
 			} else {
 				sfxb.scaleOffset(0, 0.25);	// set dummy value
-				sfxb.writeRegister(kfh,  0);
-				sfxb.writeRegister(byp,  0);
+				sfxb.writeRegister(kfh, 0);
+				sfxb.writeRegister(byp, 0);
 			}
 
 			// ------------- start of filter code
 			//			rdax	lp1al,1
-			sfxb.readRegister(hp1al,1);
+			sfxb.readRegister(hp1al, 1);
 			//			mulx	kfl
 			sfxb.mulx(kfh);
 			//			rdax	lp1bl,1
-			sfxb.readRegister(hp1bl,1);
+			sfxb.readRegister(hp1bl, 1);
 			//			wrax	lp1bl,-1
 			sfxb.writeRegister(hp1bl, -1);
 			//			rdax	lp1al,kql
 			p = this.getPin("Resonance").getPinConnection();
 			int control2 = -1;
-			if(p != null) {
+			if (p != null) {
 				control2 = p.getRegister();
 				temp = sfxb.allocateReg();
 				sfxb.writeRegister(temp, 0.0);
-				sfxb.readRegister(hp1al,-kqh);
+				sfxb.readRegister(hp1al, -kqh);
 				sfxb.mulx(control2);
 				sfxb.readRegister(temp, 1.0);
+			} else {
+				sfxb.readRegister(hp1al, -kqh);
 			}
-			else {	
-				sfxb.readRegister(hp1al,-kqh);
-			}	
 			//			rdax	fol,1
-			sfxb.readRegister(input,1);
+			sfxb.readRegister(input, 1);
 			sfxb.writeRegister(hpout, 1);
 			//			mulx	kfl
 			sfxb.mulx(kfh);
 			//			rdax	lp1al,1
-			sfxb.readRegister(hp1al,1);
+			sfxb.readRegister(hp1al, 1);
 			//			wrax	lp1al,0
 			sfxb.writeRegister(hp1al, 0);
 
-
-			this.getPin("High Pass").setRegister(hpout);	
+			this.getPin("High Pass").setRegister(hpout);
 		}
 		System.out.println("HPF 2/4 pole code gen!");
 	}
@@ -148,11 +147,11 @@ public class HPF2PCADBlock extends SpinCADBlock{
 	}
 
 	public double getQ() {
-		return kqh/10.0;
+		return kqh / 10.0;
 	}
 
 	public void setQ(double value) {
-		kqh = 10/(value); 
+		kqh = 10 / (value);
 	}
 
 }

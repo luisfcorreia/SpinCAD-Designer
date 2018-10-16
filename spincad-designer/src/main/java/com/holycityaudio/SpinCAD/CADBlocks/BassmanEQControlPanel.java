@@ -16,8 +16,7 @@
  *   You should have received a copy of the GNU General Public License 
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. 
  *     
- */ 
-
+ */
 package com.holycityaudio.SpinCAD.CADBlocks;
 
 import javax.swing.BoxLayout;
@@ -29,8 +28,9 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 class BassmanEQControlPanel {
+
 	private JFrame frame;
-	
+
 	JSlider lSlider;	// "low"
 	JLabel lLabel;
 
@@ -43,7 +43,7 @@ class BassmanEQControlPanel {
 	private BassmanEQCADBlock spbBMEQ;
 
 	public BassmanEQControlPanel(BassmanEQCADBlock bassmanEQCADBlock) {
-		
+
 		spbBMEQ = bassmanEQCADBlock;
 
 		SwingUtilities.invokeLater(new Runnable() {
@@ -56,7 +56,7 @@ class BassmanEQControlPanel {
 				lSlider = new JSlider(JSlider.HORIZONTAL, 1, 100, (int) (100 * spbBMEQ.getBass()));
 				mSlider = new JSlider(JSlider.HORIZONTAL, 1, 100, (int) (100 * spbBMEQ.getMid()));
 				tSlider = new JSlider(JSlider.HORIZONTAL, 1, 100, (int) (100 * spbBMEQ.getTreble()));
-				
+
 				BassmanEQSliderListener bEQSL = new BassmanEQSliderListener();
 
 				lSlider.addChangeListener(bEQSL);
@@ -79,8 +79,8 @@ class BassmanEQControlPanel {
 				updateTrebleLabel();
 				frame.getContentPane().add(tSlider);
 
-				frame.setVisible(true);		
-				frame.setAlwaysOnTop(true);	
+				frame.setVisible(true);
+				frame.setAlwaysOnTop(true);
 				frame.pack();
 				frame.setResizable(false);
 				frame.setLocation(spbBMEQ.getX() + 100, spbBMEQ.getY() + 100);
@@ -88,36 +88,35 @@ class BassmanEQControlPanel {
 		});
 	}
 
-	class BassmanEQSliderListener implements ChangeListener { 
+	class BassmanEQSliderListener implements ChangeListener {
+
 		public void stateChanged(ChangeEvent ce) {
-			if(ce.getSource() == lSlider) {
-				spbBMEQ.setBass((double) (lSlider.getValue()/100.0));
+			if (ce.getSource() == lSlider) {
+				spbBMEQ.setBass((double) (lSlider.getValue() / 100.0));
 				updateBassLabel();
-			}
-			else if(ce.getSource() == mSlider) {
+			} else if (ce.getSource() == mSlider) {
 				int resValue = mSlider.getValue();
-				double mid = (double) (resValue/100.0);
+				double mid = (double) (resValue / 100.0);
 				spbBMEQ.setMid(mid);
 				updateMidLabel();
-			}
-			else if(ce.getSource() == tSlider) {
+			} else if (ce.getSource() == tSlider) {
 				int trebValue = tSlider.getValue();
-				double treble = (double) (trebValue/100.0);
+				double treble = (double) (trebValue / 100.0);
 				spbBMEQ.setTreble(treble);
 				updateTrebleLabel();
 			}
 		}
 	}
-	
+
 	private void updateBassLabel() {
-		lLabel.setText("Bass " + String.format("%4.2f", spbBMEQ.getBass() * 10));		
+		lLabel.setText("Bass " + String.format("%4.2f", spbBMEQ.getBass() * 10));
 	}
 
 	private void updateMidLabel() {
-		mLabel.setText("Mid " + String.format("%4.2f", spbBMEQ.getMid() * 10));		
+		mLabel.setText("Mid " + String.format("%4.2f", spbBMEQ.getMid() * 10));
 	}
 
 	private void updateTrebleLabel() {
-		tLabel.setText("Treble " + String.format("%4.2f", spbBMEQ.getTreble() * 10));		
+		tLabel.setText("Treble " + String.format("%4.2f", spbBMEQ.getTreble() * 10));
 	}
 }

@@ -15,8 +15,7 @@
  *   You should have received a copy of the GNU General Public License 
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. 
  *     
- */ 
-
+ */
 package com.holycityaudio.SpinCAD.CADBlocks;
 
 import javax.swing.BoxLayout;
@@ -37,7 +36,7 @@ public class GainBoostControlPanel implements ChangeListener {
 
 	public GainBoostControlPanel(GainBoostCADBlock gainBoostCADBlock) {
 		gainSlider.addChangeListener(this);
-		
+
 		this.pC = gainBoostCADBlock;
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
@@ -68,9 +67,9 @@ public class GainBoostControlPanel implements ChangeListener {
 			pC.setGain(gainSlider.getValue());
 			updateGainLabel();
 		}
-	}	
-	
+	}
+
 	public void updateGainLabel() {
-		gainLabel.setText(String.format("Gain: %2d dB", pC.getGain() * 6));		
+		gainLabel.setText(String.format("Gain: %2d dB", pC.getGain() * 6));
 	}
 }

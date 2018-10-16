@@ -16,18 +16,17 @@
  *   You should have received a copy of the GNU General Public License 
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. 
  *     
- */ 
-
+ */
 package com.holycityaudio.SpinCAD.CADBlocks;
 
 import java.awt.Color;
 
 import com.holycityaudio.SpinCAD.SpinCADBlock;
 
-public class DelayCADBlock extends SpinCADBlock{
+public class DelayCADBlock extends SpinCADBlock {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = -135502969220455821L;
 

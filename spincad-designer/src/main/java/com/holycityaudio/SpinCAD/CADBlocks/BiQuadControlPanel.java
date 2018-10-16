@@ -16,8 +16,7 @@
  *   You should have received a copy of the GNU General Public License 
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. 
  *     
- */ 
-
+ */
 package com.holycityaudio.SpinCAD.CADBlocks;
 
 import java.awt.BorderLayout;
@@ -39,6 +38,7 @@ import javax.swing.event.ChangeListener;
 
 @SuppressWarnings("serial")
 class BiQuadControlPanel {
+
 	private JFrame frame;
 	JSlider freqSlider;
 	JSlider resSlider;
@@ -51,7 +51,7 @@ class BiQuadControlPanel {
 	private BiQuadCADBlock spbBQF;
 
 	public BiQuadControlPanel(BiQuadCADBlock b) {
-		
+
 		spbBQF = b;
 
 		SwingUtilities.invokeLater(new Runnable() {
@@ -68,7 +68,7 @@ class BiQuadControlPanel {
 
 				freqLabel = new JLabel();
 				resLabel = new JLabel();
-				buttons = new bqRadioButtons();		
+				buttons = new bqRadioButtons();
 
 				frame.getContentPane().add(buttons);
 				buttons.setVisible(true);
@@ -81,8 +81,8 @@ class BiQuadControlPanel {
 				updateResLabel();
 				frame.getContentPane().add(resSlider);
 
-				frame.setAlwaysOnTop(true);	
-				frame.setVisible(true);		
+				frame.setAlwaysOnTop(true);
+				frame.setVisible(true);
 				frame.pack();
 				frame.setResizable(false);
 				frame.setLocation(spbBQF.getX() + 200, spbBQF.getY() + 150);
@@ -90,13 +90,14 @@ class BiQuadControlPanel {
 		});
 	}
 
-	class biquadSliderListener implements ChangeListener { 
+	class biquadSliderListener implements ChangeListener {
+
 		public void stateChanged(ChangeEvent ce) {
-			if(ce.getSource() == freqSlider) {
+			if (ce.getSource() == freqSlider) {
 				spbBQF.setFreq((double) freqSlider.getValue());
 				updateFreqLabel();
 			}
-			if(ce.getSource() == resSlider) {
+			if (ce.getSource() == resSlider) {
 				int resValue = resSlider.getValue();
 				double res = (double) resValue;
 				spbBQF.setQ(res);
@@ -104,24 +105,24 @@ class BiQuadControlPanel {
 			}
 		}
 	}
-	
 
 	private void updateFreqLabel() {
-		freqLabel.setText("Frequency " + String.format("%4.2f", spbBQF.getFreq()));		
+		freqLabel.setText("Frequency " + String.format("%4.2f", spbBQF.getFreq()));
 	}
 
 	private void updateResLabel() {
-		resLabel.setText("Resonance " + String.format("%4.2f", spbBQF.getQ()));		
+		resLabel.setText("Resonance " + String.format("%4.2f", spbBQF.getQ()));
 	}
 
 	class bqRadioButtons extends JPanel implements ActionListener {
+
 		JRadioButton lpfButton = new JRadioButton("Low pass");
 		JRadioButton bpfButton = new JRadioButton("Band pass");
 		JRadioButton hpfButton = new JRadioButton("High pass");
 
 		public bqRadioButtons() {
 			super(new BorderLayout());
-		
+
 			lpfButton.setActionCommand("Low pass");
 
 			bpfButton.setActionCommand("Band pass");
@@ -129,41 +130,43 @@ class BiQuadControlPanel {
 			hpfButton.setActionCommand("High pass");
 			hpfButton.setHorizontalAlignment(SwingConstants.CENTER);
 
-			if(spbBQF.getFilterMode() == 1)
+			if (spbBQF.getFilterMode() == 1) {
 				lpfButton.setSelected(true);
-			else if(spbBQF.getFilterMode() == 2)
+			} else if (spbBQF.getFilterMode() == 2) {
 				bpfButton.setSelected(true);
-			if(spbBQF.getFilterMode() == 3)
+			}
+			if (spbBQF.getFilterMode() == 3) {
 				hpfButton.setSelected(true);
+			}
 
 			//Group the radio buttons.
 			ButtonGroup group = new ButtonGroup();
 			group.add(lpfButton);
 			group.add(bpfButton);
 			group.add(hpfButton);
-			
+
 			//Register a listener for the radio buttons.
 			lpfButton.addActionListener(this);
 			bpfButton.addActionListener(this);
 			hpfButton.addActionListener(this);
-			
-	        JPanel radioPanel = new JPanel(new GridLayout(0, 1));
-	        radioPanel.add(lpfButton);
-	        radioPanel.add(bpfButton);
-	        radioPanel.add(hpfButton);
-	        add(radioPanel, BorderLayout.LINE_START);
+
+			JPanel radioPanel = new JPanel(new GridLayout(0, 1));
+			radioPanel.add(lpfButton);
+			radioPanel.add(bpfButton);
+			radioPanel.add(hpfButton);
+			add(radioPanel, BorderLayout.LINE_START);
 		}
+
 		@Override
 
 		public void actionPerformed(ActionEvent arg0) {
-			if(lpfButton.isSelected()) {
+			if (lpfButton.isSelected()) {
 				spbBQF.setFilterMode(1);
-			} 
-			else if(bpfButton.isSelected()) {
-				spbBQF.setFilterMode(2);				
+			} else if (bpfButton.isSelected()) {
+				spbBQF.setFilterMode(2);
 			} else if (hpfButton.isSelected()) {
-				spbBQF.setFilterMode(3);				
-			}  
+				spbBQF.setFilterMode(3);
+			}
 
 		}
 	}

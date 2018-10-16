@@ -15,14 +15,15 @@
  *   You should have received a copy of the GNU General Public License 
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. 
  *     
- */ 
+ */
 package com.holycityaudio.SpinCAD.CADBlocks;
 
 import com.holycityaudio.SpinCAD.SpinFXBlock;
 
-public class ConstantCADBlock extends ControlCADBlock{
+public class ConstantCADBlock extends ControlCADBlock {
+
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 7025985649946130854L;
 	int value = 1;
@@ -51,16 +52,15 @@ public class ConstantCADBlock extends ControlCADBlock{
 		System.out.println("Constant code gen!");
 	}
 
-	public void editBlock(){
+	public void editBlock() {
 		new ConstantControlPanel(this);
 	}
 	//====================================================
 
-
 	public void setConstant(int value) {
-		constant = (double) value/1000;
+		constant = (double) value / 1000;
 	}
-	
+
 	public int getConstant() {
 		return (int) (constant * 1000);
 	}

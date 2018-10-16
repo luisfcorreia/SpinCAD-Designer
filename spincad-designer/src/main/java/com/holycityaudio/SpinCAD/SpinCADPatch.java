@@ -3,6 +3,7 @@ package com.holycityaudio.SpinCAD;
 import java.io.Serializable;
 
 public class SpinCADPatch implements Serializable {
+
 	String patchFileName;
 	SpinCADModel patchModel = new SpinCADModel();
 	SpinCADCommentBlock cb = new SpinCADCommentBlock();
@@ -11,7 +12,7 @@ public class SpinCADPatch implements Serializable {
 	private double[] potVal = new double[3];
 	int[] hexFile = new int[128];
 	boolean isHexFile = false;
-	
+
 	SpinCADPatch() {
 		patchModel = new SpinCADModel();
 		patchFileName = "Untitled";
@@ -26,25 +27,26 @@ public class SpinCADPatch implements Serializable {
 	void updateFileName(String n) {
 		patchFileName = n;
 	}
-	
+
 	public void setChanged(boolean b) {
 		changed = b;
 	}
-	
+
 	public boolean getChanged() {
 		return changed;
 	}
-	
+
 	public void setPotVal(int index, double newVal) {
-		if(index >= 0 && index < 3) {
+		if (index >= 0 && index < 3) {
 			potVal[index] = newVal;
 		}
 	}
-	
+
 	public double getPotVal(int index) {
-		if(index >= 0 && index < 3) {
+		if (index >= 0 && index < 3) {
 			return potVal[index];
-		} else
+		} else {
 			return -1;
+		}
 	}
 }

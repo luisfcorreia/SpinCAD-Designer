@@ -15,15 +15,16 @@
  *   You should have received a copy of the GNU General Public License 
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. 
  *     
- */ 
+ */
 package com.holycityaudio.SpinCAD.CADBlocks;
 
 import com.holycityaudio.SpinCAD.SpinCADPin;
 import com.holycityaudio.SpinCAD.SpinFXBlock;
 
-public class ClipControlCADBlock extends ControlCADBlock{
+public class ClipControlCADBlock extends ControlCADBlock {
+
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 7025985649946130854L;
 	double gain = 3;
@@ -45,49 +46,56 @@ public class ClipControlCADBlock extends ControlCADBlock{
 		boolean flipped = false;	// keep track of inversions from SOF
 		SpinCADPin p = this.getPin("Control Input 1").getPinConnection();
 		sfxb.comment(getName());
-		if (p != null ) {
+		if (p != null) {
 			control = p.getRegister();
 			int lbyp = sfxb.allocateReg();
 			sfxb.readRegister(control, 1.0);
-			if(invert == true) {
+			if (invert == true) {
 				sfxb.scaleOffset(-0.999, 0.999);
 			}
-			if(scaledGain > 8.0)	// 10.0 is the max
+			if (scaledGain > 8.0) // 10.0 is the max
 			{
-				sfxb.scaleOffset(-2.0,  0);
-				scaledGain = scaledGain/2.0;
+				sfxb.scaleOffset(-2.0, 0);
+				scaledGain = scaledGain / 2.0;
 				flipped = true;
 			}
-			if(scaledGain > 4.0)	// 10.0 is the max
+			if (scaledGain > 4.0) // 10.0 is the max
 			{
-				sfxb.scaleOffset(-2.0,  0);
-				scaledGain = scaledGain/2.0;
-				if(flipped == true)	// it was flipped in the previous stage
+				sfxb.scaleOffset(-2.0, 0);
+				scaledGain = scaledGain / 2.0;
+				if (flipped == true) // it was flipped in the previous stage
+				{
 					flipped = false;
-				else
+				} else {
 					flipped = true;	// it wasn't flipped previously
+				}
 			}
-			if(scaledGain > 2.0)	// 4.0 would be the max here
+			if (scaledGain > 2.0) // 4.0 would be the max here
 			{
-				sfxb.scaleOffset(-2.0,  0);
-				scaledGain = scaledGain/2.0;
-				if(flipped == true)	// it was flipped in the previous stage
+				sfxb.scaleOffset(-2.0, 0);
+				scaledGain = scaledGain / 2.0;
+				if (flipped == true) // it was flipped in the previous stage
+				{
 					flipped = false;
-				else
+				} else {
 					flipped = true;	// it wasn't flipped previously
+				}
 			}
-			if(scaledGain > 1.0) {
-				sfxb.scaleOffset(-scaledGain,  0);				
-				if(flipped == true)	// it was flipped in the previous stage
+			if (scaledGain > 1.0) {
+				sfxb.scaleOffset(-scaledGain, 0);
+				if (flipped == true) // it was flipped in the previous stage
+				{
 					flipped = false;
-				else
+				} else {
 					flipped = true;	// it wasn't flipped previously
+				}
 			}
-			
-			if(flipped == true)
+
+			if (flipped == true) {
 				sfxb.scaleOffset(-1.0, 0);
-			
-			if(flip == true) {
+			}
+
+			if (flip == true) {
 				sfxb.scaleOffset(-0.999, 0.999);
 			}
 			sfxb.writeRegister(lbyp, 0);
@@ -96,9 +104,10 @@ public class ClipControlCADBlock extends ControlCADBlock{
 		System.out.println("Clip control code gen! Clip:" + gain);
 	}
 
-	public void editBlock(){
+	public void editBlock() {
 		new ClipControlControlPanel(this);
 	}
+
 	//====================================================
 	public double getGain() {
 		return gain;
@@ -110,7 +119,7 @@ public class ClipControlCADBlock extends ControlCADBlock{
 
 	public boolean getInvert() {
 		return invert;
-		}
+	}
 
 	public void setInvert(boolean b) {
 		invert = b;
@@ -118,7 +127,7 @@ public class ClipControlCADBlock extends ControlCADBlock{
 
 	public boolean getFlip() {
 		return flip;
-		}
+	}
 
 	public void setFlip(boolean b) {
 		flip = b;

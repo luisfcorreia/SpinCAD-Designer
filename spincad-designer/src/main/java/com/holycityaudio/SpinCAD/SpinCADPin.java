@@ -17,7 +17,6 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 	
  */
-
 package com.holycityaudio.SpinCAD;
 
 import java.awt.BasicStroke;
@@ -30,15 +29,18 @@ import java.io.Serializable;
 public class SpinCADPin implements Serializable {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = -6926516028763652131L;
 	private int x_pos = -1;
 	private int y_pos = -1;
 	private SpinCADBlock block = null;
 	private SpinCADBlock connectorBlock = null;
-	private SpinCADPin connectorPin = null;	
-	public enum pinType {AUDIO_IN, AUDIO_OUT, CONTROL_IN, CONTROL_OUT };
+	private SpinCADPin connectorPin = null;
+
+	public enum pinType {
+		AUDIO_IN, AUDIO_OUT, CONTROL_IN, CONTROL_OUT
+	};
 	public int numConnections = 0;
 
 	// the register value is assigned during code generation
@@ -55,7 +57,6 @@ public class SpinCADPin implements Serializable {
 	 * @param x is x position relative to left edge of block
 	 * @param y is y position relative to top edge of block
 	 */
-
 	public SpinCADPin(SpinCADBlock b, String pinName, pinType pType, int x, int y) {
 		block = b;
 		name = pinName;
@@ -73,13 +74,13 @@ public class SpinCADPin implements Serializable {
 
 	public void deletePinConnection() {
 		connectorPin.numConnections--;
-		if(connectorPin.numConnections == 0) {
+		if (connectorPin.numConnections == 0) {
 			connectorPin.connectorPin = null;
 			connectorPin.connectorBlock = null;
 		}
 
 		numConnections--;
-		if(numConnections == 0) {
+		if (numConnections == 0) {
 			connectorPin = null;
 			connectorBlock = null;
 		}
@@ -88,9 +89,12 @@ public class SpinCADPin implements Serializable {
 	public boolean isConnected() {
 		if (numConnections > 0) {
 			return true;
-		} else
+		} else {
 			return false;
-	}	public SpinCADBlock getBlockConnection() {
+		}
+	}
+
+	public SpinCADBlock getBlockConnection() {
 		return connectorBlock;
 	}
 
@@ -98,11 +102,10 @@ public class SpinCADPin implements Serializable {
 		return connectorPin;
 	}
 
-
 	public void paintComponent(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
 		int size = 8;
-		Ellipse2D boundingRect = new Ellipse2D.Double(block.getX() + x_pos - size/2, block.getY() + y_pos - size/2, size, size);
+		Ellipse2D boundingRect = new Ellipse2D.Double(block.getX() + x_pos - size / 2, block.getY() + y_pos - size / 2, size, size);
 		g2.setColor(pinColor);
 		g2.setStroke(new BasicStroke(2));
 		g2.draw(boundingRect);
@@ -110,7 +113,7 @@ public class SpinCADPin implements Serializable {
 
 	public pinType getType() {
 		return type;
-	}	
+	}
 
 	public int getX() {
 		return x_pos;
@@ -138,49 +141,54 @@ public class SpinCADPin implements Serializable {
 
 	public String getName() {
 		return name;
-	}	
+	}
 
 	public boolean isInputPin() {
-		if((type == pinType.AUDIO_IN) | (type == pinType.CONTROL_IN)) 
+		if ((type == pinType.AUDIO_IN) | (type == pinType.CONTROL_IN)) {
 			return true;
-		else
+		} else {
 			return false;
+		}
 	}
 
 	public boolean isAudioInputPin() {
-		if((type == pinType.AUDIO_IN)) 
+		if ((type == pinType.AUDIO_IN)) {
 			return true;
-		else
+		} else {
 			return false;
-	}	
+		}
+	}
 
 	public boolean isControlInputPin() {
-		if((type == pinType.CONTROL_IN)) 
+		if ((type == pinType.CONTROL_IN)) {
 			return true;
-		else
+		} else {
 			return false;
+		}
 	}
 
 	public boolean isOutputPin() {
-		if((type == pinType.AUDIO_OUT) | (type == pinType.CONTROL_OUT)) 
+		if ((type == pinType.AUDIO_OUT) | (type == pinType.CONTROL_OUT)) {
 			return true;
-		else
+		} else {
 			return false;
+		}
 	}
 
 	public boolean isAudioOutputPin() {
-		if((type == pinType.AUDIO_OUT)) 
+		if ((type == pinType.AUDIO_OUT)) {
 			return true;
-		else
+		} else {
 			return false;
-	}	
+		}
+	}
 
 	public boolean isControlOutputPin() {
-		if((type == pinType.CONTROL_OUT)) 
+		if ((type == pinType.CONTROL_OUT)) {
 			return true;
-		else
+		} else {
 			return false;
+		}
 	}
 
 }
-

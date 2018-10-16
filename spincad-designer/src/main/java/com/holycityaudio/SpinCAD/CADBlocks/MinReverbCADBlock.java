@@ -16,19 +16,18 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 	
  */
-
 // MinReverbCADBlock.java
 // based on "minimum reverb" from Spin web site.
-
 package com.holycityaudio.SpinCAD.CADBlocks;
 
 import com.holycityaudio.SpinCAD.SpinCADBlock;
 import com.holycityaudio.SpinCAD.SpinCADPin;
 import com.holycityaudio.SpinCAD.SpinFXBlock;
 
-public class MinReverbCADBlock extends SpinCADBlock{
+public class MinReverbCADBlock extends SpinCADBlock {
+
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = -5323444338681502405L;
 	// local register defines
@@ -37,6 +36,7 @@ public class MinReverbCADBlock extends SpinCADBlock{
 	// coefficients
 	private double krt = 0.13;  // reverb time
 	private double kap = 0.325;  // AP coeff
+
 	public MinReverbCADBlock(int x, int y) {
 		super(x, y);
 		// ---
@@ -50,7 +50,7 @@ public class MinReverbCADBlock extends SpinCADBlock{
 		//		super(blockName);
 		int input;
 		int output = -1;
-		
+
 		SpinCADPin p = this.getPin("Audio Input 1").getPinConnection();
 		if (p != null) {
 			input = p.getRegister();
@@ -66,10 +66,10 @@ public class MinReverbCADBlock extends SpinCADBlock{
 				apout = sfxb.allocateReg();
 				//		dry = sfxb.allocateReg();
 				output = sfxb.allocateReg();
-				
+
 				sfxb.comment("Minimum reverb");
-				
-				sfxb.readRegister(input, 0.25);	
+
+				sfxb.readRegister(input, 0.25);
 
 				sfxb.FXreadDelay("api1", 1.0, kap);  // read from the end of api1
 				sfxb.FXwriteAllpass("api1", 0, -1.0);  // write back in inverted
@@ -88,12 +88,11 @@ public class MinReverbCADBlock extends SpinCADBlock{
 				// first loop delay
 				int Control1 = -1;
 				SpinCADPin pd = this.getPin("Reverb Time").getPinConnection();
-				if(pd != null) {
+				if (pd != null) {
 					Control1 = pd.getRegister();
 					sfxb.FXreadDelay("del2", 1.0, 1.0);  // read del2, scale by krt			
 					sfxb.mulx(Control1);
-				}
-				else {
+				} else {
 					sfxb.FXreadDelay("del2", 1.0, krt);  // read del2, scale by krt			
 				}
 				sfxb.FXreadDelay("ap1", 1.0, -kap);  // do loop ap
@@ -104,11 +103,10 @@ public class MinReverbCADBlock extends SpinCADBlock{
 
 				// second loop delay
 				sfxb.readRegister(apout, 1.0);
-				if(pd != null) {
+				if (pd != null) {
 					sfxb.FXreadDelay("del1", 1.0, 1.0);  // read del2, scale by krt			
 					sfxb.mulx(Control1);
-				}
-				else {
+				} else {
 					sfxb.FXreadDelay("del1", 1.0, krt);  // read del2, scale by krt
 				}
 				sfxb.FXreadDelay("ap2", 1.0, -kap);  // do loop ap
@@ -117,9 +115,9 @@ public class MinReverbCADBlock extends SpinCADBlock{
 				//		sfxb.readRegister(dry,1.0);
 				sfxb.writeRegister(output, 0.0);
 				p = this.getPin("Audio Output 1");
-				p.setRegister(output);		
+				p.setRegister(output);
 			}
 		}
-		System.out.println("Min reverb code gen!");	
+		System.out.println("Min reverb code gen!");
 	}
 }

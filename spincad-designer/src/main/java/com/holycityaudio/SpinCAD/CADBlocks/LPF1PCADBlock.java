@@ -17,44 +17,46 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 	
  */
-
 package com.holycityaudio.SpinCAD.CADBlocks;
 
 import com.holycityaudio.SpinCAD.SpinCADPin;
 import com.holycityaudio.SpinCAD.SpinFXBlock;
 
-public class LPF1PCADBlock extends FilterCADBlock{
+public class LPF1PCADBlock extends FilterCADBlock {
+
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 5711126291575876825L;
 	double f0 = 240;
+
 	public LPF1PCADBlock(int x, int y) {
 		super(x, y);
 		hasControlPanel = true;
 		addInputPin(this, "Audio Input");
 		addOutputPin(this, "Audio Output");
-		setName("Low Pass 1P");	}
+		setName("Low Pass 1P");
+	}
 
-	public void editBlock(){
+	public void editBlock() {
 		new LPF1PControlPanel(this);
-	}	
+	}
 
 	public void generateCode(SpinFXBlock sfxb) {
 		// coefficients
 
-		double k1 = Math.exp((-6.283 * f0)/getSamplerate());
+		double k1 = Math.exp((-6.283 * f0) / getSamplerate());
 		double k2 = 1.0 - k1;
 
 		int input = -1;
 
 		SpinCADPin p = this.getPin("Audio Input").getPinConnection();
 
-		if(p != null) {
+		if (p != null) {
 			input = p.getRegister();
 
 			int filt = sfxb.allocateReg();
-			
+
 			sfxb.comment("1 pole low pass");
 			// ------------- start of filter code
 //			sfxb.loadAccumulator(input);
@@ -62,7 +64,7 @@ public class LPF1PCADBlock extends FilterCADBlock{
 			sfxb.readRegister(input, k2);
 			sfxb.writeRegister(filt, 0.0);
 
-			this.getPin("Audio Output").setRegister(filt);	
+			this.getPin("Audio Output").setRegister(filt);
 		}
 		System.out.println("LPF 1P code gen!");
 	}

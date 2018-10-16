@@ -15,8 +15,7 @@
  *   You should have received a copy of the GNU General Public License 
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. 
  *     
- */ 
-
+ */
 package com.holycityaudio.SpinCAD.CADBlocks;
 
 import java.awt.Color;
@@ -36,8 +35,6 @@ import javax.swing.JSlider;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
-import com.holycityaudio.SpinCAD.CADBlocks.ClipControlCADBlock;
 
 public class ClipControlControlPanel implements ChangeListener, ActionListener, ItemListener {
 
@@ -67,7 +64,7 @@ public class ClipControlControlPanel implements ChangeListener, ActionListener, 
 				invert.setText("Invert");
 				flip.setText("Flip");
 				graph.setBackground(Color.GREEN);
-				graph.setPreferredSize(new Dimension(150,120));
+				graph.setPreferredSize(new Dimension(150, 120));
 				//				    graph.setBorder(BorderFactory.createEmptyBorder(0,10,10,10)); 
 
 				gainSlider.setMajorTickSpacing(25);
@@ -84,7 +81,7 @@ public class ClipControlControlPanel implements ChangeListener, ActionListener, 
 				flip.setSelected(pC.getFlip());
 
 				frame.setLocation(pC.getX() + 200, pC.getY() + 150);
-				frame.setAlwaysOnTop(true);	
+				frame.setAlwaysOnTop(true);
 				frame.setVisible(true);
 				frame.pack();
 				graph.repaint();
@@ -101,34 +98,34 @@ public class ClipControlControlPanel implements ChangeListener, ActionListener, 
 		Object source = arg0.getItemSelectable();
 
 		if (source == flip) {
-	        if (arg0.getStateChange() == ItemEvent.DESELECTED) {
+			if (arg0.getStateChange() == ItemEvent.DESELECTED) {
 				pC.setFlip(false);
+			} else {
+				pC.setFlip(true);
 			}
-			else
-				pC.setFlip(true);	    		
 		} else if (source == invert) {
-	        if (arg0.getStateChange() == ItemEvent.DESELECTED) {
+			if (arg0.getStateChange() == ItemEvent.DESELECTED) {
 				pC.setInvert(false);
+			} else {
+				pC.setInvert(true);
 			}
-			else
-				pC.setInvert(true);	    		
-		} 	
+		}
 		graph.repaint();
 	}
 
 	@Override
 	public void stateChanged(ChangeEvent e) {
 		if (e.getSource() == gainSlider) {
-			pC.setGain((double) gainSlider.getValue()/100.0);
+			pC.setGain((double) gainSlider.getValue() / 100.0);
 			gainLabel.setText(String.format("%2.2f", pC.getGain()));
 			graph.repaint();
 		}
-	}	
+	}
 
 	class ClipPanel extends JPanel {
 
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = -7881835628314249883L;
 
@@ -137,7 +134,7 @@ public class ClipControlControlPanel implements ChangeListener, ActionListener, 
 		}
 
 		public void paintComponent(Graphics g) {
-			super.paintComponent(g);       
+			super.paintComponent(g);
 
 			// Draw Text
 			double i;
@@ -150,26 +147,24 @@ public class ClipControlControlPanel implements ChangeListener, ActionListener, 
 			g.setColor(Color.BLACK);
 			g.fillRect(0, 0, getWidth(), getHeight());
 
-			for(i = 0; i < 1.0; i += 0.01) {
+			for (i = 0; i < 1.0; i += 0.01) {
 				double j;
 				double ii;
 
-				if(pC.getFlip() == true) {
+				if (pC.getFlip() == true) {
 					j = 1.0 - i;
-				}
-				else {
+				} else {
 					j = i;
 				}
 
-				if(pC.getInvert() == true) {
+				if (pC.getInvert() == true) {
 					ii = Math.min(1.0, j * p);
-				}
-				else {
+				} else {
 					ii = 1.0 - Math.min(1.0, j * p);
 				}
 				g.setColor(Color.CYAN);
-				g.drawRect((int) ((i * x_scale) + x_offset),(int) ((ii * y_scale) + y_offset),1,1);
+				g.drawRect((int) ((i * x_scale) + x_offset), (int) ((ii * y_scale) + y_offset), 1, 1);
 			}
-		}  
+		}
 	}
 }

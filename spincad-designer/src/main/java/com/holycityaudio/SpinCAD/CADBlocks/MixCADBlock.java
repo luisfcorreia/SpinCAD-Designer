@@ -16,17 +16,16 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 	
  */
-
 package com.holycityaudio.SpinCAD.CADBlocks;
 
 import java.awt.Color;
 
 import com.holycityaudio.SpinCAD.SpinCADBlock;
 
-public class MixCADBlock extends SpinCADBlock{
+public class MixCADBlock extends SpinCADBlock {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = -8225832881225754622L;
 

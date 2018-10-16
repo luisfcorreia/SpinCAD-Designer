@@ -17,20 +17,22 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 interface gwSliderSpinnerListener {
+
 	public void sliderChanged();
+
 	public void spinnerChanged();
 }
 
 // this is the initiating class
-
 public class SpinSliderSpinner extends JPanel {
+
 	/**
-	 * 
+	 *
 	 */
 
 	private static final long serialVersionUID = 1L;
 	JSlider filtSlider;
-	JLabel  filtLabel;	
+	JLabel filtLabel;
 	JSpinner filtSpinner;
 
 	public SpinSliderSpinner(final String label) {
@@ -48,42 +50,42 @@ public class SpinSliderSpinner extends JPanel {
 
 				filtSpinner = new JSpinner(filtSpinnerNumberModel);
 
-				JSpinner.NumberEditor editor = (JSpinner.NumberEditor)filtSpinner.getEditor();  
+				JSpinner.NumberEditor editor = (JSpinner.NumberEditor) filtSpinner.getEditor();
 				filtLabel = new JLabel(label);
 				topLine.add(filtLabel);
 				topLine.setVisible(true);
 
-				internal.add(Box.createRigidArea(new Dimension(5,4)));			
+				internal.add(Box.createRigidArea(new Dimension(5, 4)));
 
-				DecimalFormat format = editor.getFormat();  
-				format.setMinimumFractionDigits(2);  
-				format.setMaximumFractionDigits(2);  
-				editor.getTextField().setHorizontalAlignment(SwingConstants.CENTER);  
-				Dimension d = filtSpinner.getPreferredSize();  
-				d.width = 55;  
-				filtSpinner.setPreferredSize(d);  
+				DecimalFormat format = editor.getFormat();
+				format.setMinimumFractionDigits(2);
+				format.setMaximumFractionDigits(2);
+				editor.getTextField().setHorizontalAlignment(SwingConstants.CENTER);
+				Dimension d = filtSpinner.getPreferredSize();
+				d.width = 55;
+				filtSpinner.setPreferredSize(d);
 
 				//				updatefiltSpinner();
 				topLine.add(filtSpinner);
 				filtSpinner.addChangeListener(new SliderSpinnerListener());
 
 				internal.add(topLine);
-				internal.add(Box.createRigidArea(new Dimension(5,5)));			
+				internal.add(Box.createRigidArea(new Dimension(5, 5)));
 
 				//				filtSlider = new JSlider(JSlider.HORIZONTAL, (int)(-29),(int) (100), gCB.logvalToSlider(gCB.filtToFreq(gCB.getfilt()), 100.0));
-				filtSlider = new JSlider(JSlider.HORIZONTAL, (int)(-29),(int) (100), 50);
+				filtSlider = new JSlider(JSlider.HORIZONTAL, (int) (-29), (int) (100), 50);
 				filtSlider.addChangeListener(new SliderSpinnerListener());
-				internal.add(filtSlider);		
-				internal.add(Box.createRigidArea(new Dimension(5,4)));			
+				internal.add(filtSlider);
+				internal.add(Box.createRigidArea(new Dimension(5, 4)));
 
-				internal.setVisible(true);		
+				internal.setVisible(true);
 			}
 		});
 		this.add(internal);
 	}
 
 	private void updateLabel() {
-		filtLabel.setText(String.format(" Frequency (Hz) "));		
+		filtLabel.setText(String.format(" Frequency (Hz) "));
 	}
 
 	private void updateSpinner() {
@@ -95,31 +97,34 @@ public class SpinSliderSpinner extends JPanel {
 	}
 
 	// add change listener for Sliders 
-	class SliderSpinnerListener implements ChangeListener { 
+	class SliderSpinnerListener implements ChangeListener {
+
 		public void stateChanged(ChangeEvent ce) {
-			if(ce.getSource() == filtSlider) {
+			if (ce.getSource() == filtSlider) {
 				updateSlider();
 				updateSpinner();
-			} else if(ce.getSource() == filtSpinner) {
+			} else if (ce.getSource() == filtSpinner) {
 				updateSlider();
 				updateSpinner();
-			} 
+			}
 		}
 	}
 
 	ArrayList<gwSliderSpinnerListener> listeners = new ArrayList<gwSliderSpinnerListener>();
 
-    public void addListener(gwSliderSpinnerListener toAdd) {
-        listeners.add(toAdd);
-    }
+	public void addListener(gwSliderSpinnerListener toAdd) {
+		listeners.add(toAdd);
+	}
 }
 
 class Responder implements gwSliderSpinnerListener {
-    @Override
+
+	@Override
 	public void sliderChanged() {
-    	System.out.println("Slider...");
-    }    	
+		System.out.println("Slider...");
+	}
+
 	public void spinnerChanged() {
-    	System.out.println("Spinner...");
-    }    	
+		System.out.println("Spinner...");
+	}
 }

@@ -15,22 +15,21 @@
  *   You should have received a copy of the GNU General Public License 
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. 
  *     
- */ 
-
+ */
 package com.holycityaudio.SpinCAD.CADBlocks;
 
 import com.holycityaudio.SpinCAD.SpinCADPin;
 import com.holycityaudio.SpinCAD.SpinFXBlock;
 
-public class EnvelopeControlCADBlock extends ControlCADBlock{
+public class EnvelopeControlCADBlock extends ControlCADBlock {
 
 	/**
-	 * 
+	 *
 	 */
 	private double attackCoeff = 0.00015;
 	private int gain = 2;
 	private double decayCoeff = 0.0001;
-	
+
 	private static final long serialVersionUID = -125887536230107216L;
 
 	public EnvelopeControlCADBlock(int x, int y) {
@@ -47,7 +46,7 @@ public class EnvelopeControlCADBlock extends ControlCADBlock{
 		int input = -1;
 		SpinCADPin p = this.getPin("Audio Input 1").getPinConnection();
 
-		if(p != null) {
+		if (p != null) {
 			input = p.getRegister();
 			int AVG = sfxb.allocateReg();			//
 			int LAVG = sfxb.allocateReg();			//
@@ -55,17 +54,17 @@ public class EnvelopeControlCADBlock extends ControlCADBlock{
 			sfxb.comment(getName());
 			sfxb.readRegister(input, 1);
 			p = this.getPin("Sensitivity").getPinConnection();
-			if(p != null) {
+			if (p != null) {
 				int sens = p.getRegister();
 				sfxb.mulx(sens);
 			}
 			sfxb.absa();
-			
-			for(int i = 0; i < gain; i++) {
-				sfxb.scaleOffset(-2.0,  0.0);
+
+			for (int i = 0; i < gain; i++) {
+				sfxb.scaleOffset(-2.0, 0.0);
 			}
-			if((gain & 1) == 1) {
-				sfxb.scaleOffset(-1.0,  0.0);				
+			if ((gain & 1) == 1) {
+				sfxb.scaleOffset(-1.0, 0.0);
 			}
 
 			//				rdfx	avg,0.01		;average input level
@@ -73,19 +72,19 @@ public class EnvelopeControlCADBlock extends ControlCADBlock{
 			//				wrax	avg,0		;write avg level, pass on
 			sfxb.writeRegister(AVG, 0);
 			//				rdax	lavg,0
-			sfxb.readRegister(LAVG,1);
+			sfxb.readRegister(LAVG, 1);
 			//				sof	-0.01,0	
 			sfxb.scaleOffset(-decayCoeff, 0);
 			//				rdax	lavg,1	
-			sfxb.readRegister(LAVG,1);
+			sfxb.readRegister(LAVG, 1);
 			//				wrax	temp,0
 			sfxb.writeRegister(TEMP, 0);
 			//				rdax	avg,1
-			sfxb.readRegister(AVG,1);
+			sfxb.readRegister(AVG, 1);
 			//				maxx	temp,1		;filter a long average
-			sfxb.maxx(TEMP,1);
+			sfxb.maxx(TEMP, 1);
 			//				wrax	lavg,0
-			sfxb.writeRegister(LAVG,0);
+			sfxb.writeRegister(LAVG, 0);
 			this.getPin("Single Slope").setRegister(AVG);
 			this.getPin("Dual Slope").setRegister(LAVG);
 		}
@@ -93,10 +92,11 @@ public class EnvelopeControlCADBlock extends ControlCADBlock{
 		System.out.println("Envelope control code gen!");
 
 	}
-	
-	public void editBlock(){
+
+	public void editBlock() {
 		new EnvelopeControlControlPanel(this);
 	}
+
 	//====================================================
 	public int getGain() {
 		return gain;
@@ -108,7 +108,7 @@ public class EnvelopeControlCADBlock extends ControlCADBlock{
 
 	public double getAttack() {
 		return attackCoeff;
-		}
+	}
 
 	public void setAttack(double b) {
 		attackCoeff = b;
@@ -123,4 +123,3 @@ public class EnvelopeControlCADBlock extends ControlCADBlock{
 	}
 
 }
-

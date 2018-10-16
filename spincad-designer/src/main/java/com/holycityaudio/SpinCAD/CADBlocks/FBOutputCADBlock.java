@@ -15,8 +15,7 @@
  *   You should have received a copy of the GNU General Public License 
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. 
  *     
- */ 
-
+ */
 package com.holycityaudio.SpinCAD.CADBlocks;
 
 import java.awt.Color;
@@ -25,17 +24,16 @@ import com.holycityaudio.SpinCAD.SpinCADBlock;
 import com.holycityaudio.SpinCAD.SpinCADPin;
 import com.holycityaudio.SpinCAD.SpinFXBlock;
 
-public class FBOutputCADBlock extends SpinCADBlock{
+public class FBOutputCADBlock extends SpinCADBlock {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = -2094768928842616450L;
 	/**
-	 * 
+	 *
 	 */
 	int register = -1;
-	
 
 	public FBOutputCADBlock(int x, int y) {
 		super(x, y);
@@ -58,11 +56,11 @@ public class FBOutputCADBlock extends SpinCADBlock{
 		p.setRegister(register);
 		eP.comment("Feedback Output");
 	}
-	
+
 	public int getRegister() {
 		return register;
 	}
-	
+
 	public void setRegister(int val) {
 		register = val;
 	}

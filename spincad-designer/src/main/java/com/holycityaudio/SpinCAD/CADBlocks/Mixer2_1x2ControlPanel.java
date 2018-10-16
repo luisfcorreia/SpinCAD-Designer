@@ -16,8 +16,6 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 	
  */
-
-
 package com.holycityaudio.SpinCAD.CADBlocks;
 
 import java.awt.Point;
@@ -31,6 +29,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 class Mixer2_1x2ControlPanel {
+
 	private JFrame frame;
 
 	JSlider gain1aSlider;
@@ -58,7 +57,7 @@ class Mixer2_1x2ControlPanel {
 				gain1aSlider = new JSlider(JSlider.HORIZONTAL, 1, 100, (int) (spbMix.getGain1a() * 100));
 				gain1aSlider.addChangeListener(new volumeSliderListener());
 				gain1aLabel = new JLabel();
-				
+
 				gain1bSlider = new JSlider(JSlider.HORIZONTAL, 1, 100, (int) (spbMix.getGain1b() * 100));
 				gain1bSlider.addChangeListener(new volumeSliderListener());
 				gain1bLabel = new JLabel();
@@ -66,11 +65,11 @@ class Mixer2_1x2ControlPanel {
 				gain2aSlider = new JSlider(JSlider.HORIZONTAL, 1, 100, (int) (spbMix.getGain2a() * 100));
 				gain2aSlider.addChangeListener(new volumeSliderListener());
 				gain2aLabel = new JLabel();
-				
+
 				gain2bSlider = new JSlider(JSlider.HORIZONTAL, 1, 100, (int) (spbMix.getGain2b() * 100));
 				gain2bSlider.addChangeListener(new volumeSliderListener());
 				gain2bLabel = new JLabel();
-				
+
 				frame.getContentPane().add(gain1aLabel);
 				frame.getContentPane().add(gain1aSlider);
 				frame.getContentPane().add(gain1bLabel);
@@ -79,10 +78,10 @@ class Mixer2_1x2ControlPanel {
 				frame.getContentPane().add(gain2aSlider);
 				frame.getContentPane().add(gain2bLabel);
 				frame.getContentPane().add(gain2bSlider);
-				
+
 				updateGainLabels();
-				frame.setVisible(true);	
-				frame.setAlwaysOnTop(true);	
+				frame.setVisible(true);
+				frame.setAlwaysOnTop(true);
 				frame.setResizable(false);
 				frame.setLocation(new Point(spbMix.getX() + 200, spbMix.getY() + 150));
 				frame.pack();
@@ -90,32 +89,30 @@ class Mixer2_1x2ControlPanel {
 		});
 	}
 
-	class volumeSliderListener implements ChangeListener { 
+	class volumeSliderListener implements ChangeListener {
+
 		public void stateChanged(ChangeEvent ce) {
-			if(ce.getSource() == gain1aSlider) {
-				spbMix.setGain1a((double) gain1aSlider.getValue()/100.0);
+			if (ce.getSource() == gain1aSlider) {
+				spbMix.setGain1a((double) gain1aSlider.getValue() / 100.0);
 				updateGainLabels();
-			}
-			else if(ce.getSource() == gain1bSlider) {
-				spbMix.setGain1b((double) gain1bSlider.getValue()/100.0);
+			} else if (ce.getSource() == gain1bSlider) {
+				spbMix.setGain1b((double) gain1bSlider.getValue() / 100.0);
 				updateGainLabels();
-			}
-			else if(ce.getSource() == gain2aSlider) {
-				spbMix.setGain2a((double) gain2aSlider.getValue()/100.0);
+			} else if (ce.getSource() == gain2aSlider) {
+				spbMix.setGain2a((double) gain2aSlider.getValue() / 100.0);
 				updateGainLabels();
-			}
-			else if(ce.getSource() == gain2bSlider) {
-				spbMix.setGain2b((double) gain2bSlider.getValue()/100.0);
+			} else if (ce.getSource() == gain2bSlider) {
+				spbMix.setGain2b((double) gain2bSlider.getValue() / 100.0);
 				updateGainLabels();
 			}
 		}
 	}
 
 	public void updateGainLabels() {
-		gain1aLabel.setText("Gain 1a " + String.format("%4.2f", spbMix.getGain1a()));		
-		gain1bLabel.setText("Gain 1b " + String.format("%4.2f", spbMix.getGain1b()));		
-		gain2aLabel.setText("Gain 2a " + String.format("%4.2f", spbMix.getGain2a()));		
-		gain2bLabel.setText("Gain 2b " + String.format("%4.2f", spbMix.getGain2b()));		
+		gain1aLabel.setText("Gain 1a " + String.format("%4.2f", spbMix.getGain1a()));
+		gain1bLabel.setText("Gain 1b " + String.format("%4.2f", spbMix.getGain1b()));
+		gain2aLabel.setText("Gain 2a " + String.format("%4.2f", spbMix.getGain2a()));
+		gain2bLabel.setText("Gain 2b " + String.format("%4.2f", spbMix.getGain2b()));
 
 	}
 }

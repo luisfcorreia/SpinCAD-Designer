@@ -16,14 +16,12 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 	
  */
-
 package com.holycityaudio.SpinCAD.CADBlocks;
 
-
-public class MonoDelayFBCADBlock extends DelayCADBlock{
+public class MonoDelayFBCADBlock extends DelayCADBlock {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = -8232355418183014446L;
 

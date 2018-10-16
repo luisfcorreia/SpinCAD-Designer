@@ -30,6 +30,7 @@ import org.andrewkilpatrick.elmGen.simulator.LevelLogger.triggerMode;
 import org.andrewkilpatrick.elmGen.simulator.SpinSimulator;
 
 public class SpinCADSimulator {
+
 	private boolean simRunning = false;
 	public SpinSimulator sim;
 	// simulator output file
@@ -78,10 +79,9 @@ public class SpinCADSimulator {
 	// if outputFile = null, then simulator goes thru speakers
 	public void setOutputFileMode(Boolean state) {
 
-		if(state == true) {
+		if (state == true) {
 			outputFile = prefs.get("SIMULATOR_OUT_FILE", "");
-		}
-		else {
+		} else {
 			outputFile = null;
 		}
 	}
@@ -90,11 +90,11 @@ public class SpinCADSimulator {
 	class simControlToolBar extends JToolBar implements ActionListener, ChangeListener {
 
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = 7552645224196206164L;
 		/**
-		 * 
+		 *
 		 */
 		final JButton btnStartSimulation = new JButton("Start Simulation");
 		final JButton btnSigGen = new JButton("Sig Gen Sim");
@@ -128,7 +128,7 @@ public class SpinCADSimulator {
 			}
 		}
 
-		public void updateSimSliders() {	
+		public void updateSimSliders() {
 			pot0Slider.setValue((int) patch.getPotVal(0));
 			pot1Slider.setValue((int) patch.getPotVal(1));
 			pot2Slider.setValue((int) patch.getPotVal(2));
@@ -148,23 +148,26 @@ public class SpinCADSimulator {
 
 		public void stateChanged(ChangeEvent e) {
 			if (e.getSource() == pot0Slider) {
-				patch.setPotVal(0,(double) pot0Slider.getValue());
+				patch.setPotVal(0, (double) pot0Slider.getValue());
 				double simPot0 = patch.getPotVal(0) / 100.0;
 				pot0Slider.setToolTipText("Pot 0: " + simPot0);
-				if (sim != null)
+				if (sim != null) {
 					sim.setPot(0, simPot0);
+				}
 			} else if (e.getSource() == pot1Slider) {
-				patch.setPotVal(1,(double) pot1Slider.getValue());
+				patch.setPotVal(1, (double) pot1Slider.getValue());
 				double simPot1 = patch.getPotVal(1) / 100.0;
 				pot1Slider.setToolTipText("Pot 1: " + simPot1);
-				if (sim != null)
+				if (sim != null) {
 					sim.setPot(1, patch.getPotVal(1) / 100.0);
+				}
 			} else if (e.getSource() == pot2Slider) {
-				patch.setPotVal(2,(double) pot2Slider.getValue());
+				patch.setPotVal(2, (double) pot2Slider.getValue());
 				double simPot2 = patch.getPotVal(2) / 100.0;
 				pot2Slider.setToolTipText("Pot 2: " + simPot2);
-				if (sim != null)
+				if (sim != null) {
 					sim.setPot(2, simPot2);
+				}
 			}
 		}
 
@@ -179,30 +182,29 @@ public class SpinCADSimulator {
 					sim.stopSimulator();
 				} else {
 					String testWavFileName = checkSimulatorFile();
-					if(testWavFileName != "Not found!") {
+					if (testWavFileName != "Not found!") {
 						setSimRunning(true);
 						// create file
 						btnStartSimulation.setText(" Stop Simulator ");
 						frame.updateAll();
 						sim = new SpinSimulator(patch.patchModel.getRenderBlock(),
-								testWavFileName, outputFile, patch.getPotVal(0), patch.getPotVal(1),
-								patch.getPotVal(2));
+							testWavFileName, outputFile, patch.getPotVal(0), patch.getPotVal(1),
+							patch.getPotVal(2));
 						// loggerPanel.setVisible(loggerIsVisible);
-						if(loggerIsVisible) {
+						if (loggerIsVisible) {
 							sim.showLevelLogger(loggerPanel);
 							//							sim.showLevelMeter(levelMonitor);
 						}
-						if(scopeIsVisible) {
+						if (scopeIsVisible) {
 							sim.showScope(scopePanel);
 							//							sim.showLevelMeter(levelMonitor);
 						}
 						//					sim.showLevelMeter();
 						setSimPotValues();
 						sim.start();
-					}
-					else { 
+					} else {
 						SpinCADDialogs.MessageBox("Simulator file not found.", "Please set a simulator source file.");
-					} 
+					}
 				}
 			} else if (arg0.getSource() == btnSigGen) {
 				if (isSimRunning() == true) {
@@ -216,41 +218,40 @@ public class SpinCADSimulator {
 					//					SignalGenerator SigGen = new SignalGenerator();
 				}
 			}
-		} 
+		}
 	}
-	
-	
 
 	public class ScopeToolBar extends JToolBar implements ActionListener, ChangeListener {
 
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = -3040642773216953900L;
 		final JLabel ch1_Vertical_Gain_Label = new JLabel(" Ch 1 Gain: ");
 
-		String[] gainLabels = new String[] {"1x", "2x", "4x", "8x", "16x"};
+		String[] gainLabels = new String[]{"1x", "2x", "4x", "8x", "16x"};
 		JComboBox<String> ch1_Vertical_Gain = new JComboBox<>(gainLabels);
 
 		final JLabel ch2_Vertical_Gain_Label = new JLabel(" Ch 2 Gain: ");
 		JComboBox<String> ch2_Vertical_Gain = new JComboBox<>(gainLabels);
 
-		String[] timebaseLabels = new String[] {"8", "16", "32", "64", "128", "256", "512", "1024"};
+		String[] timebaseLabels = new String[]{"8", "16", "32", "64", "128", "256", "512", "1024"};
 		final JLabel timebaseLabel = new JLabel(" Time Base: ");
 		JComboBox<String> timebase = new JComboBox<>(timebaseLabels);
 
-		String[] triggerModeLabels = new String[] {"Auto", "Normal", "Single"};
+		String[] triggerModeLabels = new String[]{"Auto", "Normal", "Single"};
 		final JLabel triggerModeLabel = new JLabel(" Trigger Mode: ");
 		final JComboBox<String> triggerModeCB = new JComboBox<String>(triggerModeLabels);
 
 		final JLabel triggerLevelLabel = new JLabel(" Trigger Level: ");
 		final JSpinner triggerLevel = new JSpinner();
 
-		String[] triggerSlopeLabels = new String[] {"Pos", "Neg"};
+		String[] triggerSlopeLabels = new String[]{"Pos", "Neg"};
 		final JLabel triggerSlopeLabel = new JLabel(" Trigger Slope: ");
 		final JComboBox<String> triggerSlope = new JComboBox<String>(triggerSlopeLabels);
 
 		class Task extends SwingWorker<Void, Void> {
+
 			/*
 			 * Main task. Executed in background thread.
 			 */
@@ -279,11 +280,10 @@ public class SpinCADSimulator {
 
 			// Call setStringPainted now so that the progress bar height
 			// stays the same whether or not the string is shown.
-
 			ch1_Vertical_Gain.setToolTipText(" Ch 1 Gain ");
 			//			ch1_Vertical_Gain.setPreferredSize(new Dimension(20,10));
-			ch1_Vertical_Gain.setMinimumSize(new Dimension(100,120));
-			ch1_Vertical_Gain.setMaximumSize(new Dimension(120,140));
+			ch1_Vertical_Gain.setMinimumSize(new Dimension(100, 120));
+			ch1_Vertical_Gain.setMaximumSize(new Dimension(120, 140));
 			ch1_Vertical_Gain.addActionListener(this);
 
 			Border border = BorderFactory.createBevelBorder(BevelBorder.RAISED);
@@ -291,8 +291,8 @@ public class SpinCADSimulator {
 
 			ch2_Vertical_Gain.setToolTipText(" Ch 2 Gain ");
 			//			ch2_Vertical_Gain.setPreferredSize(new Dimension(100,40));
-			ch2_Vertical_Gain.setMinimumSize(new Dimension(100,120));
-			ch2_Vertical_Gain.setMaximumSize(new Dimension(120,140));
+			ch2_Vertical_Gain.setMinimumSize(new Dimension(100, 120));
+			ch2_Vertical_Gain.setMaximumSize(new Dimension(120, 140));
 			//			ch2_Vertical_Gain.setMaximumSize(ch2_Vertical_Gain.getPreferredSize());
 			ch2_Vertical_Gain.setBorder(border);
 			ch2_Vertical_Gain.addActionListener(this);
@@ -308,29 +308,29 @@ public class SpinCADSimulator {
 
 			add(timebaseLabel);
 
-			timebase.setMinimumSize(new Dimension(100,120));
-			timebase.setMaximumSize(new Dimension(120,140));
+			timebase.setMinimumSize(new Dimension(100, 120));
+			timebase.setMaximumSize(new Dimension(120, 140));
 			timebase.setBorder(border);
 			timebase.addActionListener(this);
 			add(timebase);
 
 			add(triggerModeLabel);
-			triggerModeCB.setMinimumSize(new Dimension(100,120));
-			triggerModeCB.setMaximumSize(new Dimension(120,140));
+			triggerModeCB.setMinimumSize(new Dimension(100, 120));
+			triggerModeCB.setMaximumSize(new Dimension(120, 140));
 			triggerModeCB.setBorder(border);
 			triggerModeCB.addActionListener(this);
 			add(triggerModeCB);
 
 			add(triggerLevelLabel);
-			triggerLevel.setMinimumSize(new Dimension(100,120));
-			triggerLevel.setMaximumSize(new Dimension(120,140));
+			triggerLevel.setMinimumSize(new Dimension(100, 120));
+			triggerLevel.setMaximumSize(new Dimension(120, 140));
 			triggerLevel.setBorder(border);
 			triggerLevel.addChangeListener(this);
 			add(triggerLevel);
 
 			add(triggerSlopeLabel);
-			triggerSlope.setMinimumSize(new Dimension(100,120));
-			triggerSlope.setMaximumSize(new Dimension(120,140));
+			triggerSlope.setMinimumSize(new Dimension(100, 120));
+			triggerSlope.setMaximumSize(new Dimension(120, 140));
 			triggerSlope.setBorder(border);
 			triggerSlope.addActionListener(this);
 			add(triggerSlope);
@@ -339,137 +339,137 @@ public class SpinCADSimulator {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			if (arg0.getSource() == ch1_Vertical_Gain) {
-				JComboBox<?> cb = (JComboBox<?>)arg0.getSource();
-				String gain = (String)cb.getSelectedItem();
-				switch(gain) {
-				case "1x":
-					if(sim != null) {
-						sim.scope.setScopeCh1Gain(19);
-					}
-					break;
-				case "2x":
-					if(sim != null) {
-						sim.scope.setScopeCh1Gain(18);
-					}
-					break;
-				case "4x":
-					if(sim != null) {
-						sim.scope.setScopeCh1Gain(17);
-					}
-					break;
-				case "8x":
-					if(sim != null) {
-						sim.scope.setScopeCh1Gain(16);
-					}
-				case "16":
-					if(sim != null) {
-						sim.scope.setScopeCh1Gain(15);
-					}
-					break;
+				JComboBox<?> cb = (JComboBox<?>) arg0.getSource();
+				String gain = (String) cb.getSelectedItem();
+				switch (gain) {
+					case "1x":
+						if (sim != null) {
+							sim.scope.setScopeCh1Gain(19);
+						}
+						break;
+					case "2x":
+						if (sim != null) {
+							sim.scope.setScopeCh1Gain(18);
+						}
+						break;
+					case "4x":
+						if (sim != null) {
+							sim.scope.setScopeCh1Gain(17);
+						}
+						break;
+					case "8x":
+						if (sim != null) {
+							sim.scope.setScopeCh1Gain(16);
+						}
+					case "16":
+						if (sim != null) {
+							sim.scope.setScopeCh1Gain(15);
+						}
+						break;
 				}
 			} else if (arg0.getSource() == ch2_Vertical_Gain) {
-				JComboBox<?> cb = (JComboBox<?>)arg0.getSource();
-				String gain = (String)cb.getSelectedItem();
-				switch(gain) {
-				case "1x":
-					if(sim != null) {
-						sim.scope.setScopeCh2Gain(19);
-					}
-					break;
-				case "2x":
-					if(sim != null) {
-						sim.scope.setScopeCh2Gain(18);
-					}
-					break;
-				case "4x":
-					if(sim != null) {
-						sim.scope.setScopeCh2Gain(17);
-					}
-					break;
-				case "8x":
-					if(sim != null) {
-						sim.scope.setScopeCh2Gain(16);
-					}
-				case "16x":
-					if(sim != null) {
-						sim.scope.setScopeCh2Gain(15);
-					}
-					break;
+				JComboBox<?> cb = (JComboBox<?>) arg0.getSource();
+				String gain = (String) cb.getSelectedItem();
+				switch (gain) {
+					case "1x":
+						if (sim != null) {
+							sim.scope.setScopeCh2Gain(19);
+						}
+						break;
+					case "2x":
+						if (sim != null) {
+							sim.scope.setScopeCh2Gain(18);
+						}
+						break;
+					case "4x":
+						if (sim != null) {
+							sim.scope.setScopeCh2Gain(17);
+						}
+						break;
+					case "8x":
+						if (sim != null) {
+							sim.scope.setScopeCh2Gain(16);
+						}
+					case "16x":
+						if (sim != null) {
+							sim.scope.setScopeCh2Gain(15);
+						}
+						break;
 				}
 			} else if (arg0.getSource() == timebase) {
-				JComboBox<?> cb = (JComboBox<?>)arg0.getSource();
-				String gain = (String)cb.getSelectedItem();
+				JComboBox<?> cb = (JComboBox<?>) arg0.getSource();
+				String gain = (String) cb.getSelectedItem();
 				setTimeBase(gain);
-				
+
 			} else if (arg0.getSource() == triggerSlope) {
 				int j = 1;
 			} else if (arg0.getSource() == triggerModeCB) {
-				JComboBox<?> cb = (JComboBox<?>)arg0.getSource();
-				String gain = (String)cb.getSelectedItem();
-				switch(gain) {
-				case "Auto":
-					if(sim != null) {
-					sim.scope.tm = triggerMode.AUTO;
-					}
-					break;
-				case "Normal":
-					if(sim != null) {
-					}
-					break;
-				case "Single":
-					if(sim != null) {
-						sim.scope.tm = triggerMode.SINGLE;
-					}
-					break;
+				JComboBox<?> cb = (JComboBox<?>) arg0.getSource();
+				String gain = (String) cb.getSelectedItem();
+				switch (gain) {
+					case "Auto":
+						if (sim != null) {
+							sim.scope.tm = triggerMode.AUTO;
+						}
+						break;
+					case "Normal":
+						if (sim != null) {
+						}
+						break;
+					case "Single":
+						if (sim != null) {
+							sim.scope.tm = triggerMode.SINGLE;
+						}
+						break;
 				}
 			}
 
 		}
-		
+
 		void setTimeBase(String gain) {
-			switch(gain) {
-			case "8":
-				if(sim != null) {
-					sim.scope.setWindowRatio(8);
-				}
-				break;
-			case "16":
-				if(sim != null) {
-					sim.scope.setWindowRatio(16);
-				}
-				break;
-			case "32":
-				if(sim != null) {
-					sim.scope.setWindowRatio(32);
-				}
-				break;
-			case "64":
-				if(sim != null) {
-					sim.scope.setWindowRatio(64);
-				}
-				break;
-			case "128":
-				if(sim != null) {
-					sim.scope.setWindowRatio(128);
-				}
-				break;
-			case "256":
-				if(sim != null) {
-					sim.scope.setWindowRatio(256);
-				}
-				break;
-			case "512":
-				if(sim != null) {
-					sim.scope.setWindowRatio(512);
-				}
-				break;
-			case "1024":
-				if(sim != null) {
-					sim.scope.setWindowRatio(1024);
-				}
-				break;
+			switch (gain) {
+				case "8":
+					if (sim != null) {
+						sim.scope.setWindowRatio(8);
+					}
+					break;
+				case "16":
+					if (sim != null) {
+						sim.scope.setWindowRatio(16);
+					}
+					break;
+				case "32":
+					if (sim != null) {
+						sim.scope.setWindowRatio(32);
+					}
+					break;
+				case "64":
+					if (sim != null) {
+						sim.scope.setWindowRatio(64);
+					}
+					break;
+				case "128":
+					if (sim != null) {
+						sim.scope.setWindowRatio(128);
+					}
+					break;
+				case "256":
+					if (sim != null) {
+						sim.scope.setWindowRatio(256);
+					}
+					break;
+				case "512":
+					if (sim != null) {
+						sim.scope.setWindowRatio(512);
+					}
+					break;
+				case "1024":
+					if (sim != null) {
+						sim.scope.setWindowRatio(1024);
+					}
+					break;
 			}
-			
+
 		}
 
 		@Override
@@ -477,29 +477,26 @@ public class SpinCADSimulator {
 			// ---
 			if (e.getSource() == triggerLevel) {
 				int j = 1;
-			}		
+			}
 		}
 	}
-
 
 	public String checkSimulatorFile() {
 		File f = null;
 		String testWavFileName = prefs.get("SIMULATOR_FILE", "");
-		if(testWavFileName == "") {
+		if (testWavFileName == "") {
 			System.out.println("Simulator file name blank!");
 			return "Not found!";
 		} else {
 			try {
 				f = new File(testWavFileName);
-			} 
-			catch(Exception e) {
+			} catch (Exception e) {
 				System.out.println("Exception opening file!");
 				return "Not found!";
+			} finally {
 			}
-			finally {
-			}
-			if(f.exists() && !f.isDirectory()) {
-				return testWavFileName;	
+			if (f.exists() && !f.isDirectory()) {
+				return testWavFileName;
 			}
 		}
 		return "Not found!";
@@ -509,7 +506,7 @@ public class SpinCADSimulator {
 		String testWavFileName = prefs.get("SIMULATOR_FILE", "");
 		final JFileChooser fc = new JFileChooser(testWavFileName);
 		FileNameExtensionFilter filter = new FileNameExtensionFilter(
-				"WAV files", "wav");
+			"WAV files", "wav");
 		fc.setSelectedFile(new File(testWavFileName));
 		fc.setFileFilter(filter);
 
@@ -531,7 +528,7 @@ public class SpinCADSimulator {
 		String debugFileName = prefs.get("SIMULATOR_DEBUG_FILE", "");
 		final JFileChooser fc = new JFileChooser(debugFileName);
 		FileNameExtensionFilter filter = new FileNameExtensionFilter(
-				"txt files", "txt");
+			"txt files", "txt");
 		fc.setSelectedFile(new File(debugFileName));
 		fc.setFileFilter(filter);
 
@@ -550,7 +547,7 @@ public class SpinCADSimulator {
 		String simWavOutFileName = prefs.get("SIMULATOR_OUT_FILE", "");
 		final JFileChooser fc = new JFileChooser(simWavOutFileName);
 		FileNameExtensionFilter filter = new FileNameExtensionFilter(
-				"WAV files", "wav");
+			"WAV files", "wav");
 		fc.setSelectedFile(new File(simWavOutFileName));
 
 		fc.setFileFilter(filter);

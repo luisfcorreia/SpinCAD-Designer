@@ -17,7 +17,6 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 	
  */
-
 package com.holycityaudio.SpinCAD.CADBlocks;
 
 import java.awt.Point;
@@ -30,10 +29,10 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-
 class HPF1PControlPanel extends JFrame {
+
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = -2288952347754535913L;
 
@@ -46,7 +45,7 @@ class HPF1PControlPanel extends JFrame {
 		this.HPF = hpf1pcadBlock;
 		createAndShowUI();
 	}
-	
+
 	private void createAndShowUI() {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
@@ -61,7 +60,7 @@ class HPF1PControlPanel extends JFrame {
 				getContentPane().add(freqLabel);
 				getContentPane().add(freqSlider);
 
-				freqSlider.setValue((int)Math.round(HPF.getFreq()));
+				freqSlider.setValue((int) Math.round(HPF.getFreq()));
 				updateFreqLabel();
 				setAlwaysOnTop(true);
 				setVisible(true);
@@ -69,20 +68,21 @@ class HPF1PControlPanel extends JFrame {
 				pack();
 				setResizable(false);
 			}
-		});		
+		});
 	}
 
-	class LPF1PChangeListener implements ChangeListener { 
+	class LPF1PChangeListener implements ChangeListener {
+
 		public void stateChanged(ChangeEvent ce) {
-			if(ce.getSource() == freqSlider) {
+			if (ce.getSource() == freqSlider) {
 				HPF.setFreq((double) freqSlider.getValue());
 				updateFreqLabel();
 			}
 		}
 	}
-	
+
 	private void updateFreqLabel() {
-		freqLabel.setText("Frequency " + String.format("%4.2f", HPF.getFreq()));		
+		freqLabel.setText("Frequency " + String.format("%4.2f", HPF.getFreq()));
 	}
 
 }

@@ -16,17 +16,16 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 	
  */
-
 package com.holycityaudio.SpinCAD.CADBlocks;
 
 import com.holycityaudio.SpinCAD.SpinCADBlock;
 import com.holycityaudio.SpinCAD.SpinCADPin;
 import com.holycityaudio.SpinCAD.SpinFXBlock;
 
-public class InputCADBlock extends SpinCADBlock{
+public class InputCADBlock extends SpinCADBlock {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = -4680315672929089295L;
 
@@ -36,7 +35,7 @@ public class InputCADBlock extends SpinCADBlock{
 		addOutputPin(this, "Output 2");
 		setName("Input");
 	}
-	
+
 	public void generateCode(SpinFXBlock eP) {
 //		System.out.println("Input codegen!");
 		SpinCADPin p = this.getPin("Output 1");

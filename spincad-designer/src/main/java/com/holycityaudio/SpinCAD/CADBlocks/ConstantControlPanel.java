@@ -15,8 +15,7 @@
  *   You should have received a copy of the GNU General Public License 
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. 
  *     
- */ 
-
+ */
 package com.holycityaudio.SpinCAD.CADBlocks;
 
 import java.awt.Point;
@@ -31,6 +30,7 @@ import javax.swing.event.ChangeListener;
 
 @SuppressWarnings("serial")
 public class ConstantControlPanel extends JFrame implements ChangeListener {
+
 	JSlider constantSlider;
 	JLabel constantLabel;
 
@@ -49,9 +49,9 @@ public class ConstantControlPanel extends JFrame implements ChangeListener {
 				constantLabel = new JLabel();
 
 				getContentPane().add(constantLabel);
-				getContentPane().add(constantSlider);		
+				getContentPane().add(constantSlider);
 
-				constantSlider.setValue((int)Math.round((cCB.getConstant())));
+				constantSlider.setValue((int) Math.round((cCB.getConstant())));
 				updateConstantLabel();
 
 				setVisible(true);
@@ -66,7 +66,7 @@ public class ConstantControlPanel extends JFrame implements ChangeListener {
 	@Override
 
 	public void stateChanged(ChangeEvent ce) {
-		if(ce.getSource() == constantSlider) {
+		if (ce.getSource() == constantSlider) {
 			sof.setConstant(constantSlider.getValue());
 			updateConstantLabel();
 		}
@@ -74,6 +74,6 @@ public class ConstantControlPanel extends JFrame implements ChangeListener {
 	}
 
 	private void updateConstantLabel() {
-		constantLabel.setText("Value: " + String.format("%3.3f", sof.getConstant()/1000.0));
+		constantLabel.setText("Value: " + String.format("%3.3f", sof.getConstant() / 1000.0));
 	}
 }

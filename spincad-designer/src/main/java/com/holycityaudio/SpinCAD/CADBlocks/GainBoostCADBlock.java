@@ -15,8 +15,7 @@
  *   You should have received a copy of the GNU General Public License 
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. 
  *     
- */ 
-
+ */
 package com.holycityaudio.SpinCAD.CADBlocks;
 
 import java.awt.Color;
@@ -24,14 +23,14 @@ import java.awt.Color;
 import com.holycityaudio.SpinCAD.SpinCADPin;
 import com.holycityaudio.SpinCAD.SpinFXBlock;
 
-public class GainBoostCADBlock extends ControlCADBlock{
+public class GainBoostCADBlock extends ControlCADBlock {
 
 	/**
-	 * 
+	 *
 	 */
 	// gain is increments of 6 dB, or # of SOF -2.0, 0
 	int gain = 1;
-	
+
 	private static final long serialVersionUID = -125887536230107216L;
 
 	public GainBoostCADBlock(int x, int y) {
@@ -39,8 +38,8 @@ public class GainBoostCADBlock extends ControlCADBlock{
 		hasControlPanel = true;
 		setName("Gain Boost");
 		setBorderColor(new Color(0x2468f2));
-		addInputPin(this, "Audio Input");	
-		addOutputPin(this, "Audio Output");	
+		addInputPin(this, "Audio Input");
+		addOutputPin(this, "Audio Output");
 	}
 
 	public void generateCode(SpinFXBlock sfxb) {
@@ -48,26 +47,27 @@ public class GainBoostCADBlock extends ControlCADBlock{
 		SpinCADPin p = this.getPin("Audio Input").getPinConnection();
 		sfxb.comment(getName());
 
-		if(p != null) {
+		if (p != null) {
 			input = p.getRegister();
 			int AVG = sfxb.allocateReg();			//
 
 			sfxb.readRegister(input, 1);
-			for(int i = 0; i < gain; i++) {
-				sfxb.scaleOffset(-2.0,  0.0);
+			for (int i = 0; i < gain; i++) {
+				sfxb.scaleOffset(-2.0, 0.0);
 			}
-			if((gain & 1) == 1) {
-				sfxb.scaleOffset(-1.0,  0.0);				
+			if ((gain & 1) == 1) {
+				sfxb.scaleOffset(-1.0, 0.0);
 			}
 			sfxb.writeRegister(AVG, 0);
 			this.getPin("Audio Output").setRegister(AVG);
 		}
 		System.out.println("Gain boost code gen!");
 	}
-	
-	public void editBlock(){
+
+	public void editBlock() {
 		new GainBoostControlPanel(this);
 	}
+
 	//====================================================
 	public int getGain() {
 		return gain;
@@ -77,4 +77,3 @@ public class GainBoostCADBlock extends ControlCADBlock{
 		gain = d;
 	}
 }
-

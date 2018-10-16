@@ -16,7 +16,6 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 	
  */
-
 package com.holycityaudio.SpinCAD.CADBlocks;
 
 import java.awt.Point;
@@ -31,31 +30,32 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 class FBInputControlPanel extends JFrame implements ChangeListener, ActionListener {
+
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = -5986441333071288546L;
 	JSlider lGainSlider;
 	JLabel lGainLabel;
-	
+
 	private FBInputCADBlock inBlock;
-	
+
 	public FBInputControlPanel(FBInputCADBlock fbInputCADBlock) {
 		inBlock = fbInputCADBlock;
 		this.setTitle(inBlock.getName());
 		this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
-		
+
 		lGainSlider = new JSlider(JSlider.HORIZONTAL, -190, 190, 0);
 		lGainSlider.addChangeListener(this);
-		
+
 		lGainLabel = new JLabel();
-		
+
 		this.getContentPane().add(lGainLabel);
 		this.getContentPane().add(lGainSlider);
 
-		lGainSlider.setValue((int)Math.round(100.0 * inBlock.getLGain()));
+		lGainSlider.setValue((int) Math.round(100.0 * inBlock.getLGain()));
 		this.pack();
-		this.setAlwaysOnTop(true);	
+		this.setAlwaysOnTop(true);
 		this.setVisible(true);
 		this.setLocation(new Point(inBlock.getX() + 200, inBlock.getY() + 150));
 		this.setResizable(false);
@@ -64,14 +64,14 @@ class FBInputControlPanel extends JFrame implements ChangeListener, ActionListen
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// ---
-		
+
 	}
 
 	public void stateChanged(ChangeEvent ce) {
-		if(ce.getSource() == lGainSlider) {
-			inBlock.setLGain((double) lGainSlider.getValue()/100.0);
+		if (ce.getSource() == lGainSlider) {
+			inBlock.setLGain((double) lGainSlider.getValue() / 100.0);
 			lGainLabel.setText("Gain "
-					+ String.format("%2.2f", inBlock.getLGain()));
+				+ String.format("%2.2f", inBlock.getLGain()));
 		}
 	}
 }

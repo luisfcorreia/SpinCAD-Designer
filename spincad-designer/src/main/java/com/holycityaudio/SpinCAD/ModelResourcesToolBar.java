@@ -1,6 +1,5 @@
 package com.holycityaudio.SpinCAD;
 
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -20,7 +19,7 @@ import javax.swing.border.Border;
 public class ModelResourcesToolBar extends JToolBar implements ActionListener {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = -3040642773216953900L;
 	final JProgressBar progressBar_2 = new JProgressBar();
@@ -33,6 +32,7 @@ public class ModelResourcesToolBar extends JToolBar implements ActionListener {
 	private SpinCADModel model;
 
 	class Task extends SwingWorker<Void, Void> {
+
 		/*
 		 * Main task. Executed in background thread.
 		 */
@@ -61,7 +61,6 @@ public class ModelResourcesToolBar extends JToolBar implements ActionListener {
 
 		// Call setStringPainted now so that the progress bar height
 		// stays the same whether or not the string is shown.
-
 		progressBar_2.setToolTipText("Code Length");
 		progressBar_2.setMaximum(128);
 		progressBar_2.setBackground(Color.CYAN);
@@ -120,7 +119,6 @@ public class ModelResourcesToolBar extends JToolBar implements ActionListener {
 	/**
 	 * Invoked when the user presses the start button.
 	 */
-
 	public void actionPerformed(ActionEvent evt) {
 		// progressBar.setIndeterminate(true);
 		int codeLength = model.sortAlignGen();
@@ -164,50 +162,50 @@ public class ModelResourcesToolBar extends JToolBar implements ActionListener {
 		}
 		progressBar_1.setValue(ramUsed);
 
-		int rampLFO_0 = SpinCADModel.countLFOReferences(model,"LoadRampLFO(0");
-		if(rampLFO_0 == 0) {
+		int rampLFO_0 = SpinCADModel.countLFOReferences(model, "LoadRampLFO(0");
+		if (rampLFO_0 == 0) {
 			ramp0Bar.setBackground(Color.GREEN);
 			ramp0Bar.setForeground(Color.black);
-		} else if(rampLFO_0 == 1) {
+		} else if (rampLFO_0 == 1) {
 			ramp0Bar.setBackground(Color.YELLOW);
 			ramp0Bar.setForeground(Color.black);
-		} else { 
+		} else {
 			ramp0Bar.setBackground(Color.RED);
 			ramp0Bar.setForeground(Color.white);
 		}
 
-		int rampLFO_1 = SpinCADModel.countLFOReferences(model,"LoadRampLFO(1");
-		if(rampLFO_1 == 0) {
+		int rampLFO_1 = SpinCADModel.countLFOReferences(model, "LoadRampLFO(1");
+		if (rampLFO_1 == 0) {
 			ramp1Bar.setBackground(Color.GREEN);
 			ramp1Bar.setForeground(Color.black);
-		} else if(rampLFO_1 == 1) {
+		} else if (rampLFO_1 == 1) {
 			ramp1Bar.setBackground(Color.YELLOW);
 			ramp1Bar.setForeground(Color.black);
-		} else { 
+		} else {
 			ramp1Bar.setBackground(Color.RED);
 			ramp1Bar.setForeground(Color.white);
 		}
 
-		int sineLFO_0 = SpinCADModel.countLFOReferences(model,"LoadSinLFO(0");
-		if(sineLFO_0 == 0) {
+		int sineLFO_0 = SpinCADModel.countLFOReferences(model, "LoadSinLFO(0");
+		if (sineLFO_0 == 0) {
 			sine0Bar.setBackground(Color.GREEN);
 			sine0Bar.setForeground(Color.black);
-		} else if(sineLFO_0 == 1) {
+		} else if (sineLFO_0 == 1) {
 			sine0Bar.setBackground(Color.YELLOW);
 			sine0Bar.setForeground(Color.black);
-		} else { 
+		} else {
 			sine0Bar.setBackground(Color.RED);
 			sine0Bar.setForeground(Color.white);
 		}
 
-		int sineLFO_1 = SpinCADModel.countLFOReferences(model,"LoadSinLFO(1");
-		if(sineLFO_1 == 0) {
+		int sineLFO_1 = SpinCADModel.countLFOReferences(model, "LoadSinLFO(1");
+		if (sineLFO_1 == 0) {
 			sine1Bar.setBackground(Color.GREEN);
 			sine1Bar.setForeground(Color.black);
-		} else if(sineLFO_1 == 1) {
+		} else if (sineLFO_1 == 1) {
 			sine1Bar.setBackground(Color.YELLOW);
 			sine1Bar.setForeground(Color.black);
-		} else { 
+		} else {
 			sine1Bar.setBackground(Color.RED);
 			sine1Bar.setForeground(Color.white);
 		}
@@ -215,7 +213,7 @@ public class ModelResourcesToolBar extends JToolBar implements ActionListener {
 
 	public void update(SpinCADPatch p) {
 		model = p.patchModel;
-		if(p.isHexFile == false) {
+		if (p.isHexFile == false) {
 			this.setVisible(true);
 			ActionEvent evt = null;
 			actionPerformed(evt);
@@ -224,5 +222,3 @@ public class ModelResourcesToolBar extends JToolBar implements ActionListener {
 		}
 	}
 }
-
-
