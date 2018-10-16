@@ -15,18 +15,17 @@
  *   You should have received a copy of the GNU General Public License 
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. 
  *     
- */ 
-
+ */
 package com.holycityaudio.SpinCAD.ControlBlocks;
 
 import java.awt.Color;
 
 import com.holycityaudio.SpinCAD.SpinCADBlock;
 
-public class ControlCADBlock extends SpinCADBlock{
+public class ControlCADBlock extends SpinCADBlock {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 7247802278031572526L;
 

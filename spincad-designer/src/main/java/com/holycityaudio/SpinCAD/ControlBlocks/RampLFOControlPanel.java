@@ -15,8 +15,7 @@
  *   You should have received a copy of the GNU General Public License 
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. 
  *     
- */ 
-
+ */
 package com.holycityaudio.SpinCAD.ControlBlocks;
 
 import java.awt.BorderLayout;
@@ -42,18 +41,18 @@ import javax.swing.event.ChangeListener;
 import com.holycityaudio.SpinCAD.CADBlocks.RampLFOCADBlock;
 
 public class RampLFOControlPanel implements ChangeListener, ActionListener, ItemListener {
-	
-	String RampWidths[] = { "512", "1024", "2048", "4096" };
-	int lfoWidths[] = { 512, 1024, 2048, 4096 };
+
+	String RampWidths[] = {"512", "1024", "2048", "4096"};
+	int lfoWidths[] = {512, 1024, 2048, 4096};
 
 	private JSlider lfoWidthSlider = new JSlider(JSlider.HORIZONTAL, 0, 3, 3);
 	private JLabel lfoWidthLabel = new JLabel("LFO Width");
-	
+
 	private JSlider lfoRateSlider = new JSlider(JSlider.HORIZONTAL, -16384, 32767, 3200);
 	private JLabel lfoRateLabel = new JLabel("LFO Rate");
 
 	private LFORadioButtons rb;
-	
+
 	private JFrame frame;
 	private RampLFOCADBlock pC;
 
@@ -61,8 +60,8 @@ public class RampLFOControlPanel implements ChangeListener, ActionListener, Item
 		lfoWidthSlider.addChangeListener(this);
 		lfoRateSlider.addChangeListener(this);
 		this.pC = rampLFOCADBlock;
-		rb  = new LFORadioButtons();
-		
+		rb = new LFORadioButtons();
+
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				frame = new JFrame("LFO");
@@ -72,7 +71,6 @@ public class RampLFOControlPanel implements ChangeListener, ActionListener, Item
 				frame.setLocation(new Point(pC.getX() + 200, pC.getY() + 150));
 
 				//   graph.setBorder(BorderFactory.createEmptyBorder(0,10,10,10)); 
-
 				lfoRateSlider.setMajorTickSpacing(25);
 
 				frame.add(lfoRateLabel);
@@ -84,9 +82,9 @@ public class RampLFOControlPanel implements ChangeListener, ActionListener, Item
 				updateLFORateLabel();
 				lfoWidthSlider.setValue(pC.getLFOWidth());
 				updateLFOWidthLabel();
-				
+
 				frame.add(rb);
-				
+
 				frame.setVisible(true);
 				frame.setAlwaysOnTop(true);
 				frame.pack();
@@ -94,7 +92,7 @@ public class RampLFOControlPanel implements ChangeListener, ActionListener, Item
 		});
 	}
 
-		@Override
+	@Override
 	public void actionPerformed(ActionEvent arg0) {
 
 	}
@@ -106,26 +104,26 @@ public class RampLFOControlPanel implements ChangeListener, ActionListener, Item
 	public void stateChanged(ChangeEvent e) {
 		if (e.getSource() == lfoRateSlider) {
 			updateLFORateLabel();
-		}
-		else if (e.getSource() == lfoWidthSlider) {
+		} else if (e.getSource() == lfoWidthSlider) {
 			updateLFOWidthLabel();
 			updateLFORateLabel();	// since the rate depends on the width...
 		}
-	}	
-	
+	}
+
 	private void updateLFOWidthLabel() {
 		pC.setLFOWidth(lfoWidthSlider.getValue());
-		lfoWidthLabel.setText("Width: " + RampWidths[pC.getLFOWidth()]);		
+		lfoWidthLabel.setText("Width: " + RampWidths[pC.getLFOWidth()]);
 	}
-	
+
 	private void updateLFORateLabel() {
-		pC.setLFORate( lfoRateSlider.getValue());
+		pC.setLFORate(lfoRateSlider.getValue());
 		lfoRateLabel.setText(String.format("Rate: %2.3f", 16.0 * pC.getLFORate() * 4096 / (32767.0 * lfoWidths[pC.getLFOWidth()])));
 	}
-	
+
 	class LFORadioButtons extends JPanel implements ActionListener {
+
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = -507133930408340822L;
 		JRadioButton lfo0 = new JRadioButton("LFO 0");
@@ -137,10 +135,11 @@ public class RampLFOControlPanel implements ChangeListener, ActionListener, Item
 			lfo0.setActionCommand("LFO 0");
 			lfo1.setActionCommand("LFO 1");
 
-			if(pC.getLFOSel() == 0)
+			if (pC.getLFOSel() == 0) {
 				lfo0.setSelected(true);
-			else if(pC.getLFOSel() == 1)
+			} else if (pC.getLFOSel() == 1) {
 				lfo1.setSelected(true);
+			}
 
 			//Group the radio buttons.
 			ButtonGroup group = new ButtonGroup();
@@ -157,15 +156,15 @@ public class RampLFOControlPanel implements ChangeListener, ActionListener, Item
 			lfo1.setAlignmentY(SwingConstants.CENTER);
 			add(radioPanel, BorderLayout.LINE_START);
 		}
+
 		@Override
 
 		public void actionPerformed(ActionEvent arg0) {
-			if(lfo0.isSelected()) {
+			if (lfo0.isSelected()) {
 				pC.setLFOSel(0);
-			} 
-			else if(lfo1.isSelected()) {
+			} else if (lfo1.isSelected()) {
 				pC.setLFOSel(1);
-			} 
+			}
 			pC.setName("Ramp LFO " + pC.getLFOSel());
 		}
 	}

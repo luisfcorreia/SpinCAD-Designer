@@ -15,18 +15,16 @@
  *   You should have received a copy of the GNU General Public License 
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. 
  *     
- */ 
-
+ */
 package com.holycityaudio.SpinCAD.ControlBlocks;
 
 import com.holycityaudio.SpinCAD.SpinCADPin;
 import com.holycityaudio.SpinCAD.SpinFXBlock;
-import com.holycityaudio.SpinCAD.ControlBlocks.ControlCADBlock;
 
-public class InvertControlCADBlock extends ControlCADBlock{
+public class InvertControlCADBlock extends ControlCADBlock {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 2532916136606805308L;
 
@@ -45,13 +43,12 @@ public class InvertControlCADBlock extends ControlCADBlock{
 		sfxb.comment(getName());
 
 		SpinCADPin p = this.getPin("Control Input 1").getPinConnection();
-		if(p == null) {	// there's no pin attached!
-		}
-		else {
+		if (p == null) {	// there's no pin attached!
+		} else {
 			controlInput = p.getRegister();
 			sfxb.readRegister(controlInput, 1.0);
 			sfxb.scaleOffset(-0.999, 0.999);
-			sfxb.writeRegister(controlOutput,  0);
+			sfxb.writeRegister(controlOutput, 0);
 			p = this.getPin("Control Output 1");
 			p.setRegister(controlOutput);
 		}

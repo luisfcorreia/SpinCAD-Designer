@@ -2,10 +2,10 @@ package com.holycityaudio.SpinCAD.ControlBlocks;
 
 import com.holycityaudio.SpinCAD.SpinFXBlock;
 
-public class ExponentialControlCADBlock extends ControlCADBlock{
+public class ExponentialControlCADBlock extends ControlCADBlock {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 4812040104612463732L;
 
@@ -15,7 +15,7 @@ public class ExponentialControlCADBlock extends ControlCADBlock{
 		addControlOutputPin(this);	//	feedback
 		setName("Exp");
 	}
-	
+
 	public void generateCode(SpinFXBlock sfxb) {
 
 		int Exp = sfxb.allocateReg();			//
@@ -28,9 +28,9 @@ public class ExponentialControlCADBlock extends ControlCADBlock{
 //		sof	0.5,-0.5	;ranges -0.5 to 0
 		sfxb.scaleOffset(0.5, -0.5);
 //		exp	1,0
-		sfxb.exp(1,0);
+		sfxb.exp(1, 0);
 
-		sfxb.writeRegister(Exp,0);
+		sfxb.writeRegister(Exp, 0);
 
 		this.getPin("Control Output 1").setRegister(Exp);
 		System.out.println("Envelope control code gen!");

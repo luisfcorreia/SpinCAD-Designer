@@ -57,12 +57,13 @@ import org.andrewkilpatrick.elmGen.instructions.Xor;
 /**
  * This class represents a program on the DSP. Effect programs should subclass
  * this class and call the appropriate methods to set up and test the program.
- * 
+ *
  * @author andrew
  */
 public class ElmProgram implements Serializable {
+
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 3718907348318020286L;
 	protected String name;
@@ -129,7 +130,6 @@ public class ElmProgram implements Serializable {
 	// every time a WLDR or WLDS is called (once per block, since with conditional
 	// paths it's conceivable that more than one reference might exist in one block
 	// and still be OK
-
 	public int usedSINLFO0 = 0;
 	public int usedSINLFO1 = 0;
 	public int usedRMPLFO0 = 0;
@@ -140,7 +140,6 @@ public class ElmProgram implements Serializable {
 	// although upper case.  This allows direct use of the parsed string
 	// from a Spin ASM file, after conversion to upper case.
 	// It's also less confusing as all documentation uses Spin names.
-
 	public static final int NEG = 0x01;
 	public static final int GEZ = 0x02;
 	public static final int ZRO = 0x04;
@@ -164,11 +163,10 @@ public class ElmProgram implements Serializable {
 	public static final int NA = 0x20;
 
 	/**
-	 * Creates a new ElmProgram with a blank memory map and instruction list.
-	 * The default samplerate is 32768Hz.
-	 * 
-	 * @param name
-	 *            the program name
+	 * Creates a new ElmProgram with a blank memory map and instruction
+	 * list. The default samplerate is 32768Hz.
+	 *
+	 * @param name the program name
 	 */
 	public ElmProgram(String name) {
 		this.name = name;
@@ -180,7 +178,7 @@ public class ElmProgram implements Serializable {
 	public static void setSamplerate(int samplerate) {
 		if (samplerate < 32000 || samplerate > 48000) {
 			throw new ElmProgramException(
-					"samplerate must be: 32000 to 48000Hz");
+				"samplerate must be: 32000 to 48000Hz");
 		}
 		ElmProgram.SAMPLERATE = samplerate;
 	}
@@ -191,7 +189,7 @@ public class ElmProgram implements Serializable {
 
 	/**
 	 * Gets the name of the program.
-	 * 
+	 *
 	 * @return the program name
 	 */
 	public String getName() {
@@ -200,25 +198,23 @@ public class ElmProgram implements Serializable {
 
 	/**
 	 * Allocates a segment of delay memory.
-	 * 
-	 * @param name
-	 *            the segment name
-	 * @param size
-	 *            the number of samples of memory to allocate
+	 *
+	 * @param name the segment name
+	 * @param size the number of samples of memory to allocate
 	 */
 	public void allocDelayMem(String name, int size) {
 		String name2 = name.toUpperCase();
 		for (int i = 0; i < memoryMap.size(); i++) {
 			if (memoryMap.get(i).getName().equals(name2)) {
 				throw new ElmProgramException(
-						"attempt to allocate memory segment "
-								+ "with name that is already used: " + name2);
+					"attempt to allocate memory segment "
+					+ "with name that is already used: " + name2);
 			}
 		}
 		int offset = getDelayMemAllocated() + memoryMap.size();
 		if (size < 1) {
 			throw new ElmProgramException("attempt to allocate memory segment "
-					+ "with size < 1");
+				+ "with size < 1");
 		}
 		if ((offset + size) > MAX_DELAY_MEM) {
 			// throw new
@@ -239,9 +235,8 @@ public class ElmProgram implements Serializable {
 
 	/**
 	 * Gets a delay memory segment by name.
-	 * 
-	 * @param name
-	 *            the segment name
+	 *
+	 * @param name the segment name
 	 * @return the MemSegment referenced
 	 */
 	protected MemSegment getDelayMemByName(String name) {
@@ -257,7 +252,7 @@ public class ElmProgram implements Serializable {
 
 	/**
 	 * Gets the total amount of delay memory allocated in samples.
-	 * 
+	 *
 	 * @return the number of samples of delay memory allocated
 	 */
 	public int getDelayMemAllocated() {
@@ -270,7 +265,7 @@ public class ElmProgram implements Serializable {
 
 	/**
 	 * Gets the total amount of delay memory in the system.
-	 * 
+	 *
 	 * @return the total amount of delay memory in the system
 	 */
 	public int getMaxDelayMem() {
@@ -279,7 +274,7 @@ public class ElmProgram implements Serializable {
 
 	/**
 	 * Gets the memory map as a String.
-	 * 
+	 *
 	 * @return the memory map as a String
 	 */
 	public String getMemoryMap() {
@@ -292,9 +287,8 @@ public class ElmProgram implements Serializable {
 
 	/**
 	 * Checks the current code length.
-	 * 
-	 * @throws ElmProgramException
-	 *             if the code length is max.
+	 *
+	 * @throws ElmProgramException if the code length is max.
 	 */
 	public void checkCodeLen() {
 		if ((getCodeLen() - getNumComments()) >= MAX_CODE_LEN) {
@@ -310,7 +304,7 @@ public class ElmProgram implements Serializable {
 
 	/**
 	 * Returns the number of instructions in the program.
-	 * 
+	 *
 	 * @return the number of instructions in the program
 	 */
 	public int getCodeLen() {
@@ -321,12 +315,9 @@ public class ElmProgram implements Serializable {
 		return nComments;
 	}
 
-
-
-
 	/**
 	 * Gets the maximum number of instructions supported.
-	 * 
+	 *
 	 * @return the maximum number of instructions supported
 	 */
 	public int getMaxCodeLen() {
@@ -335,9 +326,8 @@ public class ElmProgram implements Serializable {
 
 	/**
 	 * Gets an instruction by number.
-	 * 
-	 * @param num
-	 *            the Instruction index
+	 *
+	 * @param num the Instruction index
 	 * @return the Instruction
 	 */
 	public Instruction getInstruction(int num) {
@@ -346,15 +336,15 @@ public class ElmProgram implements Serializable {
 
 	/**
 	 * Generates the hex output from the current instruction list.
-	 * 
+	 *
 	 * @return an int[] containing the hex words for the program
 	 */
 	public int[] generateHex() {
 		int hex[] = new int[instList.size()];
 		for (int i = 0, j = 0; i < instList.size(); i++) {
 			int ii = instList.get(i).getHexWord();
-			if(ii != -1) {
-				hex[j] = ii; 
+			if (ii != -1) {
+				hex[j] = ii;
 //				System.out.printf("%08x\n", hex[j]);
 				j++;
 			}
@@ -364,7 +354,7 @@ public class ElmProgram implements Serializable {
 
 	/**
 	 * Gets machine code strings.
-	 * 
+	 *
 	 * @return a String[] with the machine codes as Strings
 	 */
 	public String[] getMachineCodeStrings() {
@@ -377,7 +367,7 @@ public class ElmProgram implements Serializable {
 
 	/**
 	 * Gets machine code listing.
-	 * 
+	 *
 	 * @return a printable machine code listing
 	 */
 	public String getProgramListing() {
@@ -399,8 +389,9 @@ public class ElmProgram implements Serializable {
 				str += inst.getInstructionString(1) + "\n";
 			}
 			return str;
-		} else
+		} else {
 			return "Error! Invalid mode.";
+		}
 	}
 
 	/*
@@ -408,11 +399,9 @@ public class ElmProgram implements Serializable {
 	 */
 	/**
 	 * Scales the contents of ACC and adds an offset.
-	 * 
-	 * @param scale
-	 *            the scale factor
-	 * @param offset
-	 *            the amount to add to the ACC after scaling
+	 *
+	 * @param scale the scale factor
+	 * @param offset the amount to add to the ACC after scaling
 	 */
 	public void scaleOffset(double scale, double offset) {
 		//checkCodeLen();
@@ -421,9 +410,8 @@ public class ElmProgram implements Serializable {
 
 	/**
 	 * ANDs the ACC with a mask.
-	 * 
-	 * @param mask
-	 *            the mask to AND the ACC with
+	 *
+	 * @param mask the mask to AND the ACC with
 	 */
 	public void and(int mask) {
 		//checkCodeLen();
@@ -432,9 +420,8 @@ public class ElmProgram implements Serializable {
 
 	/**
 	 * ORs the ACC with a mask.
-	 * 
-	 * @param mask
-	 *            the mask to OR the ACC with
+	 *
+	 * @param mask the mask to OR the ACC with
 	 */
 	public void or(int mask) {
 		//checkCodeLen();
@@ -443,9 +430,8 @@ public class ElmProgram implements Serializable {
 
 	/**
 	 * XORs the ACC with a mask.
-	 * 
-	 * @param mask
-	 *            the mask to XOR the ACC with
+	 *
+	 * @param mask the mask to XOR the ACC with
 	 */
 	public void xor(int mask) {
 		//checkCodeLen();
@@ -453,13 +439,11 @@ public class ElmProgram implements Serializable {
 	}
 
 	/**
-	 * Multiplies the base 2 absolute value of the ACC with the scale value and
-	 * then adds an offset.
-	 * 
-	 * @param scale
-	 *            the amount to scale the result by
-	 * @param offset
-	 *            the amount of offset to add to the scaled result
+	 * Multiplies the base 2 absolute value of the ACC with the scale value
+	 * and then adds an offset.
+	 *
+	 * @param scale the amount to scale the result by
+	 * @param offset the amount of offset to add to the scaled result
 	 */
 	public void log(double scale, double offset) {
 		//checkCodeLen();
@@ -468,11 +452,9 @@ public class ElmProgram implements Serializable {
 
 	/**
 	 * Scales 2^ACC by scale and adds offset.
-	 * 
-	 * @param scale
-	 *            the amount to scale the result by
-	 * @param offset
-	 *            the amount of offset to add to the scaled result
+	 *
+	 * @param scale the amount to scale the result by
+	 * @param offset the amount of offset to add to the scaled result
 	 */
 	public void exp(double scale, double offset) {
 		//checkCodeLen();
@@ -481,11 +463,10 @@ public class ElmProgram implements Serializable {
 
 	/**
 	 * Skips instructions conditionally.
-	 * 
-	 * @param flags
-	 *            the condition flags
-	 * @param nskip
-	 *            the number of instructions to skip if the conditions are met
+	 *
+	 * @param flags the condition flags
+	 * @param nskip the number of instructions to skip if the conditions are
+	 * met
 	 */
 	public void skip(int flags, int nskip) {
 		//checkCodeLen();
@@ -493,14 +474,12 @@ public class ElmProgram implements Serializable {
 	}
 
 	/**
-	 * Reads a register, scales it by scale and adds it to the existing contents
-	 * of ACC.
-	 * 
-	 * @param addr
-	 *            the register address
-	 * @param scale
-	 *            the amount to scale the register by before adding it to the
-	 *            ACC
+	 * Reads a register, scales it by scale and adds it to the existing
+	 * contents of ACC.
+	 *
+	 * @param addr the register address
+	 * @param scale the amount to scale the register by before adding it to
+	 * the ACC
 	 */
 	public void readRegister(int addr, double scale) {
 		//checkCodeLen();
@@ -510,11 +489,10 @@ public class ElmProgram implements Serializable {
 	/**
 	 * Writes the current value of the ACC to a register. Then scales the
 	 * current ACC value by scale.
-	 * 
-	 * @param addr
-	 *            the register address to write to
-	 * @param scale
-	 *            the amount to scale the ACC by after writing the register
+	 *
+	 * @param addr the register address to write to
+	 * @param scale the amount to scale the ACC by after writing the
+	 * register
 	 */
 	public void writeRegister(int addr, double scale) {
 		//checkCodeLen();
@@ -522,13 +500,13 @@ public class ElmProgram implements Serializable {
 	}
 
 	/**
-	 * Compares the absolute value of ACC with the absolute value of a register
-	 * scaled by scale. The larger absolute value is written into the ACC.
-	 * 
-	 * @param addr
-	 *            the register to use for comparison
-	 * @param scale
-	 *            the amount to scale the register value by before comparison
+	 * Compares the absolute value of ACC with the absolute value of a
+	 * register scaled by scale. The larger absolute value is written into
+	 * the ACC.
+	 *
+	 * @param addr the register to use for comparison
+	 * @param scale the amount to scale the register value by before
+	 * comparison
 	 */
 	public void maxx(int addr, double scale) {
 		//checkCodeLen();
@@ -537,9 +515,8 @@ public class ElmProgram implements Serializable {
 
 	/**
 	 * Multiplies the current ACC value by the contents of the register.
-	 * 
-	 * @param addr
-	 *            the address of the register to use for multiplication
+	 *
+	 * @param addr the address of the register to use for multiplication
 	 */
 	public void mulx(int addr) {
 		//checkCodeLen();
@@ -547,14 +524,13 @@ public class ElmProgram implements Serializable {
 	}
 
 	/**
-	 * Subtracts the value of the register at addr from the current ACC value,
-	 * then scales the result by scale and finally adds the value of the
-	 * register at addr to the result.
-	 * 
-	 * @param addr
-	 *            the register to use
-	 * @param scale
-	 *            the amount to scale the result before adding the register
+	 * Subtracts the value of the register at addr from the current ACC
+	 * value, then scales the result by scale and finally adds the value of
+	 * the register at addr to the result.
+	 *
+	 * @param addr the register to use
+	 * @param scale the amount to scale the result before adding the
+	 * register
 	 */
 	public void readRegisterFilter(int addr, double scale) {
 		//checkCodeLen();
@@ -562,14 +538,12 @@ public class ElmProgram implements Serializable {
 	}
 
 	/**
-	 * Stores the current ACC value in the register at addr. Then subtracts the
-	 * current ACC value from the previous ACC value. Scales the result by scale
-	 * and the previous ACC value is added to the result.
-	 * 
-	 * @param addr
-	 *            the register to use
-	 * @param scale
-	 *            the amount to scale the result before adding PACC
+	 * Stores the current ACC value in the register at addr. Then subtracts
+	 * the current ACC value from the previous ACC value. Scales the result
+	 * by scale and the previous ACC value is added to the result.
+	 *
+	 * @param addr the register to use
+	 * @param scale the amount to scale the result before adding PACC
 	 */
 	public void writeRegisterLowshelf(int addr, double scale) {
 		//checkCodeLen();
@@ -578,13 +552,11 @@ public class ElmProgram implements Serializable {
 
 	/**
 	 * Stores the current ACC value in the register at addr. Then adds the
-	 * current ACC value from the previous ACC value. Scales the result by scale
-	 * and the previous ACC value is added to the result.
-	 * 
-	 * @param addr
-	 *            the register to use
-	 * @param scale
-	 *            the amount to scale the result before adding PACC
+	 * current ACC value from the previous ACC value. Scales the result by
+	 * scale and the previous ACC value is added to the result.
+	 *
+	 * @param addr the register to use
+	 * @param scale the amount to scale the result before adding PACC
 	 */
 	public void writeRegisterHighshelf(int addr, double scale) {
 		//checkCodeLen();
@@ -592,13 +564,11 @@ public class ElmProgram implements Serializable {
 	}
 
 	/**
-	 * Reads a value from the delay memory, scales it by scale and then adds it
-	 * to the current value of the ACC.
-	 * 
-	 * @param addr
-	 *            the delay memory offset
-	 * @param scale
-	 *            the amount to scale by before adding to the ACC
+	 * Reads a value from the delay memory, scales it by scale and then adds
+	 * it to the current value of the ACC.
+	 *
+	 * @param addr the delay memory offset
+	 * @param scale the amount to scale by before adding to the ACC
 	 */
 	public void readDelay(int addr, double scale) {
 		//checkCodeLen();
@@ -606,21 +576,19 @@ public class ElmProgram implements Serializable {
 	}
 
 	/**
-	 * Reads a value from the delay memory, scales it by scale and then adds it
-	 * to the current value of the ACC.
-	 * 
-	 * @param memName
-	 *            the delay memory segment name
-	 * @param offset
-	 *            the read position (0.0 to 1.0) within the memory segment
-	 * @param scale
-	 *            the amount to scale by before adding to the ACC
+	 * Reads a value from the delay memory, scales it by scale and then adds
+	 * it to the current value of the ACC.
+	 *
+	 * @param memName the delay memory segment name
+	 * @param offset the read position (0.0 to 1.0) within the memory
+	 * segment
+	 * @param scale the amount to scale by before adding to the ACC
 	 */
 	public void readDelay(String memName, double offset, double scale) {
 		//checkCodeLen();
 		if (offset < 0.0 || offset > 1.0) {
 			throw new ElmProgramException("offset out of range: " + offset
-					+ " - valid range: 0.0 to 1.0");
+				+ " - valid range: 0.0 to 1.0");
 		}
 
 		MemSegment seg = getDelayMemByName(memName);
@@ -634,11 +602,11 @@ public class ElmProgram implements Serializable {
 	}
 
 	/**
-	 * Reads from the delay memory based on the address in the indirect address
-	 * pointer register. Scales the result by scale and adds to the ACC.
-	 * 
-	 * @param scale
-	 *            the amount to scale by before adding to the ACC
+	 * Reads from the delay memory based on the address in the indirect
+	 * address pointer register. Scales the result by scale and adds to the
+	 * ACC.
+	 *
+	 * @param scale the amount to scale by before adding to the ACC
 	 */
 	public void readDelayPointer(double scale) {
 		//checkCodeLen();
@@ -646,13 +614,12 @@ public class ElmProgram implements Serializable {
 	}
 
 	/**
-	 * Writes the current ACC value to the delay memory. Then scales the ACC by
-	 * scale.
-	 * 
-	 * @param addr
-	 *            the delay memory offset
-	 * @param scale
-	 *            the amount to scale the ACC by after writing to delay memory
+	 * Writes the current ACC value to the delay memory. Then scales the ACC
+	 * by scale.
+	 *
+	 * @param addr the delay memory offset
+	 * @param scale the amount to scale the ACC by after writing to delay
+	 * memory
 	 */
 	public void writeDelay(int addr, double scale) {
 		//checkCodeLen();
@@ -660,22 +627,20 @@ public class ElmProgram implements Serializable {
 	}
 
 	/**
-	 * Writes the current ACC value to the delay memory. Then scales the ACC by
-	 * scale.
-	 * 
-	 * @param memName
-	 *            the delay memory segment name
-	 * @param offset
-	 *            the read position (0.0 to 1.0) within the memory segment
-	 * @param scale
-	 *            the amount to scale the ACC by after writing to the delay
-	 *            memory
+	 * Writes the current ACC value to the delay memory. Then scales the ACC
+	 * by scale.
+	 *
+	 * @param memName the delay memory segment name
+	 * @param offset the read position (0.0 to 1.0) within the memory
+	 * segment
+	 * @param scale the amount to scale the ACC by after writing to the
+	 * delay memory
 	 */
 	public void writeDelay(String memName, double offset, double scale) {
 		//checkCodeLen();
 		if (offset < 0.0 || offset > 1.0) {
 			throw new ElmProgramException("offset out of range: " + offset
-					+ " - valid range: 0.0 to 1.0");
+				+ " - valid range: 0.0 to 1.0");
 		}
 
 		MemSegment seg = getDelayMemByName(memName);
@@ -689,15 +654,13 @@ public class ElmProgram implements Serializable {
 	}
 
 	/**
-	 * Writes the current ACC value in delay memory at addr. Then scales the ACC
-	 * by scale. Finally, adds the contents of the previous delay memory read to
-	 * the ACC.
-	 * 
-	 * @param addr
-	 *            the offset in delay memory
-	 * @param scale
-	 *            the amount to scale the ACC by after writing to the delay
-	 *            memory
+	 * Writes the current ACC value in delay memory at addr. Then scales the
+	 * ACC by scale. Finally, adds the contents of the previous delay memory
+	 * read to the ACC.
+	 *
+	 * @param addr the offset in delay memory
+	 * @param scale the amount to scale the ACC by after writing to the
+	 * delay memory
 	 */
 	public void writeAllpass(int addr, double scale) {
 		//checkCodeLen();
@@ -705,23 +668,21 @@ public class ElmProgram implements Serializable {
 	}
 
 	/**
-	 * Writes the current ACC value in delay memory at addr. Then scales the ACC
-	 * by scale. Finally, adds the contents of the previous delay memory read to
-	 * the ACC.
-	 * 
-	 * @param memName
-	 *            the delay memory segment name
-	 * @param offset
-	 *            the read position (0.0 to 1.0) within the memory segment
-	 * @param scale
-	 *            the amount to scale the ACC by after writing to the delay
-	 *            memory
+	 * Writes the current ACC value in delay memory at addr. Then scales the
+	 * ACC by scale. Finally, adds the contents of the previous delay memory
+	 * read to the ACC.
+	 *
+	 * @param memName the delay memory segment name
+	 * @param offset the read position (0.0 to 1.0) within the memory
+	 * segment
+	 * @param scale the amount to scale the ACC by after writing to the
+	 * delay memory
 	 */
 	public void writeAllpass(String memName, double offset, double scale) {
 		//checkCodeLen();
 		if (offset < 0.0 || offset > 1.0) {
 			throw new ElmProgramException("offset out of range: " + offset
-					+ " - valid range: 0.0 to 1.0");
+				+ " - valid range: 0.0 to 1.0");
 		}
 
 		MemSegment seg = getDelayMemByName(memName);
@@ -736,13 +697,10 @@ public class ElmProgram implements Serializable {
 
 	/**
 	 * Loads one of the SIN LFOs with frequency and amplitude settings.
-	 * 
-	 * @param lfo
-	 *            the SIN LFO (0 or 1)
-	 * @param freq
-	 *            the frequency setting (0.0 to 20.33 in Hz)
-	 * @param amp
-	 *            the amplitude
+	 *
+	 * @param lfo the SIN LFO (0 or 1)
+	 * @param freq the frequency setting (0.0 to 20.33 in Hz)
+	 * @param amp the amplitude
 	 */
 	public void loadSinLFO(int lfo, double freq, double amp) {
 		//checkCodeLen();
@@ -752,13 +710,10 @@ public class ElmProgram implements Serializable {
 
 	/**
 	 * Loads one of the SIN LFOs with frequency and amplitude settings.
-	 * 
-	 * @param lfo
-	 *            the SIN LFO (0 or 1)
-	 * @param freq
-	 *            the frequency setting (register value)
-	 * @param amp
-	 *            the amplitude
+	 *
+	 * @param lfo the SIN LFO (0 or 1)
+	 * @param freq the frequency setting (register value)
+	 * @param amp the amplitude
 	 */
 	public void loadSinLFO(int lfo, int freq, int amp) {
 		//checkCodeLen();
@@ -768,13 +723,11 @@ public class ElmProgram implements Serializable {
 
 	/**
 	 * Loads one of the RAMP LFOs with frequency and amplitude settings.
-	 * 
-	 * @param lfo
-	 *            the RAM LFO (0 or 1) - // GSW actually this should be 2 or 3
-	 * @param freq
-	 *            the frequency setting
-	 * @param amp
-	 *            the amplitude setting
+	 *
+	 * @param lfo the RAM LFO (0 or 1) - // GSW actually this should be 2 or
+	 * 3
+	 * @param freq the frequency setting
+	 * @param amp the amplitude setting
 	 */
 	public void loadRampLFO(int lfo, int freq, int amp) {
 		//checkCodeLen();
@@ -784,9 +737,9 @@ public class ElmProgram implements Serializable {
 
 	/**
 	 * Resets one of the RAMP LFOs to the starting position.
-	 * 
-	 * @param lfo
-//	 *            the RAMP LFO (0 or 1) - // GSW actually this should be 2 or 3
+	 *
+	 * @param lfo //	* the RAMP LFO (0 or 1) - // GSW actually this should
+	 * be 2 or 3
 	 */
 	public void jam(int lfo) {
 		//checkCodeLen();
@@ -794,15 +747,12 @@ public class ElmProgram implements Serializable {
 	}
 
 	/**
-	 * Reads from the delay memory with the read pointer value modulated by the
-	 * selected LFO.
-	 * 
-	 * @param lfo
-	 *            the LFO to use
-	 * @param flags
-	 *            the flags
-	 * @param addr
-	 *            the base offset in delay memory
+	 * Reads from the delay memory with the read pointer value modulated by
+	 * the selected LFO.
+	 *
+	 * @param lfo the LFO to use
+	 * @param flags the flags
+	 * @param addr the base offset in delay memory
 	 */
 	public void chorusReadDelay(int lfo, int flags, int addr) {
 		//checkCodeLen();
@@ -810,15 +760,12 @@ public class ElmProgram implements Serializable {
 	}
 
 	/**
-	 * Reads from the delay memory with the read pointer value modulated by the
-	 * selected LFO.
-	 * 
-	 * @param lfo
-	 *            the LFO to use
-	 * @param flags
-	 *            the flags
-	 * @param addr
-	 *            the base offset in delay memory
+	 * Reads from the delay memory with the read pointer value modulated by
+	 * the selected LFO.
+	 *
+	 * @param lfo the LFO to use
+	 * @param flags the flags
+	 * @param addr the base offset in delay memory
 	 */
 	public void comment(String s) {
 		nComments = nComments + 1;
@@ -826,17 +773,13 @@ public class ElmProgram implements Serializable {
 	}
 
 	/**
-	 * Reads from the delay memory with the read pointer value modulated by the
-	 * selected LFO.
-	 * 
-	 * @param lfo
-	 *            the LFO to use
-	 * @param flags
-	 *            the flags
-	 * @param memName
-	 *            the delay memory segment name
-	 * @param offset
-	 *            the base read position - absolute, in samples
+	 * Reads from the delay memory with the read pointer value modulated by
+	 * the selected LFO.
+	 *
+	 * @param lfo the LFO to use
+	 * @param flags the flags
+	 * @param memName the delay memory segment name
+	 * @param offset the base read position - absolute, in samples
 	 */
 	public void chorusReadDelay(int lfo, int flags, String memName, int offset) {
 		//checkCodeLen();
@@ -844,22 +787,19 @@ public class ElmProgram implements Serializable {
 		int ofst = offset;
 		if (ofst < 0 || ofst > seg.getLength()) {
 			throw new ElmProgramException("offset out of range: " + ofst
-					+ " - valid range: 0 to " + seg.getLength());
+				+ " - valid range: 0 to " + seg.getLength());
 		}
 		int addr = seg.getStart() + ofst;
 		instList.add(new ChorusReadDelay(lfo, flags, addr));
 	}
 
 	/**
-	 * Scales the contents of the ACC and adds an offset. The scale coefficient
-	 * is driven by the chosen LFO.
-	 * 
-	 * @param lfo
-	 *            the LFO to use
-	 * @param flags
-	 *            the flags
-	 * @param offset
-	 *            the base offset in delay memory
+	 * Scales the contents of the ACC and adds an offset. The scale
+	 * coefficient is driven by the chosen LFO.
+	 *
+	 * @param lfo the LFO to use
+	 * @param flags the flags
+	 * @param offset the base offset in delay memory
 	 */
 	public void chorusScaleOffset(int lfo, int flags, double offset) {
 		//checkCodeLen();
@@ -868,9 +808,8 @@ public class ElmProgram implements Serializable {
 
 	/**
 	 * Reads the current LFO value into the ACC.
-	 * 
-	 * @param lfo
-	 *            the LFO to use
+	 *
+	 * @param lfo the LFO to use
 	 */
 	public void chorusReadValue(int lfo) {
 		//checkCodeLen();
@@ -903,9 +842,8 @@ public class ElmProgram implements Serializable {
 
 	/**
 	 * Loads the ACC with the value of the register at addr.
-	 * 
-	 * @param addr
-	 *            the register to load
+	 *
+	 * @param addr the register to load
 	 */
 	public void loadAccumulator(int addr) {
 		checkCodeLen();
@@ -915,35 +853,34 @@ public class ElmProgram implements Serializable {
 	// GSW - added to keep track of LFO reference/allocation so that we can be aware
 	// when multiple blocks reference the same LFO, which is usually not what we are looking
 	// for
-
 	public void clearLFOUsedCounts() {
 		usedSINLFO0 = 0;
 		usedSINLFO1 = 0;
 		usedRMPLFO0 = 0;
-		usedRMPLFO1 = 0;	
+		usedRMPLFO1 = 0;
 	}
 
 	public void incrementLFOUsed(int LFO) {
-		if(LFO == SIN0) {
-			usedSINLFO0 ++;
-		} else if(LFO == SIN1) {
-			usedSINLFO1 ++;
-		} else if(LFO == RMP0) {
-			usedRMPLFO0 ++;
-		} else if(LFO == RMP1) {
-			usedRMPLFO1 ++;
+		if (LFO == SIN0) {
+			usedSINLFO0++;
+		} else if (LFO == SIN1) {
+			usedSINLFO1++;
+		} else if (LFO == RMP0) {
+			usedRMPLFO0++;
+		} else if (LFO == RMP1) {
+			usedRMPLFO1++;
 		}
 	}
 
 	public int getLFOUsed(int LFO) {
 		int result = 0;
-		if(LFO == SIN0) {
+		if (LFO == SIN0) {
 			result = usedSINLFO0;
-		} else if(LFO == SIN1) {
+		} else if (LFO == SIN1) {
 			result = usedSINLFO1;
-		} else if(LFO == RMP0) {
+		} else if (LFO == RMP0) {
 			result = usedRMPLFO0;
-		} else if(LFO == RMP1) {
+		} else if (LFO == RMP1) {
 			result = usedRMPLFO1;
 		}
 		return result;

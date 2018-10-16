@@ -27,8 +27,6 @@ public class SwingBugTest {
 	/**
 	 * Launch the application.
 	 */
-
-
 	public static void main(String[] args) {
 
 		new SwingBugTest();
@@ -39,14 +37,13 @@ public class SwingBugTest {
 				dspFrame.setVisible(true);
 				dspFrame.setLayout(new BoxLayout(dspFrame.getContentPane(), BoxLayout.Y_AXIS));
 
-
 				qLabel = new JLabel();
 				qLabel.setAlignmentX(SwingConstants.LEFT);
 
 				updateQLabel(40);
 
 				dspFrame.getContentPane().add(qLabel);
-				dspFrame.getContentPane().add(Box.createRigidArea(new Dimension(205,4)));			
+				dspFrame.getContentPane().add(Box.createRigidArea(new Dimension(205, 4)));
 				dspFrame.getContentPane().add(qSlider);
 
 				dspFrame.setAlwaysOnTop(true);
@@ -56,20 +53,20 @@ public class SwingBugTest {
 				dspFrame.setResizable(true);
 			}
 
-			});		
-		}
+		});
+	}
 
-		class LPF1PChangeListener implements ChangeListener { 
-			public void stateChanged(ChangeEvent ce) {
-				if(ce.getSource() == qSlider) {
-					int value = qSlider.getValue();
-					updateQLabel(value);
-				}
+	class LPF1PChangeListener implements ChangeListener {
+
+		public void stateChanged(ChangeEvent ce) {
+			if (ce.getSource() == qSlider) {
+				int value = qSlider.getValue();
+				updateQLabel(value);
 			}
-		}
-
-		public static void updateQLabel(int value) {
-			qLabel.setText(" Resonance " + String.format("%4.1f",(100.0/value)));		
 		}
 	}
 
+	public static void updateQLabel(int value) {
+		qLabel.setText(" Resonance " + String.format("%4.1f", (100.0 / value)));
+	}
+}

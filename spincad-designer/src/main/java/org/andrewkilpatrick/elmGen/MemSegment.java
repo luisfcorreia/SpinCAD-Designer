@@ -21,18 +21,19 @@ import java.io.Serializable;
 
 /**
  * This class represents a delay memory segment in the DSP.
- * 
+ *
  * @author andrew
  */
 public class MemSegment implements Serializable {
+
 	private static final long serialVersionUID = -8461943977923452457L;
 	final String name;
 	final int length;
 	final int start;
-	
+
 	/**
 	 * Creates a new memory segment.
-	 * 
+	 *
 	 * @param name the segment name
 	 * @param size the length in samples
 	 * @param offset the sample offset
@@ -47,7 +48,7 @@ public class MemSegment implements Serializable {
 	public String getName() {
 		return name;
 	}
-	
+
 	public int getLength() {
 		return length;
 	}
@@ -55,20 +56,20 @@ public class MemSegment implements Serializable {
 	public int getStart() {
 		return start;
 	}
-	
+
 	public int getEnd() {
 //		return start + length - 1;
 		return start + length;  // SpinASM compatibility
 	}
-	
+
 	public int getMiddle() {
 		return (length - start) / 2;
 	}
-	
+
 	public String toString() {
-		return "MemSegment: " + name +
-			" - start: " + start + String.format(" (0x%04X)", start) +
-			" - end: " + getEnd() + String.format(" (0x%04X)", getEnd()) +
-			" - length: " + length + String.format(" (0x%04X)", length);
+		return "MemSegment: " + name
+			+ " - start: " + start + String.format(" (0x%04X)", start)
+			+ " - end: " + getEnd() + String.format(" (0x%04X)", getEnd())
+			+ " - length: " + length + String.format(" (0x%04X)", length);
 	}
 }
